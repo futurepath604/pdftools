@@ -76,9 +76,27 @@ async def api_merge(files: List[UploadFile] = File(...), file_order: str = Form(
     if len(files) < 2:
         raise HTTPException(status_code=400, detail="Select at least 2 files.")
     try:
-        order_list = json.loads(file_order)
-        file_map = {f.filename: await f.read() for f in files}
-        ordered_bytes = [file_map[name] for name in order_list if name in file_map]
+        # সব আপলোডেড ফাইলের বাইটস মেমরিতে রিড করা
+        file_map = {}
+        all_raw_bytes = []
+        for f in files:
+            file_content = await f.read()
+            file_map[f.filename] = file_content
+            all_raw_bytes.append(file_content)
+        
+        # ফ্রন্টএন্ড থেকে পাঠানো সিকোয়েন্স লিস্ট পার্স করা
+        try:
+            order_list = json.loads(file_order)
+            ordered_bytes = []
+            for name in order_list:
+                if name in file_map:
+                    ordered_bytes.append(file_map[name])
+        except Exception:
+            ordered_bytes = []
+
+        # 🔒 সেফটি ফলব্যাক: যদি নামের অমিলের কারণে লিস্ট খালি হয়ে যায়, তবে আপলোড করা সিকোয়েন্সেই মার্জ হবে (কোনো ক্র্যাশ করবে না)
+        if not ordered_bytes:
+            ordered_bytes = all_raw_bytes
         
         output_stream = merge_pdfs_logic(ordered_bytes)
         return StreamingResponse(output_stream, media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=merged_secure_doc.pdf"})
