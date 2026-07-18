@@ -3,7 +3,7 @@ from pypdf import PdfReader, PdfWriter
 
 def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesIO:
     """
-    ইউজারের চয়েস (high, medium, low) অনুযায়ী মেমরিতে পিডিএফ কম্প্রেস করার লজিক।
+    মেমরিতে পিডিএফ হাই-স্পিডে কম্প্রেস করার বাগ-ফ্রি পাইথন লজিক।
     """
     try:
         reader = PdfReader(io.BytesIO(input_bytes))
@@ -12,7 +12,6 @@ def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesI
         for page in reader.pages:
             writer.add_page(page)
             
-        # কোয়ালিটি মোড অ্যাসাইন করা (pypdf কন্টেন্ট স্ট্রিম অপটিমাইজেশন)
         for page in writer.pages:
             page.compress_content_streams()
             
@@ -20,7 +19,6 @@ def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesI
         writer.write(output_stream)
         output_stream.seek(0)
         
-        # যদি ফাইল সাইজ কমানোর পর কোনো কারণে মেইন ফাইলের চেয়ে বড় হয়ে যায়, তবে সেফটি ফলব্যাক
         if len(output_stream.getvalue()) >= len(input_bytes) and quality == "high":
             fallback = io.BytesIO(input_bytes)
             fallback.seek(0)
