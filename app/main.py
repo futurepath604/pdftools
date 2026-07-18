@@ -1,12 +1,17 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-import io
-from PyPDF2 import PdfReader, PdfWriter
 
-app = FastAPI()
+# আপনার আগের তৈরি করা মডুলার কম্প্রেসার ইঞ্জিন ইম্পোর্ট করা হলো
+from app.tools.compressor import compress_pdf_logic
 
-# 🔒 এটি চিরকালের জন্য CORS পলিসি ফিক্স করে দিল, ভবিষ্যতে আর কোনো সমস্যা হবে না
+app = FastAPI(
+    title="Secure PDF Tools API",
+    description="100% Free & Private PDF Tools. No files are saved on the server.",
+    version="1.0.0"
+)
+
+# 🔒 চিরকালের জন্য CORS পলিসি ফিক্স (Hugging Face ফ্রন্টএন্ডের জন্য)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,30 +28,26 @@ def read_root():
     }
 
 @app.post("/api/compress")
-async def compress_pdf(file: UploadFile = File(...)):
-    if not file.filename.endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="শুধুমাত্র PDF ফাইল সাপোর্ট করে।")
+async def api_compress(file: UploadFile = File(...)):
+    # ফাইল টাইপ ভ্যালিডেশন
+    if not file.filename.lower().endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="দয়া করে শুধুমাত্র PDF ফাইল আপলোড করুন।")
     
     try:
-        pdf_bytes = await file.read()
-        reader = PdfReader(io.BytesIO(pdf_bytes))
-        writer = PdfWriter()
+        # ফাইল রিড করা
+        content = await file.read()
         
-        for page in reader.pages:
-            writer.add_page(page)
+        # ১৫ মেগাবাইট ফাইল সাইজ লিমিট চেক
+        if len(content) > 15 * 1024 * 1024:
+            raise HTTPException(status_code=400, detail="ফাইল সাইজ ১৫ মেগাবাইটের বেশি হওয়া যাবে না।")
             
-        # মেমরিতেই কম্প্রেস করার লজিক (ইন-মেমরি প্রসেস)
-        for page in writer.pages:
-            page.compress_content_streams()
-            
-        output_stream = io.BytesIO()
-        writer.write(output_stream)
-        output_stream.seek(0)
+        # মেমরিতেই কম্প্রেস করার লজিক কল করা
+        output_stream = compress_pdf_logic(content)
         
         return StreamingResponse(
-            output_stream,
-            media_type="application/pdf",
+            output_stream, 
+            media_type="application/pdf", 
             headers={"Content-Disposition": f"attachment; filename=compressed_{file.filename}"}
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="ফাইলটি প্রসেস করতে সমস্যা হয়েছে।")
