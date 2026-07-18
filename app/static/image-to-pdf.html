@@ -3,80 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to PDF - Secure PDF Tools Pro</title>
+    <title>Image to PDF - Secure PDF Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #2d3748; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; width: 100%; text-align: center; }
-        h1 { color: #38a169; margin-bottom: 10px; }
-        .drop-zone { border: 2px dashed #38a169; padding: 40px 20px; border-radius: 8px; background: #f0fff4; cursor: pointer; margin: 20px 0; }
-        .drop-zone:hover { background: #c6f6d5; }
-        .file-list { text-align: left; margin: 15px 0; max-height: 200px; overflow-y: auto; }
-        .file-item { background: #edf2f7; padding: 8px 12px; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; }
-        button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 6px; background: #38a169; color: white; font-weight: bold; border: none; cursor: pointer; display: none; font-size: 1rem; }
-        button:hover { background: #2f855a; }
-        .status { margin-top: 15px; font-weight: bold; color: #4a5568; }
-        .back-link { margin-top: 20px; display: inline-block; color: #4a90e2; text-decoration: none; }
+        .gradient-bg { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
+        .group:hover .group-hover\:opacity-100 { opacity: 1; visibility: visible; }
     </style>
 </head>
-<body>
-<div class="container">
-    <h1>🖼️ Image to PDF</h1>
-    <p>JPG, PNG বা যেকোনো ছবিকে নিমেষেই প্রফেশনাল পিডিএফে কনভার্ট করুন।</p>
-    <div class="drop-zone" id="dropZone">
-        <p>এক বা একাধিক ছবি ড্র্যাগ করে ছাড়ুন অথবা ক্লিক করে সিলেক্ট করুন</p>
-        <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
-    </div>
-    <div class="file-list" id="fileList"></div>
-    <button id="submitBtn">CONVERT IMAGES TO PDF</button>
-    <div class="status" id="statusMsg"></div>
-    <a href="/" class="back-link">← Back to Dashboard</a>
-</div>
-<script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileListElement = document.getElementById('fileList');
-    const submitBtn = document.getElementById('submitBtn');
-    const statusMsg = document.getElementById('statusMsg');
-    let selectedFiles = [];
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col justify-between">
 
-    dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFiles(e.target.files); });
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = '#c6f6d5'; });
-    dropZone.addEventListener('dragleave', () => dropZone.style.background = '#f0fff4');
-    dropZone.addEventListener('drop', (e) => { e.preventDefault(); if(e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files); });
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-2 text-indigo-600 font-bold text-xl">
+                        <span>🛠️ Secure PDF Tools</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="/" class="text-gray-600 hover:text-indigo-600 text-sm font-medium">Dashboard</a>
+                    <div class="relative group inline-block text-left">
+                        <button class="text-gray-600 hover:text-indigo-600 text-sm font-medium flex items-center space-x-1 focus:outline-none py-5">
+                            <span>All Tools</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="absolute right-0 mt-0 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="py-1">
+                                <a href="/compress" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📉 Compress PDF</a>
+                                <a href="/merge" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔀 Merge PDF</a>
+                                <a href="/pdf-to-image" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖼️ PDF to Image</a>
+                                <a href="/image-to-pdf" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📸 Image to PDF</a>
+                            </div>
+                            <div class="py-1">
+                                <a href="/split" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">✂️ Split PDF</a>
+                                <a href="/rotate" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔄 Rotate PDF</a>
+                                <a href="/delete-pages" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🗑️ Delete Pages</a>
+                            </div>
+                            <div class="py-1">
+                                <a href="/lock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Lock PDF</a>
+                                <a href="/unlock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔓 Unlock PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    function handleFiles(files) {
-        for (let file of files) { if (file.type.startsWith("image/")) { selectedFiles.push(file); } }
-        renderFiles();
-    }
-    function renderFiles() {
-        fileListElement.innerHTML = '';
-        selectedFiles.forEach((file, index) => {
-            const item = document.createElement('div');
-            item.className = 'file-item';
-            item.innerHTML = `<span>${index + 1}. ${file.name}</span><span style="color:red; cursor:pointer;" onclick="removeFile(${index})">❌</span>`;
-            fileListElement.appendChild(item);
+    <!-- Main Content -->
+    <main class="flex-grow max-w-3xl w-full mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-gray-900">Image to PDF</h1>
+            <p class="mt-2 text-gray-500">Convert JPG/PNG images into a clean PDF document.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-500 bg-gray-50">
+                <input type="file" id="file-input" class="hidden" accept="image/*" multiple>
+                <div class="space-y-2">
+                    <div class="text-indigo-500 text-4xl">📸</div>
+                    <div class="text-gray-600"><span class="font-medium text-indigo-600">Select Images</span> or drag them here</div>
+                </div>
+            </div>
+
+            <div id="file-list" class="mt-6 grid grid-cols-2 gap-4"></div>
+
+            <button id="convert-btn" class="mt-6 w-full gradient-bg text-white py-3 rounded-xl font-medium shadow-md hover:opacity-90 disabled:opacity-50" disabled>
+                Convert Images to PDF
+            </button>
+
+            <div id="status" class="mt-4 hidden p-4 rounded-xl text-sm font-medium"></div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
+        &copy; 2026 FFuture's Workspace. All rights reserved.
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileListContainer = document.getElementById('file-list');
+        const convertBtn = document.getElementById('convert-btn');
+        const status = document.getElementById('status');
+        let selectedImages = [];
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-indigo-500'));
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); handleFiles(e.dataTransfer.files); });
+
+        function handleFiles(files) {
+            for (let file of files) {
+                if (file.type.startsWith('image/')) {
+                    selectedImages.push(file);
+                }
+            }
+            renderImages();
+        }
+
+        function renderImages() {
+            fileListContainer.innerHTML = '';
+            if (selectedImages.length > 0) convertBtn.disabled = false;
+
+            selectedImages.forEach((file, index) => {
+                const url = URL.createObjectURL(file);
+                const item = document.createElement('div');
+                item.className = "relative border border-gray-200 rounded-xl p-2 bg-gray-50 flex flex-col items-center shadow-sm";
+                item.innerHTML = `
+                    <img src="${url}" class="h-24 w-full object-cover rounded-lg mb-2">
+                    <span class="text-xs text-gray-500 truncate w-full text-center">${file.name}</span>
+                    <button onclick="removeImg(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow">✕</button>
+                `;
+                fileListContainer.appendChild(item);
+            });
+        }
+
+        window.removeImg = function(index) {
+            selectedImages.splice(index, 1);
+            if (selectedImages.length === 0) convertBtn.disabled = true;
+            renderImages();
+        };
+
+        convertBtn.addEventListener('click', async () => {
+            if (selectedImages.length === 0) return;
+            convertBtn.disabled = true;
+            convertBtn.textContent = 'Converting...';
+
+            const formData = new FormData();
+            selectedImages.forEach(img => formData.append('files', img));
+
+            try {
+                const response = await fetch('/api/image-to-pdf', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Conversion failed.');
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "images_converted.pdf";
+                a.click();
+                showStatus('Success! Images converted to PDF successfully.', 'success');
+            } catch (err) {
+                showStatus(err.message, 'error');
+            } finally {
+                convertBtn.disabled = false;
+                convertBtn.textContent = 'Convert Images to PDF';
+            }
         });
-        submitBtn.style.display = selectedFiles.length > 0 ? 'block' : 'none';
-    }
-    window.removeFile = function(index) { selectedFiles.splice(index, 1); renderFiles(); }
 
-    submitBtn.addEventListener('click', async () => {
-        if(selectedFiles.length === 0) return;
-        const formData = new FormData();
-        selectedFiles.forEach(file => formData.append('files', file));
-        statusMsg.innerText = "Converting images... Please wait...";
-        submitBtn.disabled = true;
-        try {
-            const response = await fetch('/api/image-to-pdf', { method: 'POST', body: formData });[span_1](start_span)[span_1](end_span)
-            if(!response.ok) throw new Error("Conversion failed");
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = "images_converted.pdf"; document.body.appendChild(a); a.click(); a.remove();
-            statusMsg.innerHTML = "<span style='color: green;'>Success! PDF downloading.</span>";
-        } catch (err) { statusMsg.innerHTML = "<span style='color: red;'>Error during conversion.</span>"; }
-        finally { submitBtn.disabled = false; }
-    });
-</script>
+        function showStatus(msg, type) {
+            status.classList.remove('hidden');
+            status.textContent = msg;
+            status.className = `mt-4 p-4 rounded-xl text-sm font-medium ${type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`;
+        }
+    </script>
 </body>
 </html>
