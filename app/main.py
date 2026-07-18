@@ -42,40 +42,46 @@ def merge_pdfs_logic(pdf_files_bytes: List[bytes]) -> io.BytesIO:
         raise RuntimeError(str(e))
 
 
-# --- 📂 PATH FIX: ABSOLUTE STATIC DIRECTORY RESOLUTION ---
-# রেন্ডার সার্ভারের কারেন্ট ওয়ার্কিং ডিরেক্টরি অনুযায়ী ডাইনামিক পাথ সেটআপ
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+# --- 🕵️‍♂️ SMART PATH FINDER ENGINE (চিরস্থায়ী সমাধান) ---
+def find_html_file(filename: str) -> str:
+    """
+    সার্ভারের রুট, অ্যাপ বা স্ট্যাটিক ফোল্ডারের যেকোনো জায়গা থেকে 
+    খুঁজে ফাইলটির সঠিক পরম পাথ (Absolute Path) বের করার ফলব্যাক লজিক।
+    """
+    possible_paths = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", filename),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), filename),
+        os.path.join(os.getcwd(), "static", filename),
+        os.path.join(os.getcwd(), filename),
+        os.path.join("/code", "app", "static", filename),
+        os.path.join("/code", filename)
+    ]
+    
+    for path in possible_paths:
+        if os.path.exists(path):
+            return path
+            
+    # যদি কোথাও ফাইল না পাওয়া যায়, তবে রুট ডিরেক্টরি স্ক্যান করে খোঁজার চেষ্টা
+    base_root = os.getcwd()
+    for root, dirs, files in os.walk(base_root):
+        if filename in files:
+            return os.path.join(root, filename)
+            
+    raise HTTPException(status_code=404, detail=f"ক্রিটিকাল এরর: '{filename}' ফাইলটি গিটহাবের কোনো ফোল্ডারেই খুঁজে পাওয়া যায়নি।")
 
-# প্রজেক্ট রুট বা অ্যাপ ফোল্ডার উভয় জায়গার 'static' ফোল্ডার সেফটি চেক
-STATIC_DIR = os.path.join(CURRENT_DIR, "static")
-if not os.path.exists(STATIC_DIR):
-    # ফলব্যাক: যদি static ফোল্ডারটি রুট ডিরেক্টরিতে থাকে
-    STATIC_DIR = os.path.abspath(os.path.join(CURRENT_DIR, "..", "static"))
-    if not os.path.exists(STATIC_DIR):
-        # সেকেন্ডারি ফলব্যাক: যদি কারেন্ট ডিরেক্টরিই রুট হয়
-        STATIC_DIR = os.path.join(os.getcwd(), "static")
 
 # --- ROUTING: MULTI-PAGE FRAMEWORK ---
 @app.get("/")
 async def route_home():
-    target_path = os.path.join(STATIC_DIR, "index.html")
-    if not os.path.exists(target_path):
-        raise HTTPException(status_code=404, detail=f"Homepage not found at {target_path}")
-    return FileResponse(target_path)
+    return FileResponse(find_html_file("index.html"))
 
 @app.get("/compress")
 async def route_compress():
-    target_path = os.path.join(STATIC_DIR, "compress.html")
-    if not os.path.exists(target_path):
-        raise HTTPException(status_code=404, detail=f"Compress page not found at {target_path}")
-    return FileResponse(target_path)
+    return FileResponse(find_html_file("compress.html"))
 
 @app.get("/merge")
 async def route_merge():
-    target_path = os.path.join(STATIC_DIR, "merge.html")
-    if not os.path.exists(target_path):
-        raise HTTPException(status_code=404, detail=f"Merge page not found at {target_path}")
-    return FileResponse(target_path)
+    return FileResponse(find_html_file("merge.html"))
 
 
 # --- API ENDPOINTS ---
@@ -118,7 +124,3 @@ async def api_merge(files: List[UploadFile] = File(...), file_order: str = Form(
         return StreamingResponse(output_stream, media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=merged_secure_doc.pdf"})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-# Static ফাইল মাউন্ট করা (যদি static ফোল্ডারটি এক্সিস্ট করে)
-if os.path.exists(STATIC_DIR):
-    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
