@@ -3,23 +3,23 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-# আলাদা ফাইলগুলো থেকে রাউটার ইম্পোর্ট করা হচ্ছে
-from apps.compress import router as compress_router
-from apps.merge import router as merge_router
-from apps.image_to_pdf import router as image_router
-from apps.modify import router as modify_router
-from apps.security import router as security_router
+# 'tools' ফোল্ডার থেকে রাউটারগুলো ইম্পোর্ট করা হচ্ছে
+from tools.compress import router as compress_router
+from tools.merge import router as merge_router
+from tools.image_to_pdf import router as image_router
+from tools.modify import router as modify_router
+from tools.security import router as security_router
 
 app = FastAPI(title="Secure PDF Tools Pro - Modular Backend")
 
-# সব সাব-টুলের পাইথন রাউটগুলো মেইন অ্যাপে যুক্ত করা হচ্ছে
+# রাউটারগুলো মেইন অ্যাপে রেজিস্টার করা হচ্ছে
 app.include_router(compress_router)
 app.include_router(merge_router)
 app.include_router(image_router)
 app.include_router(modify_router)
 app.include_router(security_router)
 
-# Static files mapping
+# Static files configuration
 os.makedirs("static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -28,7 +28,7 @@ async def read_index():
     index_path = os.path.join("static", "index.html")
     if os.path.exists(index_path):
         return FileResponse(index_path)
-    return {"message": "FFuture's Workspace PDF Modular API is running perfectly!"}
+    return {"message": "FFuture's Workspace PDF Tools API is running perfectly!"}
 
 @app.get("/{page_name}")
 async def serve_page(page_name: str):
