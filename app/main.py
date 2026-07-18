@@ -2,18 +2,50 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse
 from typing import List
+from pypdf import PdfReader, PdfWriter, PdfMerger
 import os
 import json
-
-from app.tools.compressor import compress_pdf_logic
-from app.tools.merger import merge_pdfs_logic
+import io
 
 app = FastAPI(title="Secure PDF Tools Pro")
 
+# --- CORE LOGIC: COMPRESSOR ENGINE ---
+def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesIO:
+    try:
+        reader = PdfReader(io.BytesIO(input_bytes))
+        writer = PdfWriter()
+        for page in reader.pages:
+            writer.add_page(page)
+        for page in writer.pages:
+            page.compress_content_streams()
+        output_stream = io.BytesIO()
+        writer.write(output_stream)
+        output_stream.seek(0)
+        return output_stream
+    except Exception:
+        fallback = io.BytesIO(input_bytes)
+        fallback.seek(0)
+        return fallback
+
+# --- CORE LOGIC: MERGER ENGINE ---
+def merge_pdfs_logic(pdf_files_bytes: List[bytes]) -> io.BytesIO:
+    try:
+        merger = PdfMerger()
+        for file_bytes in pdf_files_bytes:
+            merger.append(io.BytesIO(file_bytes))
+        output_stream = io.BytesIO()
+        merger.write(output_stream)
+        merger.close()
+        output_stream.seek(0)
+        return output_stream
+    except Exception as e:
+        raise RuntimeError(str(e))
+
+
+# --- ROUTING: MULTI-PAGE FRAMEWORK ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 
-# 📄 ROUTING: আলাদা আলাদা পেজ লিংক (SEO & Multi-page Framework)
 @app.get("/")
 async def route_home():
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))
@@ -27,7 +59,7 @@ async def route_merge():
     return FileResponse(os.path.join(STATIC_DIR, "merge.html"))
 
 
-# ⚡ API: Advanced Compression
+# --- API ENDPOINTS ---
 @app.post("/api/compress")
 async def api_compress(file: UploadFile = File(...), quality: str = Form("medium")):
     if not file.filename.lower().endswith('.pdf'):
@@ -39,7 +71,6 @@ async def api_compress(file: UploadFile = File(...), quality: str = Form("medium
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# ⚡ API: Sequenced Merge
 @app.post("/api/merge")
 async def api_merge(files: List[UploadFile] = File(...), file_order: str = Form(...)):
     if len(files) < 2:
