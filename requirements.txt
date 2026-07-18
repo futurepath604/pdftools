@@ -4,3 +4,4 @@ PyPDF2
 python-multipart
 Pillow
 pypdf
+pdf2image
