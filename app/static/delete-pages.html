@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Pages - Secure PDF Tools Pro</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #2d3748; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; width: 100%; text-align: center; }
+        h1 { color: #e53e3e; margin-bottom: 10px; }
+        .drop-zone { border: 2px dashed #e53e3e; padding: 40px 20px; border-radius: 8px; background: #fff5f5; cursor: pointer; margin: 20px 0; }
+        .drop-zone:hover { background: #fed7d7; }
+        input[type="text"], button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 1rem; }
+        button { background: #e53e3e; color: white; font-weight: bold; border: none; cursor: pointer; display: none; }
+        button:hover { background: #c53030; }
+        .status { margin-top: 15px; font-weight: bold; color: #4a5568; }
+        .back-link { margin-top: 20px; display: inline-block; color: #4a90e2; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🗑️ Delete Pages</h1>
+    <p>পিডিএফ ফাইলের ভেতর থেকে অপ্রয়োজনীয় পেজগুলো চিরতরে মুছে ফেলুন।</p>
+    <div class="drop-zone" id="dropZone">
+        <p>আপনার PDF ফাইলটি ড্র্যাগ করে ছাড়ুন অথবা ক্লিক করুন</p>
+        <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+        <div id="fileName" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+    <div id="configArea" style="display:none; text-align: left;">
+        <label>কোন কোন পেজ ডিলিট করতে চান? (যেমন: 2, 4):</label>
+        <input type="text" id="pagesInput" placeholder="Enter page numbers to remove">
+        <button id="submitBtn">DELETE PAGES</button>
+    </div>
+    <div class="status" id="statusMsg"></div>
+    <a href="/" class="back-link">← Back to Dashboard</a>
+</div>
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const configArea = document.getElementById('configArea');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    let selectedFile = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = '#fed7d7'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.background = '#fff5f5');
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
+
+    function handleFile(file) {
+        if (file.type !== "application/pdf") return alert("Only PDF supported!");
+        selectedFile = file;
+        fileName.innerText = `Selected: ${file.name}`;
+        configArea.style.display = 'block';
+        submitBtn.style.display = 'block';
+    }
+
+    submitBtn.addEventListener('click', async () => {
+        const rawPages = document.getElementById('pagesInput').value;
+        if(!rawPages) return alert("Please specify pages.");
+        
+        const pageArr = rawPages.split(',').map(p => parseInt(p.trim()) - 1).filter(p => !isNaN(p));
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('mode', 'delete_pages');[span_9](start_span)[span_9](end_span)
+        formData.append('params', JSON.stringify({ pages: pageArr }));[span_10](start_span)[span_10](end_span)
+
+        statusMsg.innerText = "Removing pages... Please wait...";
+        try {
+            const response = await fetch('/api/modify-pdf', { method: 'POST', body: formData });[span_11](start_span)[span_11](end_span)
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `edited_${selectedFile.name}`; a.click();
+            statusMsg.innerHTML = "<span style='color: green;'>Pages Deleted Successfully!</span>";
+        } catch(e) { statusMsg.innerHTML = "<span style='color: red;'>Error.</span>"; }
+    });
+</script>
+</body>
+</html>
