@@ -1,29 +1,31 @@
+from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi.responses import StreamingResponse
+from typing import List
 from PIL import Image
-import io
+from io import BytesIO
 
-def images_to_pdf_logic(image_files: list[bytes]) -> io.BytesIO:
-    """
-    একাধিক JPG/PNG ছবিকে মেমরিতেই একটি সিঙ্গেল পিডিএফ ফাইলে কনভার্ট করার লজিক।
-    """
-    pil_images = []
-    
-    for img_bytes in image_files:
-        img = Image.open(io.BytesIO(img_bytes))
-        if img.mode in ("RGBA", "P"):
-            img = img.convert("RGB")
-        pil_images.append(img)
+router = APIRouter(prefix="/api", tags=["Image to PDF"])
+
+@router.post("/image-to-pdf")
+async def image_to_pdf(files: List[UploadFile] = File(...)):
+    try:
+        images = []
+        for file in files:
+            img_bytes = await file.read()
+            img = Image.open(BytesIO(img_bytes)).convert("RGB")
+            images.append(img)
+            
+        if not images:
+            raise HTTPException(status_code=400, detail="No valid images uploaded.")
+            
+        out_buf = BytesIO()
+        images[0].save(out_buf, format="PDF", save_all=True, append_images=images[1:])
+        out_buf.seek(0)
         
-    if not pil_images:
-        raise ValueError("No images provided!")
-        
-    output_pdf = io.BytesIO()
-    first_image = pil_images[0]
-    first_image.save(
-        output_pdf, 
-        format="PDF", 
-        save_all=True, 
-        append_images=pil_images[1:]
-    )
-    
-    output_pdf.seek(0)
-    return output_pdf
+        return StreamingResponse(
+            out_buf, 
+            media_type="application/pdf", 
+            headers={"Content-Disposition": "attachment; filename=images_converted.pdf"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Image conversion failed: {str(e)}")
