@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to PDF - Secure PDF Tools Pro</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #2d3748; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; width: 100%; text-align: center; }
+        h1 { color: #38a169; margin-bottom: 10px; }
+        .drop-zone { border: 2px dashed #38a169; padding: 40px 20px; border-radius: 8px; background: #f0fff4; cursor: pointer; margin: 20px 0; }
+        .drop-zone:hover { background: #c6f6d5; }
+        .file-list { text-align: left; margin: 15px 0; max-height: 200px; overflow-y: auto; }
+        .file-item { background: #edf2f7; padding: 8px 12px; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; }
+        button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 6px; background: #38a169; color: white; font-weight: bold; border: none; cursor: pointer; display: none; font-size: 1rem; }
+        button:hover { background: #2f855a; }
+        .status { margin-top: 15px; font-weight: bold; color: #4a5568; }
+        .back-link { margin-top: 20px; display: inline-block; color: #4a90e2; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🖼️ Image to PDF</h1>
+    <p>JPG, PNG বা যেকোনো ছবিকে নিমেষেই প্রফেশনাল পিডিএফে কনভার্ট করুন।</p>
+    <div class="drop-zone" id="dropZone">
+        <p>এক বা একাধিক ছবি ড্র্যাগ করে ছাড়ুন অথবা ক্লিক করে সিলেক্ট করুন</p>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+    </div>
+    <div class="file-list" id="fileList"></div>
+    <button id="submitBtn">CONVERT IMAGES TO PDF</button>
+    <div class="status" id="statusMsg"></div>
+    <a href="/" class="back-link">← Back to Dashboard</a>
+</div>
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileListElement = document.getElementById('fileList');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    let selectedFiles = [];
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFiles(e.target.files); });
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = '#c6f6d5'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.background = '#f0fff4');
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); if(e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files); });
+
+    function handleFiles(files) {
+        for (let file of files) { if (file.type.startsWith("image/")) { selectedFiles.push(file); } }
+        renderFiles();
+    }
+    function renderFiles() {
+        fileListElement.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+            const item = document.createElement('div');
+            item.className = 'file-item';
+            item.innerHTML = `<span>${index + 1}. ${file.name}</span><span style="color:red; cursor:pointer;" onclick="removeFile(${index})">❌</span>`;
+            fileListElement.appendChild(item);
+        });
+        submitBtn.style.display = selectedFiles.length > 0 ? 'block' : 'none';
+    }
+    window.removeFile = function(index) { selectedFiles.splice(index, 1); renderFiles(); }
+
+    submitBtn.addEventListener('click', async () => {
+        if(selectedFiles.length === 0) return;
+        const formData = new FormData();
+        selectedFiles.forEach(file => formData.append('files', file));
+        statusMsg.innerText = "Converting images... Please wait...";
+        submitBtn.disabled = true;
+        try {
+            const response = await fetch('/api/image-to-pdf', { method: 'POST', body: formData });[span_1](start_span)[span_1](end_span)
+            if(!response.ok) throw new Error("Conversion failed");
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = "images_converted.pdf"; document.body.appendChild(a); a.click(); a.remove();
+            statusMsg.innerHTML = "<span style='color: green;'>Success! PDF downloading.</span>";
+        } catch (err) { statusMsg.innerHTML = "<span style='color: red;'>Error during conversion.</span>"; }
+        finally { submitBtn.disabled = false; }
+    });
+</script>
+</body>
+</html>
