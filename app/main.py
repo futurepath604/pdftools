@@ -7,23 +7,12 @@ import json
 import io
 from PIL import Image
 
-# --- 🔄 VERSION-SAFE PYPDF IMPORTS ---
-import pypdf
-from pypdf import PdfReader, PdfWriter
-
-# pypdf এর বিভিন্ন ভার্সনের সাথে সামঞ্জস্য রাখার জন্য ডায়নামিক মার্জার ইম্পোর্ট ফলব্যাক
-try:
-    from pypdf import PdfMerger
-except ImportError:
-    try:
-        from pypdf._merger import PdfMerger
-    except ImportError:
-        # যদি একদমই ওল্ড ভার্সন হয় তবে ব্যাকওয়ার্ড কম্প্যাটিবিলিটি ট্রাই করবে
-        from pypdf import PdfFileMerger as PdfMerger
+# 🔄 Stable & Robust PDF Library Engine
+from PyPDF2 import PdfReader, PdfWriter, PdfMerger
 
 app = FastAPI(title="Secure PDF Tools Pro")
 
-# --- 🚀 ADVANCED COMPRESSION ENGINE (With Image Downsampling) ---
+# --- 🚀 ADVANCED COMPRESSION ENGINE ---
 def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesIO:
     try:
         reader = PdfReader(io.BytesIO(input_bytes))
@@ -47,12 +36,12 @@ def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesI
             
             if "/Resources" in page and "/XObject" in page["/Resources"]:
                 try:
-                    xobjects = page["/Resources"]["/XObject"].get_object()
+                    xobjects = page["/Resources"]["/XObject"].getObject()
                     for obj_name in xobjects:
-                        obj = xobjects[obj_name].get_object()
+                        obj = xobjects[obj_name].getObject()
                         if obj["/Subtype"] == "/Image":
                             try:
-                                img_data = obj.get_data()
+                                img_data = obj.getData()
                                 img = Image.open(io.BytesIO(img_data))
                                 
                                 if max(img.size) > img_max_dim:
@@ -62,14 +51,12 @@ def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesI
                                 img.save(out_img_bytes, format="JPEG", quality=img_quality, optimize=True)
                                 
                                 obj._data = out_img_bytes.getvalue()
-                                if "/Filter" in obj:
-                                    obj[os.path.join("/Filter")] = "/DCTDecode"
                             except Exception:
                                 continue
                 except Exception:
                     pass
                             
-            writer.add_page(page)
+            writer.addPage(page)
             
         output_stream = io.BytesIO()
         writer.write(output_stream)
