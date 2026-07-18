@@ -3,255 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ⚡ Premium SEO & AI SEO Meta Tags -->
-    <title>SecurePDF - Free & Private In-Memory PDF Tools</title>
-    <meta name="description" content="100% Secure and Free online PDF tools. Compress PDF by resolution sizes or Merge multiple PDFs in custom sequence priority. Pure browser-RAM safety, no files stored.">
-    <meta name="keywords" content="compress pdf by size, merge pdf sequence, secure pdf tools, free pdf compressor, private pdf merger, adsense friendly pdf tools">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="">
-    
-    <!-- Open Graph for AI Search Engines & Socials -->
-    <meta property="og:title" content="SecurePDF - Secure In-Memory PDF Processing Suite">
-    <meta property="og:description" content="Advanced sequence-based PDF Merger and resolution-targeted PDF Compressor. Zero server logs, total compliance.">
-    <meta property="og:type" content="website">
-
+    <title>SecurePDF - Free Online PDF Tools Ecosystem</title>
+    <meta name="description" content="Access free online PDF tools. Compress documents by resolution sizes or merge PDFs in personalized sequence priority. Safe, private, and 100% in-memory.">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 🎨 Central Theme Settings (Easily changeable for future design overhaul) -->
-    <style>
-        :root {
-            --primary-color: #4f46e5; /* Indigo */
-            --secondary-color: #059669; /* Emerald */
-            --bg-neutral: #f8fafc;
-        }
-        .file-item { transition: all 0.2s ease; }
-        .file-item:hover { cursor: grab; background-color: #f1f5f9; }
-    </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800 font-sans flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col justify-between min-h-screen">
 
-    <!-- 🌐 Header Area (Clean & Google AdSense Ready) -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <!-- 🌐 Navigation Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-xs">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-black text-indigo-600 tracking-tight cursor-pointer">📄 SecurePDF</div>
-            <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-600">
-                <a href="#compress-section" class="hover:text-indigo-600">Compress PDF</a>
-                <a href="#merge-section" class="hover:text-indigo-600">Merge PDF</a>
-                <a href="#about-section" class="hover:text-indigo-600">Why SecurePDF?</a>
+            <a href="/" class="text-2xl font-black text-indigo-600 tracking-tight">📄 SecurePDF</a>
+            <nav class="flex space-x-6 text-sm font-bold text-slate-600">
+                <a href="/compress" class="hover:text-indigo-600">Compress PDF</a>
+                <a href="/merge" class="hover:text-indigo-600">Merge PDF</a>
             </nav>
-            <span class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full font-bold">Privacy Compliant</span>
         </div>
     </header>
 
-    <!-- 📣 Placeholder for Google AdSense Top Banner -->
-    <div class="max-w-4xl mx-auto w-full mt-4 p-2 bg-transparent text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-md">
-        [Advertisement Space - Google AdSense Ready]
-    </div>
+    <!-- 🎯 Main Content Component -->
+    <main class="max-w-5xl w-full mx-auto px-6 py-12 flex-grow space-y-12">
+        <div class="text-center space-y-3">
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">Web's Purest PDF Tools Infrastructure</h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">No files are ever stored on cloud disks. Absolute security, processing straight inside volatile RAM matrix.</p>
+        </div>
 
-    <!-- 🛠️ Main Workspace Core App -->
-    <main class="max-w-4xl w-full mx-auto px-4 py-8 space-y-12">
-
-        <!-- 🗜️ ADVANCED COMPRESSOR -->
-        <section id="compress-section" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-            <h2 class="text-2xl font-bold text-slate-900 mb-1">🗜️ Intelligent PDF Compressor</h2>
-            <p class="text-sm text-slate-500 mb-6">Downsize your documents securely based on target asset resolutions.</p>
-            
-            <div class="space-y-4">
-                <input type="file" id="comp-input" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".pdf">
-                
-                <!-- Resolution/Size Selection Categories -->
-                <div class="grid grid-cols-3 gap-3">
-                    <label class="border p-3 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 select-none">
-                        <input type="radio" name="comp-quality" value="low" class="mb-1 text-indigo-600">
-                        <span class="font-bold text-sm">Low Size</span>
-                        <span class="text-xxs text-slate-400 text-center">Max Compression (150 DPI)</span>
-                    </label>
-                    <label class="border border-indigo-500 bg-indigo-50/30 p-3 rounded-xl flex flex-col items-center justify-center cursor-pointer select-none">
-                        <input type="radio" name="comp-quality" value="medium" checked class="mb-1 text-indigo-600">
-                        <span class="font-bold text-sm text-indigo-900">Standard</span>
-                        <span class="text-xxs text-indigo-600 text-center">Balanced Opt. (220 DPI)</span>
-                    </label>
-                    <label class="border p-3 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 select-none">
-                        <input type="radio" name="comp-quality" value="high" class="mb-1 text-indigo-600">
-                        <span class="font-bold text-sm">High Res</span>
-                        <span class="text-xxs text-slate-400 text-center">Crisp Text (300 DPI)</span>
-                    </label>
-                </div>
-
-                <button id="comp-btn" class="w-full bg-indigo-600 text-white py-3.5 rounded-xl font-bold hover:bg-indigo-700 transition tracking-wide shadow-md">Optimize Document</button>
-                <p id="comp-status" class="text-sm font-medium text-center mt-2"></p>
-            </div>
-        </section>
-
-        <!-- 🔗 SEQUENCED MULTI-MERGER WITH SORTING -->
-        <section id="merge-section" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-            <h2 class="text-2xl font-bold text-slate-900 mb-1">🔗 Priority Sequence PDF Merger</h2>
-            <p class="text-sm text-slate-500 mb-4">Upload multiple files and re-arrange their order using up/down keys to customize priority sequence before merging.</p>
-            
-            <div class="space-y-4">
-                <input type="file" id="merge-input" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" accept=".pdf" multiple>
-                
-                <!-- Dynamic Sorted List UI -->
-                <div id="file-list-container" class="border border-slate-200 rounded-xl p-3 bg-slate-50 hidden space-y-2">
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Arrange Processing Order Matrix:</p>
-                    <div id="dynamic-file-list" class="space-y-1"></div>
-                </div>
-
-                <button id="merge-btn" class="w-full bg-emerald-600 text-white py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition tracking-wide shadow-md">Merge in Sequence</button>
-                <p id="merge-status" class="text-sm font-medium text-center mt-2"></p>
-            </div>
-        </section>
-
-        <!-- 📄 ADVANCED SEO & CONTENT HUB (Crucial for AdSense Approvals & AI Crawlers) -->
-        <section id="about-section" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-6">
-            <h3 class="text-xl font-bold text-slate-900 border-b pb-2">Why Process Files with SecurePDF Infrastructure?</h3>
-            <div class="grid md:grid-cols-2 gap-6 text-sm text-slate-600 leading-relaxed">
+        <!-- 🗂️ Category Grid Selections -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Compress Card -->
+            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
                 <div>
-                    <h4 class="font-bold text-slate-800 mb-1">Enterprise-Grade RAM Architecture</h4>
-                    <p>Unlike conventional cloud converters, our technology operates entirely inside volatile server memory. Your confidential documents are parsed, optimized, and compiled in transient states, preventing permanent disk storage completely.</p>
+                    <span class="text-3xl">🗜️</span>
+                    <h2 class="text-2xl font-bold text-slate-800 mt-4 mb-2">Compress PDF Engine</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed">Optimize document assets by explicitly defining destination target resolution tiers. Shrink file footprints instantly.</p>
                 </div>
-                <div>
-                    <h4 class="font-bold text-slate-800 mb-1">Adaptive Quality Presets</h4>
-                    <p>Tailor your targets directly using our multi-tier scale framework. Choose between extreme file shrink actions or crystal-clear high-definition outputs designed for digital reading or legal archives.</p>
-                </div>
+                <a href="/compress" class="mt-6 inline-block text-center bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-indigo-700 transition">Launch Compressor</a>
             </div>
-        </section>
 
+            <!-- Merge Card -->
+            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                <div>
+                    <span class="text-3xl">🔗</span>
+                    <h2 class="text-2xl font-bold text-slate-800 mt-4 mb-2">Sequence PDF Merger</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed">Combine multiple separate PDF streams into one organized block. Rearrange priorities interactively via structural index matrices.</p>
+                </div>
+                <a href="/merge" class="mt-6 inline-block text-center bg-emerald-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-emerald-700 transition">Launch Merger</a>
+            </div>
+        </div>
     </main>
 
-    <!-- 📣 AdSense Lower Dashboard Unit -->
-    <div class="max-w-4xl mx-auto w-full mb-6 p-2 bg-transparent text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-md">
-        [Ad Space - In-Article Native Component Placement]
-    </div>
-
-    <!-- 👤 Footer & AdSense Policy Anchors -->
-    <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-400">
-        <p class="mb-2">&copy; 2026 SecurePDF Suite. Globally Protected Architecture.</p>
-        <div class="flex justify-center space-x-4 font-medium text-slate-500">
-            <a href="#" class="hover:underline">Privacy Policy</a>
-            <a href="#" class="hover:underline">Terms of Use</a>
-            <a href="#" class="hover:underline">Contact System</a>
-        </div>
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <p>&copy; 2026 SecurePDF Hub. Private Cloud Architecture.</p>
     </footer>
 
-    <script>
-        const host = window.location.origin;
-        let mergeFilesArray = [];
-
-        // --- Multi-File Selection & Sequence UI Builder ---
-        document.getElementById('merge-input').onchange = function(e) {
-            const container = document.getElementById('file-list-container');
-            const listDiv = document.getElementById('dynamic-file-list');
-            listDiv.innerHTML = "";
-            mergeFilesArray = Array.from(e.target.files);
-
-            if(mergeFilesArray.length > 0) {
-                container.classList.remove('hidden');
-                renderSequenceList();
-            } else {
-                container.classList.add('hidden');
-            }
-        };
-
-        function renderSequenceList() {
-            const listDiv = document.getElementById('dynamic-file-list');
-            listDiv.innerHTML = "";
-            
-            mergeFilesArray.forEach((file, index) => {
-                const item = document.createElement('div');
-                item.className = "file-item flex justify-between items-center bg-white p-3 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 shadow-xs";
-                item.innerHTML = `
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs bg-slate-200 px-2 py-0.5 rounded text-slate-500">${index + 1}</span>
-                        <span class="truncate max-w-[200px] md:max-w-xs">${file.name}</span>
-                    </div>
-                    <div class="flex space-x-1">
-                        <button onclick="moveItem(${index}, -1)" class="p-1 bg-slate-100 rounded hover:bg-slate-200 text-xs">🔼</button>
-                        <button onclick="moveItem(${index}, 1)" class="p-1 bg-slate-100 rounded hover:bg-slate-200 text-xs">🔽</button>
-                    </div>
-                `;
-                listDiv.appendChild(item);
-            });
-        }
-
-        window.moveItem = function(index, direction) {
-            const targetIndex = index + direction;
-            if(targetIndex < 0 || targetIndex >= mergeFilesArray.length) return;
-            
-            // সোয়াপ করা (Swap elements array)
-            const temp = mergeFilesArray[index];
-            mergeFilesArray[index] = mergeFilesArray[targetIndex];
-            mergeFilesArray[targetIndex] = temp;
-            
-            renderSequenceList();
-        };
-
-        // --- Compressor Process Script ---
-        document.getElementById('comp-btn').onclick = async () => {
-            const file = document.getElementById('comp-input').files[0];
-            if (!file) return alert("Select input file first");
-            const status = document.getElementById('comp-status');
-            const quality = document.querySelector('input[name="comp-quality"]:checked').value;
-            
-            status.innerText = "⏳ Running In-Memory Compression Matrix...";
-            status.className = "text-sm font-medium text-center mt-2 text-indigo-600";
-            
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('quality', quality);
-            
-            try {
-                const res = await fetch(`${host}/api/compress`, { method: 'POST', body: formData });
-                if(res.ok) {
-                    triggerDownload(await res.blob(), `optimized_${file.name}`);
-                    status.innerText = "🎉 Process Complete! Clean Asset Ready.";
-                    status.className = "text-sm font-medium text-center mt-2 text-emerald-600";
-                } else { throw new Error(); }
-            } catch {
-                status.innerText = "❌ Optimization Error. Try matching rules.";
-                status.className = "text-sm font-medium text-center mt-2 text-rose-600";
-            }
-        };
-
-        // --- Sequenced Merger Process Script ---
-        document.getElementById('merge-btn').onclick = async () => {
-            if(mergeFilesArray.length < 2) return alert("Please select multiple files to sequence");
-            const status = document.getElementById('merge-status');
-            status.innerText = "⏳ Compiling Secure Merged Stream...";
-            status.className = "text-sm font-medium text-center mt-2 text-emerald-600";
-            
-            const formData = new FormData();
-            mergeFilesArray.forEach(file => {
-                formData.append('files', file);
-            });
-            
-            // ফাইলের নামের প্রায়োরিটি বা সিকোয়েন্স অর্ডার পাঠানো
-            const sequenceOrder = mergeFilesArray.map(f => f.name);
-            formData.append('file_order', JSON.stringify(sequenceOrder));
-            
-            try {
-                const res = await fetch(`${host}/api/merge`, { method: 'POST', body: formData });
-                if(res.ok) {
-                    triggerDownload(await res.blob(), "merged_sequence_doc.pdf");
-                    status.innerText = "🎉 Documents Merged According to Selected Priority!";
-                    status.className = "text-sm font-medium text-center mt-2 text-emerald-600";
-                } else { throw new Error(); }
-            } catch {
-                status.innerText = "❌ Integration Pipeline Blocked.";
-                status.className = "text-sm font-medium text-center mt-2 text-rose-600";
-            }
-        };
-
-        function triggerDownload(blob, filename) {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        }
-    </script>
 </body>
 </html>
