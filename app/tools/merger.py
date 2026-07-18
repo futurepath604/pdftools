@@ -1,18 +1,20 @@
-import pypdf
 import io
+from typing import List
+from pypdf import PdfMerger
 
-def merge_pdfs_logic(pdf_files: list[bytes]) -> io.BytesIO:
-    """
-    সম্পূর্ণ মেমরিতে (RAM) একাধিক পিডিএফ ফাইল একসাথে যুক্ত করার লজিক।
-    """
-    merger = pypdf.PdfMerger()
-    
-    for pdf_bytes in pdf_files:
-        merger.append(io.BytesIO(pdf_bytes))
+def merge_pdfs_logic(pdf_files_bytes: List[bytes]) -> io.BytesIO:
+    """মেমরিতে একাধিক পিডিএফ ফাইল জোড়া দেওয়ার ফাস্ট লজিক।"""
+    try:
+        merger = PdfMerger()
         
-    output_pdf = io.BytesIO()
-    merger.write(output_pdf)
-    merger.close()
-    
-    output_pdf.seek(0)
-    return output_pdf
+        for file_bytes in pdf_files_bytes:
+            merger.append(io.BytesIO(file_bytes))
+            
+        output_stream = io.BytesIO()
+        merger.write(output_stream)
+        merger.close()
+        output_stream.seek(0)
+        return output_stream
+        
+    except Exception as e:
+        raise RuntimeError(f"PDF Merge করতে সমস্যা হয়েছে: {str(e)}")
