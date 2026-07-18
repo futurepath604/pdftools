@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office to PDF - Secure PDF Tools Pro</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #2d3748; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; width: 100%; text-align: center; }
+        h1 { color: #4a5568; margin-bottom: 10px; }
+        .drop-zone { border: 2px dashed #4a5568; padding: 40px 20px; border-radius: 8px; background: #edf2f7; cursor: pointer; margin: 20px 0; }
+        button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 6px; background: #4a5568; color: white; font-weight: bold; border: none; cursor: pointer; display: none; font-size: 1rem; }
+        .status { margin-top: 15px; font-weight: bold; color: #e53e3e; line-height: 1.6; }
+        .back-link { margin-top: 20px; display: inline-block; color: #4a90e2; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📄 Office to PDF</h1>
+    <p>Word, Excel অথবা PPT ডকুমেন্ট ফাইলগুলোকে সরাসরি পিডিএফে রূপান্তর করুন।</p>
+    <div class="drop-zone" id="dropZone">
+        <p>আপনার .docx, .xlsx, .pptx ফাইলটি এখানে সিলেক্ট করুন</p>
+        <input type="file" id="fileInput" accept=".docx,.doc,.xlsx,.xls,.pptx,.ppt" style="display: none;">
+        <div id="fileName" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+    <button id="submitBtn">CONVERT DOCUMENT</button>
+    <div class="status" id="statusMsg"></div>
+    <a href="/" class="back-link">← Back to Dashboard</a>
+</div>
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    let selectedFile = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
+
+    function handleFile(file) {
+        selectedFile = file;
+        fileName.innerText = `Selected: ${file.name}`;
+        submitBtn.style.display = 'block';
+        statusMsg.innerText = "";
+    }
+
+    submitBtn.addEventListener('click', async () => {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        submitBtn.disabled = true;
+        try {
+            const response = await fetch('/api/office-to-pdf', { method: 'POST', body: formData });[span_18](start_span)[span_18](end_span)
+            const result = await response.json();
+            if(!response.ok) {
+                statusMsg.innerHTML = `⚠️ <b>Server Engine Limitation:</b><br>${result.detail}`;[span_19](start_span)[span_19](end_span)
+            }
+        } catch(e) { statusMsg.innerText = "Error connecting to service."; }
+        finally { submitBtn.disabled = false; }
+    });
+</script>
+</body>
+</html>
