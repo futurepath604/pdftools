@@ -3,70 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecurePDF - Free PDF Compressor</title>
+    <title>SecurePDF - Free & Ultimate PDF Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 flex flex-col items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
-        <h1 class="text-2xl font-bold mb-2 text-slate-800">Compress PDF</h1>
-        <p class="text-sm text-slate-400 mb-6">In-Memory & Secure (Max 15MB)</p>
-        
-        <input type="file" id="file-input" class="mb-6 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".pdf">
-        
-        <button id="submit-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Compress Now</button>
-        
-        <p id="status" class="mt-4 text-sm font-medium text-slate-600"></p>
+<body class="bg-slate-50 min-h-screen p-4 flex flex-col items-center justify-center gap-8">
+
+    <!-- 🗜️ TOOL 1: COMPRESSOR -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center border border-slate-100">
+        <h1 class="text-2xl font-bold mb-1 text-slate-800">🗜️ Compress PDF</h1>
+        <p class="text-xs text-slate-400 mb-6">Reduce file size in-memory safely (Max 15MB)</p>
+        <input type="file" id="comp-input" class="mb-6 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".pdf">
+        <button id="comp-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-sm">Compress Now</button>
+        <p id="comp-status" class="mt-4 text-sm font-medium text-slate-600"></p>
+    </div>
+
+    <!-- 🔗 TOOL 2: MERGER -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center border border-slate-100">
+        <h1 class="text-2xl font-bold mb-1 text-slate-800">🔗 Merge PDFs</h1>
+        <p class="text-xs text-slate-400 mb-6">Combine multiple PDF files into one</p>
+        <input type="file" id="merge-input" class="mb-6 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" accept=".pdf" multiple>
+        <button id="merge-btn" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold hover:bg-emerald-700 transition shadow-sm">Merge PDFs Now</button>
+        <p id="merge-status" class="mt-4 text-sm font-medium text-slate-600"></p>
     </div>
 
     <script>
-        document.getElementById('submit-btn').onclick = async () => {
-            const file = document.getElementById('file-input').files[0];
+        const host = window.location.origin;
+
+        // --- Compressor Trigger ---
+        document.getElementById('comp-btn').onclick = async () => {
+            const file = document.getElementById('comp-input').files[0];
             if (!file) return alert("দয়া করে একটি PDF ফাইল সিলেক্ট করুন।");
-            
-            const status = document.getElementById('status');
-            status.innerText = "⏳ Processing your PDF in-memory...";
+            const status = document.getElementById('comp-status');
+            status.innerText = "⏳ Processing compression...";
             status.className = "mt-4 text-sm font-medium text-indigo-600";
             
             const formData = new FormData();
             formData.append('file', file);
             
-            // 🔒 চিরস্থায়ী সমাধান: ব্রাউজার থেকে সরাসরি রানিং ফুল ডোমেইন ইউআরএল জেনারেট করা
-            const currentOrigin = window.location.origin;
-            const targetUrl = `${currentOrigin}/api/compress`;
-            
             try {
-                const res = await fetch(targetUrl, { 
-                    method: 'POST', 
-                    mode: 'cors', // ব্রাউজার সিকিউরিটি পারমিশন
-                    body: formData 
-                });
-                
+                const res = await fetch(`${host}/api/compress`, { method: 'POST', body: formData });
                 if (res.ok) {
-                    const blob = await res.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = "compressed_" + file.name;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                    status.innerText = "🎉 Compression Complete! Downloaded.";
+                    handleDownload(await res.blob(), `compressed_${file.name}`);
+                    status.innerText = "🎉 Compression Complete!";
                     status.className = "mt-4 text-sm font-medium text-emerald-600";
                 } else {
-                    let textErr = "সার্ভার ফাইলটি প্রসেস করতে পারেনি।";
-                    try {
-                        const errorData = await res.json();
-                        textErr = errorData.detail || textErr;
-                    } catch(e) {}
-                    status.innerText = "❌ Error: " + textErr;
+                    status.innerText = "❌ Error processing request.";
                     status.className = "mt-4 text-sm font-medium text-rose-600";
                 }
-            } catch (err) {
-                // যদি তাও কোনো কারণে লোকাল নেটওয়ার্ক ইস্যু হয়, তবে ইউজারকে ডাইরেক্ট এপিআই লিংক প্রোভাইড করবে
-                status.innerHTML = `❌ Network Error! ব্রাউজার সরাসরি ব্লক করলে <a href="${currentOrigin}/docs" target="_blank" class="underline font-bold text-rose-700">এখানে ক্লিক করে এপিআই ড্যাশবোর্ড</a> থেকে সরাসরি করুন।`;
+            } catch {
+                status.innerText = "❌ Network Error.";
                 status.className = "mt-4 text-sm font-medium text-rose-600";
             }
         };
+
+        // --- Merger Trigger ---
+        document.getElementById('merge-btn').onclick = async () => {
+            const files = document.getElementById('merge-input').files;
+            if (files.length < 2) return alert("জোড়া দেওয়ার জন্য নূন্যতম ২টি ফাইল সিলেক্ট করুন।");
+            const status = document.getElementById('merge-status');
+            status.innerText = "⏳ Merging documents...";
+            status.className = "mt-4 text-sm font-medium text-emerald-600";
+            
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            
+            try {
+                const res = await fetch(`${host}/api/merge`, { method: 'POST', body: formData });
+                if (res.ok) {
+                    handleDownload(await res.blob(), "merged_document.pdf");
+                    status.innerText = "🎉 PDF Merged Successfully!";
+                    status.className = "mt-4 text-sm font-medium text-emerald-600";
+                } else {
+                    status.innerText = "❌ Error blending PDFs.";
+                    status.className = "mt-4 text-sm font-medium text-rose-600";
+                }
+            } catch {
+                status.innerText = "❌ Network Error.";
+                status.className = "mt-4 text-sm font-medium text-rose-600";
+            }
+        };
+
+        function handleDownload(blob, filename) {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
     </script>
 </body>
 </html>
