@@ -1,146 +1,55 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Form
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, StreamingResponse
-from typing import List
 import os
-import json
-import io
-from PIL import Image
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
-# 🔄 Stable & Robust PDF Library Engine
-from PyPDF2 import PdfReader, PdfWriter, PdfMerger
+# আলাদা ফাইলগুলো থেকে রাউটার ইম্পোর্ট করা হচ্ছে
+from apps.compress import router as compress_router
+from apps.merge import router as merge_router
+from apps.image_to_pdf import router as image_router
+from apps.modify import router as modify_router
+from apps.security import router as security_router
 
-app = FastAPI(title="Secure PDF Tools Pro")
+app = FastAPI(title="Secure PDF Tools Pro - Modular Backend")
 
-# --- 🚀 ADVANCED COMPRESSION ENGINE ---
-def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesIO:
-    try:
-        reader = PdfReader(io.BytesIO(input_bytes))
-        writer = PdfWriter()
-        
-        if quality == "high":  # Extreme Compression
-            img_max_dim = 800
-            img_quality = 40
-        elif quality == "medium":  # Recommended
-            img_max_dim = 1200
-            img_quality = 65
-        else:  # Low Compression
-            img_max_dim = 2000
-            img_quality = 85
+# সব সাব-টুলের পাইথন রাউটগুলো মেইন অ্যাপে যুক্ত করা হচ্ছে
+app.include_router(compress_router)
+app.include_router(merge_router)
+app.include_router(image_router)
+app.include_router(modify_router)
+app.include_router(security_router)
 
-        for page in reader.pages:
-            try:
-                page.compress_content_streams()
-            except Exception:
-                pass
-            
-            if "/Resources" in page and "/XObject" in page["/Resources"]:
-                try:
-                    xobjects = page["/Resources"]["/XObject"].getObject()
-                    for obj_name in xobjects:
-                        obj = xobjects[obj_name].getObject()
-                        if obj["/Subtype"] == "/Image":
-                            try:
-                                img_data = obj.getData()
-                                img = Image.open(io.BytesIO(img_data))
-                                
-                                if max(img.size) > img_max_dim:
-                                    img.thumbnail((img_max_dim, img_max_dim), Image.Resampling.LANCZOS)
-                                
-                                out_img_bytes = io.BytesIO()
-                                img.save(out_img_bytes, format="JPEG", quality=img_quality, optimize=True)
-                                
-                                obj._data = out_img_bytes.getvalue()
-                            except Exception:
-                                continue
-                except Exception:
-                    pass
-                            
-            writer.addPage(page)
-            
-        output_stream = io.BytesIO()
-        writer.write(output_stream)
-        output_stream.seek(0)
-        return output_stream
-    except Exception:
-        fallback = io.BytesIO(input_bytes)
-        fallback.seek(0)
-        return fallback
+# Static files mapping
+os.makedirs("static", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# --- CORE LOGIC: MERGER ENGINE ---
-def merge_pdfs_logic(pdf_files_bytes: List[bytes]) -> io.BytesIO:
-    try:
-        merger = PdfMerger()
-        for file_bytes in pdf_files_bytes:
-            merger.append(io.BytesIO(file_bytes))
-        output_stream = io.BytesIO()
-        merger.write(output_stream)
-        merger.close()
-        output_stream.seek(0)
-        return output_stream
-    except Exception as e:
-        raise RuntimeError(str(e))
-
-# --- SMART PATH FINDER ENGINE ---
-def find_html_file(filename: str) -> str:
-    possible_paths = [
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", filename),
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), filename),
-        os.path.join(os.getcwd(), "static", filename),
-        os.path.join(os.getcwd(), filename),
-        os.path.join("/code", "app", "static", filename),
-        os.path.join("/code", filename)
-    ]
-    for path in possible_paths:
-        if os.path.exists(path):
-            return path
-    base_root = os.getcwd()
-    for root, dirs, files in os.walk(base_root):
-        if filename in files:
-            return os.path.join(root, filename)
-    raise HTTPException(status_code=404, detail=f"File {filename} not found.")
-
-# --- ROUTING ---
 @app.get("/")
-async def route_home(): return FileResponse(find_html_file("index.html"))
+async def read_index():
+    index_path = os.path.join("static", "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"message": "FFuture's Workspace PDF Modular API is running perfectly!"}
 
-@app.get("/compress")
-async def route_compress(): return FileResponse(find_html_file("compress.html"))
+@app.get("/{page_name}")
+async def serve_page(page_name: str):
+    page_mapping = {
+        "compress": "compress.html",
+        "merge": "merge.html",
+        "image-to-pdf": "image-to-pdf.html",
+        "split": "split.html",
+        "rotate": "rotate.html",
+        "delete-pages": "delete-pages.html",
+        "lock-pdf": "lock.html",
+        "unlock-pdf": "unlock.html",
+        "office-to-pdf": "office.html"
+    }
+    if page_name in page_mapping:
+        file_path = os.path.join("static", page_mapping[page_name])
+        if os.path.exists(file_path):
+            return FileResponse(file_path)
+        raise HTTPException(status_code=404, detail=f"{page_mapping[page_name]} file missing in static folder.")
+    raise HTTPException(status_code=404, detail="Page not found")
 
-@app.get("/merge")
-async def route_merge(): return FileResponse(find_html_file("merge.html"))
-
-# --- API ENDPOINTS ---
-@app.post("/api/compress")
-async def api_compress(file: UploadFile = File(...), quality: str = Form("medium")):
-    if not file.filename.lower().endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="Invalid file type.")
-    try:
-        content = await file.read()
-        output_stream = compress_pdf_logic(content, quality)
-        return StreamingResponse(output_stream, media_type="application/pdf", headers={"Content-Disposition": f"attachment; filename=optimized_{file.filename}"})
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/merge")
-async def api_merge(files: List[UploadFile] = File(...), file_order: str = Form(...)):
-    if len(files) < 2:
-        raise HTTPException(status_code=400, detail="Select at least 2 files.")
-    try:
-        file_map = {}
-        all_raw_bytes = []
-        for f in files:
-            file_content = await f.read()
-            file_map[f.filename] = file_content
-            all_raw_bytes.append(file_content)
-        try:
-            order_list = json.loads(file_order)
-            ordered_bytes = [file_map[name] for name in order_list if name in file_map]
-        except Exception:
-            ordered_bytes = []
-        if not ordered_bytes:
-            ordered_bytes = all_raw_bytes
-        output_stream = merge_pdfs_logic(ordered_bytes)
-        return StreamingResponse(output_stream, media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=merged_secure_doc.pdf"})
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
