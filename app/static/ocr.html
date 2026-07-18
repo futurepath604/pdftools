@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF OCR Converter - Secure PDF Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
+        .group:hover .group-hover\:opacity-100 { opacity: 1; visibility: visible; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-2 text-indigo-600 font-bold text-xl"><span>🛠️ Secure PDF Tools</span></a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="/" class="text-gray-600 hover:text-indigo-600 text-sm font-medium">Dashboard</a>
+                    <div class="relative group inline-block text-left">
+                        <button class="text-gray-600 hover:text-indigo-600 text-sm font-medium flex items-center space-x-1 focus:outline-none py-5">
+                            <span>All Tools</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="absolute right-0 mt-0 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="py-1">
+                                <a href="/compress" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📉 Compress PDF</a>
+                                <a href="/merge" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔀 Merge PDF</a>
+                                <a href="/pdf-to-image" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖼️ PDF to Image</a>
+                            </div>
+                            <div class="py-1">
+                                <a href="/split" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">✂️ Split PDF</a>
+                                <a href="/rotate" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔄 Rotate PDF</a>
+                                <a href="/delete-pages" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🗑️ Delete Pages</a>
+                                <a href="/rearrange" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🗂️ Rearrange Pages</a>
+                                <a href="/ocr" class="block px-4 py-2 text-sm text-gray-700 bg-gray-50 font-semibold text-indigo-600">🔍 PDF OCR Converter</a>
+                            </div>
+                            <div class="py-1">
+                                <a href="/lock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Lock PDF</a>
+                                <a href="/unlock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔓 Unlock PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-3xl w-full mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-gray-900">PDF OCR Converter</h1>
+            <p class="mt-2 text-sm text-gray-500 max-w-xl mx-auto">
+                Quickly convert your scanned, non-searchable PDFs into searchable and selectable text documents for free. Improve accessibility and usability without manual transcription.
+            </p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 space-y-6">
+            <!-- Drop Zone -->
+            <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-500 bg-gray-50">
+                <input type="file" id="file-input" class="hidden" accept=".pdf" multiple>
+                <div class="space-y-2">
+                    <div class="text-indigo-500 text-4xl">🔍</div>
+                    <div class="text-gray-600"><span class="font-medium text-indigo-600">Select Scanned PDFs</span> or drag them here</div>
+                    <p class="text-xs text-gray-400">Supports single-page PDFs, large documents, and multiple files.</p>
+                </div>
+            </div>
+
+            <!-- Uploaded Files List -->
+            <div id="file-list-container" class="hidden space-y-2">
+                <label class="block text-sm font-semibold text-gray-700">Selected Files:</label>
+                <div id="file-list" class="bg-gray-50 border border-gray-200 rounded-xl p-4 space-y-2 text-sm text-gray-700">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- OCR Settings Option -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Primary Document Language:</label>
+                <select id="ocr-lang" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <option value="eng">English (Default)</option>
+                    <option value="ben">Bengali (বাংলা)</option>
+                    <option value="eng+ben">English + Bengali</option>
+                </select>
+            </div>
+
+            <button id="ocr-btn" class="w-full gradient-bg text-white py-3 rounded-xl font-medium shadow-md hover:opacity-90 disabled:opacity-50" disabled>
+                Make PDF Searchable (Run OCR)
+            </button>
+
+            <div id="status" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
+        &copy; 2026 FFuture's Workspace. All rights reserved.
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileListContainer = document.getElementById('file-list-container');
+        const fileList = document.getElementById('file-list');
+        const ocrLangSelect = document.getElementById('ocr-lang');
+        const ocrBtn = document.getElementById('ocr-btn');
+        const status = document.getElementById('status');
+        
+        let selectedFiles = [];
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-indigo-500'));
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); handleFiles(e.dataTransfer.files); });
+
+        function handleFiles(files) {
+            for (let file of files) {
+                if (file.type === 'application/pdf') {
+                    selectedFiles.push(file);
+                }
+            }
+            updateFileList();
+        }
+
+        function updateFileList() {
+            if (selectedFiles.length === 0) {
+                fileListContainer.classList.add('hidden');
+                ocrBtn.disabled = true;
+                return;
+            }
+
+            fileListContainer.classList.remove('hidden');
+            ocrBtn.disabled = false;
+            fileList.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'flex justify-between items-center bg-white p-2.5 rounded-lg border border-gray-200';
+                item.innerHTML = `
+                    <span>📄 <b>${file.name}</b> (${(file.size / 1024).toFixed(1)} KB)</span>
+                    <button class="text-red-500 hover:text-red-700 font-bold focus:outline-none" onclick="removeFile(${index})">✕</button>
+                `;
+                fileList.appendChild(item);
+            });
+        }
+
+        window.removeFile = function(index) {
+            selectedFiles.splice(index, 1);
+            updateFileList();
+        };
+
+        ocrBtn.addEventListener('click', async () => {
+            if (selectedFiles.length === 0) return;
+
+            ocrBtn.disabled = true;
+            ocrBtn.textContent = 'Processing OCR (Please wait, this may take a moment)...';
+            showStatus('Extracting layout and embedding searchable text layers...', 'success');
+
+            const formData = new FormData();
+            selectedFiles.forEach((file) => {
+                formData.append('files', file);
+            });
+            formData.append('lang', ocrLangSelect.value);
+
+            try {
+                const response = await fetch('/api/ocr-pdf', { method: 'POST', body: formData });
+                if (!response.ok) {
+                    const errText = await response.json();
+                    throw new Error(errText.detail || 'OCR Pipeline engine crashed.');
+                }
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                
+                // একাধিক ফাইল হলে জিপ, সিঙ্গেল হলে পিডিএফ ডাউনলোড হবে
+                const isZip = blob.type === 'application/zip' || blob.type === 'application/x-zip-compressed';
+                a.download = isZip ? `ocr_searchable_files.zip` : `searchable_${selectedFiles[0].name}`;
+                
+                a.click();
+                showStatus('Success! Searchable text embedded successfully.', 'success');
+            } catch (err) {
+                showStatus(err.message, 'error');
+            } finally {
+                ocrBtn.disabled = false;
+                ocrBtn.textContent = 'Make PDF Searchable (Run OCR)';
+            }
+        });
+
+        function showStatus(msg, type) {
+            status.classList.remove('hidden');
+            status.textContent = msg;
+            status.className = `mt-4 p-4 rounded-xl text-sm font-medium ${type === 'success' ? 'bg-indigo-50 text-indigo-800' : 'bg-red-50 text-red-800'}`;
+        }
+    </script>
+</body>
+</html>
