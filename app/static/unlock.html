@@ -3,79 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unlock PDF - Secure PDF Tools Pro</title>
+    <title>Unlock PDF - Secure PDF Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #2d3748; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; width: 100%; text-align: center; }
-        h1 { color: #d69e2e; margin-bottom: 10px; }
-        .drop-zone { border: 2px dashed #d69e2e; padding: 40px 20px; border-radius: 8px; background: #fefcbf; cursor: pointer; margin: 20px 0; }
-        .drop-zone:hover { background: #fef3c7; }
-        input[type="password"], button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 1rem; }
-        button { background: #d69e2e; color: white; font-weight: bold; border: none; cursor: pointer; display: none; }
-        button:hover { background: #b7791f; }
-        .status { margin-top: 15px; font-weight: bold; color: #4a5568; }
-        .back-link { margin-top: 20px; display: inline-block; color: #4a90e2; text-decoration: none; }
+        .gradient-bg { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
+        .group:hover .group-hover\:opacity-100 { opacity: 1; visibility: visible; }
     </style>
 </head>
-<body>
-<div class="container">
-    <h1>🔓 Unlock PDF</h1>
-    <p>যেকোনো পাসওয়ার্ড প্রটেক্টেড পিডিএফ লক সিকিউরিটি রিমুভ করে আনলক করুন।</p>
-    <div class="drop-zone" id="dropZone">
-        <p>লক করা PDF ফাইলটি ড্র্যাগ করে ছাড়ুন অথবা ক্লিক করুন</p>
-        <input type="file" id="fileInput" accept=".pdf" style="display: none;">
-        <div id="fileName" style="margin-top: 10px; font-weight: bold;"></div>
-    </div>
-    <div id="configArea" style="display:none; text-align: left;">
-        <label>ফাইলের বর্তমান পাসওয়ার্ডটি দিন:</label>
-        <input type="password" id="passInput" placeholder="Enter PDF Password">
-        <button id="submitBtn">REMOVE SECURITY & UNLOCK</button>
-    </div>
-    <div class="status" id="statusMsg"></div>
-    <a href="/" class="back-link">← Back to Dashboard</a>
-</div>
-<script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileName = document.getElementById('fileName');
-    const configArea = document.getElementById('configArea');
-    const submitBtn = document.getElementById('submitBtn');
-    const statusMsg = document.getElementById('statusMsg');
-    let selectedFile = null;
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col justify-between">
 
-    dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = '#fef3c7'; });
-    dropZone.addEventListener('dragleave', () => dropZone.style.background = '#fefcbf');
-    dropZone.addEventListener('drop', (e) => { e.preventDefault(); if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-2 text-indigo-600 font-bold text-xl"><span>🛠️ Secure PDF Tools</span></a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="/" class="text-gray-600 hover:text-indigo-600 text-sm font-medium">Dashboard</a>
+                    <div class="relative group inline-block text-left">
+                        <button class="text-gray-600 hover:text-indigo-600 text-sm font-medium flex items-center space-x-1 focus:outline-none py-5">
+                            <span>All Tools</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="absolute right-0 mt-0 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="py-1">
+                                <a href="/compress" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📉 Compress PDF</a>
+                                <a href="/merge" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔀 Merge PDF</a>
+                                <a href="/pdf-to-image" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖼️ PDF to Image</a>
+                                <a href="/image-to-pdf" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📸 Image to PDF</a>
+                            </div>
+                            <div class="py-1">
+                                <a href="/split" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">✂️ Split PDF</a>
+                                <a href="/rotate" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔄 Rotate PDF</a>
+                                <a href="/delete-pages" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🗑️ Delete Pages</a>
+                            </div>
+                            <div class="py-1">
+                                <a href="/lock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Lock PDF</a>
+                                <a href="/unlock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔓 Unlock PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    function handleFile(file) {
-        if (file.type !== "application/pdf") return alert("Only PDF supported!");
-        selectedFile = file;
-        fileName.innerText = `Selected: ${file.name}`;
-        configArea.style.display = 'block';
-        submitBtn.style.display = 'block';
-    }
+    <main class="flex-grow max-w-3xl w-full mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-gray-900">Unlock Password PDF</h1>
+            <p class="mt-2 text-gray-500">Decrypt and permanently remove password restriction restrictions.</p>
+        </div>
 
-    submitBtn.addEventListener('click', async () => {
-        const password = document.getElementById('passInput').value;
-        if(!password) return alert("Password is required to unlock.");
-        
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        formData.append('mode', 'unlock');[span_15](start_span)[span_15](end_span)
-        formData.append('password', password);[span_16](start_span)[span_16](end_span)
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-500 bg-gray-50">
+                <input type="file" id="file-input" class="hidden" accept=".pdf">
+                <div class="space-y-2">
+                    <div class="text-indigo-500 text-4xl">🔓</div>
+                    <div class="text-gray-600"><span class="font-medium text-indigo-600">Choose Encrypted PDF</span> or drag it here</div>
+                </div>
+            </div>
 
-        statusMsg.innerText = "Unlocking PDF Document...";
-        try {
-            const response = await fetch('/api/security-pdf', { method: 'POST', body: formData });[span_17](start_span)[span_17](end_span)
-            if(!response.ok) throw new Error();
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `unlocked_${selectedFile.name}`; a.click();
-            statusMsg.innerHTML = "<span style='color: green;'>Success! Password removed.</span>";
-        } catch(e) { statusMsg.innerHTML = "<span style='color: red;'>Incorrect password or processing error.</span>"; }
-    });
-</script>
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Current PDF Password:</label>
+                <input type="password" id="password" placeholder="Enter PDF password to decrypt" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+
+            <button id="unlock-btn" class="mt-6 w-full gradient-bg text-white py-3 rounded-xl font-medium shadow-md hover:opacity-90 disabled:opacity-50" disabled>
+                Remove Restrictions
+            </button>
+
+            <div id="status" class="mt-4 hidden p-4 rounded-xl text-sm font-medium"></div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
+        &copy; 2026 FFuture's Workspace. All rights reserved.
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const passwordInput = document.getElementById('password');
+        const status = document.getElementById('status');
+        let selectedFile = null;
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-indigo-500'));
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
+
+        function handleFile(file) {
+            if (file && file.type === 'application/pdf') {
+                selectedFile = file;
+                unlockBtn.disabled = false;
+                showStatus(`Selected: ${file.name}`, 'success');
+            }
+        }
+
+        unlockBtn.addEventListener('click', async () => {
+            if (!selectedFile || !passwordInput.value) return;
+            unlockBtn.disabled = true;
+            unlockBtn.textContent = 'Decrypting...';
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('mode', 'unlock');
+            formData.append('password', passwordInput.value);
+
+            try {
+                const response = await fetch('/api/security-pdf', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Password mismatch or invalid encrypted blob.');
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `unlocked_${selectedFile.name}`;
+                a.click();
+                showStatus('Success! Decrypted PDF has been successfully unlocked.', 'success');
+            } catch (err) {
+                showStatus(err.message, 'error');
+            } finally {
+                unlockBtn.disabled = false;
+                unlockBtn.textContent = 'Remove Restrictions';
+            }
+        });
+
+        function showStatus(msg, type) {
+            status.classList.remove('hidden');
+            status.textContent = msg;
+            status.className = `mt-4 p-4 rounded-xl text-sm font-medium ${type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`;
+        }
+    </script>
 </body>
 </html>
