@@ -3,41 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecurePDF</title>
+    <title>SecurePDF - Free PDF Compressor</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 flex flex-col items-center justify-center min-h-screen p-4">
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
-        <h1 class="text-2xl font-bold mb-4">Compress PDF</h1>
-        <input type="file" id="file-input" class="mb-4 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".pdf">
-        <button id="submit-btn" class="w-full bg-indigo-600 text-white py-2 rounded-xl">Compress Now</button>
-        <p id="status" class="mt-4 text-sm"></p>
+        <h1 class="text-2xl font-bold mb-2 text-slate-800">Compress PDF</h1>
+        <p class="text-sm text-slate-400 mb-6">In-Memory & Secure (Max 15MB)</p>
+        
+        <input type="file" id="file-input" class="mb-6 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".pdf">
+        
+        <button id="submit-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Compress Now</button>
+        
+        <p id="status" class="mt-4 text-sm font-medium text-slate-600"></p>
     </div>
 
     <script>
         document.getElementById('submit-btn').onclick = async () => {
             const file = document.getElementById('file-input').files[0];
-            if (!file) return alert("Select file");
+            if (!file) return alert("দয়া করে একটি PDF ফাইল সিলেক্ট করুন।");
             
             const status = document.getElementById('status');
-            status.innerText = "Processing...";
+            status.innerText = "⏳ Processing your PDF in-memory...";
+            status.className = "mt-4 text-sm font-medium text-indigo-600";
             
             const formData = new FormData();
             formData.append('file', file);
             
-            // একই ডোমেইন হওয়ায় কোনো CORS সমস্যা নেই
-            const res = await fetch('/api/compress', { method: 'POST', body: formData });
-            
-            if (res.ok) {
-                const blob = await res.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = "compressed_" + file.name;
-                a.click();
-                status.innerText = "Done!";
-            } else {
-                status.innerText = "Error!";
+            try {
+                // একদম সরাসরি রিলেটিভ এপিআই কল
+                const res = await fetch('./api/compress', { method: 'POST', body: formData });
+                
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "compressed_" + file.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    status.innerText = "🎉 Compression Complete! Downloaded.";
+                    status.className = "mt-4 text-sm font-medium text-emerald-600";
+                } else {
+                    let textErr = "সার্ভার রেসপন্স করতে পারেনি।";
+                    try {
+                        const errorData = await res.json();
+                        textErr = errorData.detail || textErr;
+                    } catch(e) {}
+                    status.innerText = "❌ Error: " + textErr;
+                    status.className = "mt-4 text-sm font-medium text-rose-600";
+                }
+            } catch (err) {
+                status.innerText = "❌ Network Error! Please try again.";
+                status.className = "mt-4 text-sm font-medium text-rose-600";
             }
         };
     </script>
