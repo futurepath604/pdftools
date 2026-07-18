@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock PDF - Secure PDF Tools Pro</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; color: #2d3748; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; width: 100%; text-align: center; }
+        h1 { color: #d69e2e; margin-bottom: 10px; }
+        .drop-zone { border: 2px dashed #d69e2e; padding: 40px 20px; border-radius: 8px; background: #fefcbf; cursor: pointer; margin: 20px 0; }
+        .drop-zone:hover { background: #fef3c7; }
+        input[type="password"], button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 1rem; }
+        button { background: #d69e2e; color: white; font-weight: bold; border: none; cursor: pointer; display: none; }
+        button:hover { background: #b7791f; }
+        .status { margin-top: 15px; font-weight: bold; color: #4a5568; }
+        .back-link { margin-top: 20px; display: inline-block; color: #4a90e2; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔓 Unlock PDF</h1>
+    <p>যেকোনো পাসওয়ার্ড প্রটেক্টেড পিডিএফ লক সিকিউরিটি রিমুভ করে আনলক করুন।</p>
+    <div class="drop-zone" id="dropZone">
+        <p>লক করা PDF ফাইলটি ড্র্যাগ করে ছাড়ুন অথবা ক্লিক করুন</p>
+        <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+        <div id="fileName" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+    <div id="configArea" style="display:none; text-align: left;">
+        <label>ফাইলের বর্তমান পাসওয়ার্ডটি দিন:</label>
+        <input type="password" id="passInput" placeholder="Enter PDF Password">
+        <button id="submitBtn">REMOVE SECURITY & UNLOCK</button>
+    </div>
+    <div class="status" id="statusMsg"></div>
+    <a href="/" class="back-link">← Back to Dashboard</a>
+</div>
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const configArea = document.getElementById('configArea');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    let selectedFile = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = '#fef3c7'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.background = '#fefcbf');
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
+
+    function handleFile(file) {
+        if (file.type !== "application/pdf") return alert("Only PDF supported!");
+        selectedFile = file;
+        fileName.innerText = `Selected: ${file.name}`;
+        configArea.style.display = 'block';
+        submitBtn.style.display = 'block';
+    }
+
+    submitBtn.addEventListener('click', async () => {
+        const password = document.getElementById('passInput').value;
+        if(!password) return alert("Password is required to unlock.");
+        
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('mode', 'unlock');[span_15](start_span)[span_15](end_span)
+        formData.append('password', password);[span_16](start_span)[span_16](end_span)
+
+        statusMsg.innerText = "Unlocking PDF Document...";
+        try {
+            const response = await fetch('/api/security-pdf', { method: 'POST', body: formData });[span_17](start_span)[span_17](end_span)
+            if(!response.ok) throw new Error();
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `unlocked_${selectedFile.name}`; a.click();
+            statusMsg.innerHTML = "<span style='color: green;'>Success! Password removed.</span>";
+        } catch(e) { statusMsg.innerHTML = "<span style='color: red;'>Incorrect password or processing error.</span>"; }
+    });
+</script>
+</body>
+</html>
