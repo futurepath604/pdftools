@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge PDFs - SecurePDF</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/" class="text-2xl font-black text-indigo-600 flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i> SecurePDF
+            </a>
+            <div class="flex gap-4">
+                <a href="/compress" class="text-slate-600 hover:text-indigo-600 font-medium px-1 py-4 transition">Compress</a>
+                <a href="/merge" class="text-emerald-600 font-semibold border-b-2 border-emerald-600 px-1 py-4">Merge</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-xl mx-auto px-4 py-12 w-full flex-grow flex flex-col justify-center">
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-slate-100">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-slate-800">Merge PDF Files</h1>
+                <p class="text-slate-500 mt-2 text-sm">Combine multiple PDF files into one clean document</p>
+            </div>
+
+            <!-- Upload Form -->
+            <form id="mergeForm" class="space-y-6">
+                <div id="dropZone" class="border-2 border-dashed border-slate-200 rounded-xl p-8 text-center hover:border-emerald-500 cursor-pointer transition bg-slate-50/50">
+                    <input type="file" id="fileInput" name="files" accept=".pdf" multiple class="hidden" required>
+                    <div>
+                        <i class="fa-solid fa-files text-4xl text-slate-400 mb-3"></i>
+                        <p class="text-sm font-medium text-slate-700">Select 2 or more PDF files</p>
+                        <p class="text-xs text-slate-400 mt-1">Drag files here to rearrange or merge</p>
+                    </div>
+                </div>
+
+                <!-- Selected Files List -->
+                <div id="fileListContainer" class="hidden space-y-2">
+                    <label class="block text-sm font-semibold text-slate-700">Files to Merge (Order of appearance)</label>
+                    <div id="fileList" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+                </div>
+
+                <input type="hidden" id="fileOrder" name="file_order">
+
+                <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl transition shadow-md shadow-emerald-100 flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-object-group"></i> Merge PDFs
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-100 bg-white">
+        &copy; 2026 SecurePDF. All files managed with high security.
+    </footer>
+
+    <!-- Frontend Logic -->
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const fileList = document.getElementById('fileList');
+        const form = document.getElementById('mergeForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const fileOrderInput = document.getElementById('fileOrder');
+
+        let selectedFilesArray = [];
+
+        dropZone.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => {
+            const files = Array.from(e.target.files);
+            const pdfFiles = files.filter(f => f.name.toLowerCase().endsWith('.pdf'));
+            
+            if(pdfFiles.length === 0) return;
+            
+            selectedFilesArray = [...selectedFilesArray, ...pdfFiles];
+            renderFileList();
+        };
+
+        function renderFileList() {
+            if(selectedFilesArray.length > 0) {
+                fileListContainer.classList.remove('hidden');
+            } else {
+                fileListContainer.classList.add('hidden');
+            }
+            
+            fileList.innerHTML = '';
+            const names = selectedFilesArray.map(f => f.name);
+            fileOrderInput.value = JSON.stringify(names);
+
+            selectedFilesArray.forEach((file, index) => {
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm";
+                row.innerHTML = `
+                    <div class="flex items-center gap-3 truncate">
+                        <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold flex items-center justify-center shrink-0">${index + 1}</span>
+                        <p class="font-medium text-slate-800 truncate">${file.name}</p>
+                    </div>
+                    <button type="button" onclick="removeFile(${index})" class="text-slate-400 hover:text-rose-500 p-1 transition shrink-0 cursor-pointer">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                fileList.appendChild(row);
+            });
+        }
+
+        window.removeFile = function(index) {
+            selectedFilesArray.splice(index, 1);
+            renderFileList();
+        };
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            if(selectedFilesArray.length < 2) {
+                alert('Please select at least 2 PDF files to merge.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Merging Files...`;
+
+            const formData = new FormData();
+            selectedFilesArray.forEach(file => {
+                formData.append('files', file);
+            });
+            formData.append('file_order', fileOrderInput.value);
+
+            try {
+                const response = await fetch('/api/merge', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if(!response.ok) throw new Error('Merging failed.');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "merged_secure_doc.pdf";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                setTimeout(() => {
+                    alert('Successfully Merged!');
+                    location.reload();
+                }, 500);
+
+            } catch (err) {
+                alert('Server Error: Could not merge the selected PDFs.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-object-group"></i> Merge PDFs`;
+            }
+        };
+    </script>
+</body>
+</html>
 
