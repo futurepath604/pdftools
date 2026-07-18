@@ -2,11 +2,24 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse
 from typing import List
-from pypdf import PdfReader, PdfWriter, PdfMerger
 import os
 import json
 import io
 from PIL import Image
+
+# --- 🔄 VERSION-SAFE PYPDF IMPORTS ---
+import pypdf
+from pypdf import PdfReader, PdfWriter
+
+# pypdf এর বিভিন্ন ভার্সনের সাথে সামঞ্জস্য রাখার জন্য ডায়নামিক মার্জার ইম্পোর্ট ফলব্যাক
+try:
+    from pypdf import PdfMerger
+except ImportError:
+    try:
+        from pypdf._merger import PdfMerger
+    except ImportError:
+        # যদি একদমই ওল্ড ভার্সন হয় তবে ব্যাকওয়ার্ড কম্প্যাটিবিলিটি ট্রাই করবে
+        from pypdf import PdfFileMerger as PdfMerger
 
 app = FastAPI(title="Secure PDF Tools Pro")
 
@@ -16,7 +29,6 @@ def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesI
         reader = PdfReader(io.BytesIO(input_bytes))
         writer = PdfWriter()
         
-        # কোয়ালিটি স্কেল অনুযায়ী প্যারামিটার সেটআপ
         if quality == "high":  # Extreme Compression
             img_max_dim = 800
             img_quality = 40
@@ -28,48 +40,40 @@ def compress_pdf_logic(input_bytes: bytes, quality: str = "medium") -> io.BytesI
             img_quality = 85
 
         for page in reader.pages:
-            # মেটাডেটা ও স্ট্রাকচার অপটিমাইজেশন
-            page.compress_content_streams()
+            try:
+                page.compress_content_streams()
+            except Exception:
+                pass
             
-            # পিডিএফে কোনো ইমেজ অবজেক্ট থাকলে সেগুলোকে মেমরিতে ডাউনস্যাম্পল করা
             if "/Resources" in page and "/XObject" in page["/Resources"]:
-                xobjects = page["/Resources"]["/XObject"].get_object()
-                for obj_name in xobjects:
-                    obj = xobjects[obj_name].get_object()
-                    if obj["/Subtype"] == "/Image":
-                        try:
-                            # ইমেজের র ডেটা রিড করা
-                            img_data = obj.get_data()
-                            img = Image.open(io.BytesIO(img_data))
-                            
-                            # ইমেজ রিসাইজ লজিক (যদি ডাইমেনশন বেশি বড় হয়)
-                            if max(img.size) > img_max_dim:
-                                img.thumbnail((img_max_dim, img_max_dim), Image.Resampling.LANCZOS)
-                            
-                            # নতুন ফরম্যাটে মেমরিতে সেভ করা
-                            out_img_bytes = io.BytesIO()
-                            img.save(out_img_bytes, format="JPEG", quality=img_quality, optimize=True)
-                            
-                            # পিডিএফ অবজেক্টের ডেটা আপডেট করা
-                            obj._data = out_img_bytes.getvalue()
-                            if "/Filter" in obj:
-                                obj[os.path.join("/Filter")] = "/DCTDecode" # JPEG এনকোডিং ফোর্সমোড
-                        except Exception:
-                            continue # কোনো নির্দিষ্ট ইমেজে এরর আসলে স্কিপ করে পরেরটা করবে
+                try:
+                    xobjects = page["/Resources"]["/XObject"].get_object()
+                    for obj_name in xobjects:
+                        obj = xobjects[obj_name].get_object()
+                        if obj["/Subtype"] == "/Image":
+                            try:
+                                img_data = obj.get_data()
+                                img = Image.open(io.BytesIO(img_data))
+                                
+                                if max(img.size) > img_max_dim:
+                                    img.thumbnail((img_max_dim, img_max_dim), Image.Resampling.LANCZOS)
+                                
+                                out_img_bytes = io.BytesIO()
+                                img.save(out_img_bytes, format="JPEG", quality=img_quality, optimize=True)
+                                
+                                obj._data = out_img_bytes.getvalue()
+                                if "/Filter" in obj:
+                                    obj[os.path.join("/Filter")] = "/DCTDecode"
+                            except Exception:
+                                continue
+                except Exception:
+                    pass
                             
             writer.add_page(page)
             
-        # রুট মেটাডেটা ক্লিনিং
-        writer.remove_images(by_index=False) # ডুুপ্লিকেট রেফারেন্স ক্লিন করা
-        
         output_stream = io.BytesIO()
         writer.write(output_stream)
         output_stream.seek(0)
-        
-        # সেফটি চেক: কম্প্রেশন সাইজ বড় হয়ে গেলে মেইন ফাইল রিটার্ন করবে
-        if len(output_stream.getvalue()) >= len(input_bytes) and quality == "low":
-            return io.BytesIO(input_bytes)
-            
         return output_stream
     except Exception:
         fallback = io.BytesIO(input_bytes)
