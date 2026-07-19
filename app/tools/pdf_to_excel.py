@@ -1,72 +1,70 @@
 import os
-import re
 
 def convert_pdf_to_excel(input_path: str, output_path: str):
     """
-    Advanced Consolidated PDF to Excel Converter.
-    - Merges ALL pages into a Single Worksheet (No multiple sheets).
-    - Preserves row and column tabular structures from the source file.
-    - Autofits columns to ensure data doesn't clip or overlap.
+    Advanced Tabular-Aware PDF to Excel Converter.
+    - Extracts actual tables with proper column boundaries using pdfplumber.
+    - Merges all extracted rows into a Single unified Worksheet.
+    - Fallback engine preserves structural text rows if no formal tables are found.
     """
     try:
-        from pypdf import PdfReader
+        import pdfplumber
     except ImportError:
-        raise RuntimeError("Core PDF reader component (pypdf) is missing in environment.")
+        raise RuntimeError("Core layout parsing engine (pdfplumber) is missing in environment.")
 
     try:
         import pandas as pd
     except ImportError:
-        raise RuntimeError("Data processing engine (pandas) is missing in environment.")
+        raise RuntimeError("Data compilation engine (pandas) is missing in environment.")
 
-    # Master list to hold rows from ALL pages combined
-    master_data_matrix = []
-    
+    master_rows = []
+
     try:
-        reader = PdfReader(input_path)
-        
-        for page in reader.pages:
-            raw_text = page.extract_text()
-            if not raw_text:
-                continue
+        with pdfplumber.open(input_path) as pdf:
+            for page in pdf.pages:
+                # 1. Try extracting explicit graphical tables first
+                tables = page.extract_tables()
                 
-            lines = raw_text.split("\n")
-            for line in lines:
-                if not line.strip():
-                    continue
-                
-                # Dynamic regex to detect column gaps (2 or more spaces)
-                # This keeps rows together just like the source file layout
-                row_cells = re.split(r'\s{2,}', line.strip())
-                if any(row_cells):
-                    cleaned_row = [str(cell).strip() for cell in row_cells]
-                    master_data_matrix.append(cleaned_row)
-                    
-            del raw_text
-            
+                if tables:
+                    for table in tables:
+                        for row in table:
+                            # Clean cells (Remove None values and trailing whitespace)
+                            cleaned_row = [str(cell).strip() if cell is not None else "" for cell in row]
+                            # Only add rows that contain actual data
+                            if any(cleaned_row):
+                                master_rows.append(cleaned_row)
+                else:
+                    # 2. Fallback: Extract words with precise geometric positioning if no clear table lines exist
+                    text = page.extract_text(layout=True)
+                    if text:
+                        for line in text.split("\n"):
+                            if line.strip():
+                                # Target structural data separating fields cleanly
+                                row_cells = [cell.strip() for cell in line.split("   ") if cell.strip()]
+                                if row_cells:
+                                    master_rows.append(row_cells)
     except Exception as parse_error:
-        master_data_matrix = [["Parsing Error occurred", str(parse_error)]]
+        master_rows = [["Layout Analysis Error", str(parse_error)]]
 
-    # Export to a clean Single Sheet Excel File
+    # Export compiled data structure to Single Sheet Excel
     try:
-        if master_data_matrix:
-            # Create a uniform DataFrame from all accumulated rows
-            df = pd.DataFrame(master_data_matrix)
+        if not master_rows:
+            master_rows = [["Notice", "No extractable tabular data found in source PDF."]]
+
+        df = pd.DataFrame(master_rows)
+        
+        with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name="Source Layout Data", index=False, header=False)
             
-            # Write to a single sheet ("Document Data")
-            with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
-                df.to_excel(writer, sheet_name="Document Data", index=False, header=False)
-                
-                # Professional Touch: Auto-fit column widths dynamically to prevent clipping
-                worksheet = writer.sheets["Document Data"]
-                for col in worksheet.columns:
-                    max_len = 0
-                    for cell in col:
-                        if cell.value:
-                            max_len = max(max_len, len(str(cell.value)))
-                    # Add a padding of 3 spaces for a professional spaced look
-                    col_letter = col[0].column_letter
-                    worksheet.column_dimensions[col_letter].width = max(max_len + 3, 12)
-                    
+            # Dynamic grid column autowidth implementation
+            worksheet = writer.sheets["Source Layout Data"]
+            for col in worksheet.columns:
+                max_len = 0
+                for cell in col:
+                    if cell.value:
+                        max_len = max(max_len, len(str(cell.value)))
+                col_letter = col[0].column_letter
+                worksheet.column_dimensions[col_letter].width = max(max_len + 3, 12)
+
     except Exception as export_error:
-        # Ultimate fail-safe to avoid application crash
-        raise RuntimeError(f"Failed to generate unified Excel structure: {str(export_error)}")
+        raise RuntimeError(f"Excel Generation failure: {str(export_error)}")
