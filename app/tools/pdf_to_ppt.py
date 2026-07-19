@@ -1,105 +1,99 @@
 import os
-import pdfplumber
+import fitz  # PyMuPDF
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
-from pptx.enum.text import PP_ALIGN
+from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+
+def hex_to_rgb(hex_color):
+    """Converts PyMuPDF int color to python-pptx RGBColor."""
+    if hex_color is None:
+        return RGBColor(15, 23, 42) # Default dark slate text
+    # Extract RGB bytes
+    r = (hex_color >> 16) & 0xFF
+    g = (hex_color >> 8) & 0xFF
+    b = hex_color & 0xFF
+    return RGBColor(r, g, b)
 
 def convert_pdf_to_ppt(input_path: str, output_path: str):
     """
-    Converts PDF to 100% Fully Editable PowerPoint Slides while maintaining
-    tabular structures, alignments, text designs, and exact layout bounding boxes.
+    Converts PDF to PowerPoint keeping native text elements fully editable
+    while matching original fonts, sizes, text colors, and absolute alignments.
     """
     prs = Presentation()
     
-    # Standard 16:9 Widescreen slide setup
-    prs.slide_width = Inches(13.333)
-    prs.slide_height = Inches(7.5)
-    blank_layout = prs.slide_layouts[6] # Dynamic blank layout canvas
-
-    with pdfplumber.open(input_path) as pdf:
-        for page in pdf.pages:
-            slide = prs.slides.add_slide(blank_layout)
-            
-            # 1. EXTRACT TABLES (Preserving structural matrices/grids perfectly)
-            tables = page.extract_tables()
-            if tables:
-                for table in tables:
-                    if not table:
-                        continue
-                    rows = len(table)
-                    cols = len(table[0]) if table[0] else 0
-                    if cols == 0:
-                        continue
-                    
-                    # Target layout injection sizing inside the slide boundaries
-                    left = Inches(1.0)
-                    top = Inches(2.0)
-                    width = Inches(11.333)
-                    height = Inches(max(0.4 * rows, 2.0))
-                    
-                    table_shape = slide.shapes.add_table(rows, cols, left, top, width, height)
-                    ppt_table = table_shape.table
-                    
-                    for row_idx, row_data in enumerate(table):
-                        for col_idx, cell_value in enumerate(row_data):
-                            cell = ppt_table.cell(row_idx, col_idx)
-                            clean_text = str(cell_value) if cell_value is not None else ""
-                            cell.text = clean_text
-                            
-                            # Standard clear tabular formatting injection
-                            for paragraph in cell.text_frame.paragraphs:
-                                paragraph.font.size = Pt(11)
-                                paragraph.font.name = 'Arial'
-                                paragraph.font.color.rgb = RGBColor(15, 23, 42)
-                                paragraph.alignment = PP_ALIGN.LEFT
-            
-            # 2. EXTRACT TEXT FLOWS WITH COHERENT FONT SIZES & POSITIONING
-            # Using higher level layouts objects instead of granular dynamic words strings
-            text_objects = page.extract_text(
-                layout=True, 
-                x_tolerance=3, 
-                y_tolerance=3
-            )
-            
-            if text_objects:
-                # Target clean master block for regular structural texts
-                tx_left = Inches(0.8)
-                tx_top = Inches(0.8)
-                tx_width = Inches(11.733)
-                tx_height = Inches(5.8)
+    # Open PDF document to extract layout metrics
+    doc = fitz.open(input_path)
+    
+    for page in doc:
+        # Get PDF Page Size (Points)
+        pdf_w = page.rect.width
+        pdf_h = page.rect.height
+        
+        # Set PPTX Slide dimensions dynamically to match the PDF aspect ratio
+        prs.slide_width = Inches(pdf_w / 72.0)
+        prs.slide_height = Inches(pdf_h / 72.0)
+        blank_layout = prs.slide_layouts[6]
+        slide = prs.slides.add_slide(blank_layout)
+        
+        # Extract detailed layout structures including spans, fonts, and bounding boxes
+        text_page = page.get_text("dict", flags=fitz.TEXTFLAGS_SEARCH)
+        
+        for block in text_page["blocks"]:
+            if "lines" not in block:
+                continue # Skip image blocks for pure editable text processing
                 
-                # If table already occupied center canvas, push regular texts up as headers safely
-                if tables:
-                    tx_height = Inches(1.2)
+            for line in block["lines"]:
+                # Calculate absolute position mapping from PDF Points to PPTX Inches
+                l_x0, l_y0, l_x1, l_y1 = line["bbox"]
+                left = Inches(l_x0 / 72.0)
+                top = Inches(l_y0 / 72.0)
+                width = Inches((l_x1 - l_x0) / 72.0)
+                height = Inches((l_y1 - l_y0) / 72.0)
                 
-                txBox = slide.shapes.add_textbox(tx_left, tx_top, tx_width, tx_height)
+                # Safeguard for zero-width/height line bounding boxes
+                if width < Inches(0.1): width = Inches(1.0)
+                if height < Inches(0.1): height = Inches(0.4)
+                
+                # Create a native PPTX textbox at the exact matching coordinate
+                txBox = slide.shapes.add_textbox(left, top, width, height)
                 tf = txBox.text_frame
                 tf.word_wrap = True
-                tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.1)
+                tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
                 
-                first_line = True
-                for line in text_objects.split('\n'):
-                    if line.strip():
-                        if first_line:
-                            p = tf.paragraphs[0]
-                            first_line = False
-                        else:
-                            p = tf.add_paragraph()
-                            
-                        p.text = line.rstrip()
+                p = tf.paragraphs[0]
+                
+                # Combine spans to maintain consistent line alignments and font properties
+                for i, span in enumerate(span for span in line["spans"] if span["text"].strip()):
+                    if i > 0:
+                        run = p.add_run()
+                    else:
+                        run = p
                         
-                        # Dynamic Typography Parsing Mapping
-                        if len(line.strip()) < 40 and not line.endswith(('.', ',', ';')):
-                            p.font.size = Pt(22) # Large Header Style mapping
-                            p.font.bold = True
-                            p.font.color.rgb = RGBColor(30, 27, 75)
-                        else:
-                            p.font.size = Pt(13) # Regular reading block text layout
-                            p.font.bold = False
-                            p.font.color.rgb = RGBColor(71, 85, 105)
-                            
-                        p.font.name = 'Arial'
-                        p.space_after = Pt(6)
+                    run.text = span["text"]
+                    
+                    # 1. Match Exact Font Size
+                    run.font.size = Pt(round(span["size"], 1))
+                    
+                    # 2. Match Font Family / Name Safely
+                    font_name = span["font"].lower()
+                    if "bold" in font_name:
+                        run.font.bold = True
+                    if "italic" in font_name:
+                        run.font.italic = True
+                        
+                    # Map standard font fallbacks
+                    if "sans" in font_name or "arial" in font_name or "helvetica" in font_name:
+                        run.font.name = "Arial"
+                    elif "serif" in font_name or "times" in font_name or "roman" in font_name:
+                        run.font.name = "Times New Roman"
+                    elif "courier" in font_name or "mono" in font_name:
+                        run.font.name = "Courier New"
+                    else:
+                        run.font.name = span["font"] # Try native font fallback
+                        
+                    # 3. Match Hex Color Properties
+                    run.font.color.rgb = hex_to_rgb(span["color"])
 
+    doc.close()
     prs.save(output_path)
