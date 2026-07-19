@@ -96,11 +96,10 @@ async def read_pdf_to_excel(): return FileResponse("app/static/pdf-to-excel.html
 async def read_pdf_to_ppt(): return FileResponse("app/static/pdf-to-ppt.html")
 
 
-# --- DEDICATED API ENGINE ROUTES (FIXED FOR DYNAMIC ERROR TRACKING) ---
+# --- DEDICATED API ENGINE ROUTES ---
 
 @app.post("/api/pdf-to-word")
 async def api_pdf_to_word(file: UploadFile = File(...)):
-    # Dynamically import inside the route execution block to catch actual errors
     try:
         from app.tools.pdf_to_word import convert_pdf_to_word
     except Exception as import_error:
@@ -123,30 +122,35 @@ async def api_pdf_to_word(file: UploadFile = File(...)):
 
 @app.post("/api/pdf-to-excel")
 async def api_pdf_to_excel(file: UploadFile = File(...)):
-    # Dynamically import inside the route execution block to catch actual errors
     try:
         from app.tools.pdf_to_excel import convert_pdf_to_excel
     except Exception as import_error:
         raise HTTPException(status_code=500, detail=f"Excel Core Import Failure: {str(import_error)}")
         
     input_path = f"temp_{file.filename}"
-    output_path = f"{os.path.splitext(file.filename)[0]}.xlsx"
+    output_filename = f"{os.path.splitext(file.filename)[0]}.csv"
+    output_path = output_filename
     
     with open(input_path, "wb") as buffer: 
         shutil.copyfileobj(file.file, buffer)
         
     try:
         convert_pdf_to_excel(input_path, output_path)
-        return FileResponse(output_path, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename=output_path)
+        return FileResponse(
+            output_path, 
+            media_type="text/csv", 
+            filename=output_filename,
+            headers={"Content-Disposition": f"attachment; filename={output_filename}"}
+        )
     except Exception as e: 
         raise HTTPException(status_code=500, detail=f"Excel Conversion Engine Error: {str(e)}")
     finally:
-        if os.path.exists(input_path): os.remove(input_path)
+        if os.path.exists(input_path): 
+            os.remove(input_path)
 
 
 @app.post("/api/pdf-to-ppt")
 async def api_pdf_to_ppt(file: UploadFile = File(...)):
-    # Dynamically import inside the route execution block to catch actual errors
     try:
         from app.tools.pdf_to_ppt import convert_pdf_to_ppt
     except Exception as import_error:
