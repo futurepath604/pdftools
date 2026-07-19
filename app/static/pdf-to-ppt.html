@@ -6,57 +6,21 @@
     <title>PDF to PowerPoint Converter</title>
     <style>
         :root {
-            --primary-color: #b7472a; /* Microsoft PowerPoint Orange/Red Theme */
+            --primary-color: #b7472a;
             --secondary-color: #1e1b4b;
             --background-color: #f8fafc;
             --card-background: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
         }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-main);
-            padding: 3rem 1rem;
-            display: flex;
-            justify-content: center;
-        }
-        .converter-box {
-            background: var(--card-background);
-            max-width: 500px;
-            width: 100%;
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-            text-align: center;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--background-color); color: var(--text-main); padding: 3rem 1rem; display: flex; justify-content: center; }
+        .converter-box { background: var(--card-background); max-width: 500px; width: 100%; padding: 2.5rem; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; text-align: center; }
         h2 { color: var(--primary-color); margin-bottom: 0.5rem; }
         p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
-        .upload-area {
-            border: 2px dashed #b7472a;
-            padding: 2.5rem 2rem;
-            border-radius: 12px;
-            cursor: pointer;
-            background: #fdf5f2;
-            display: block;
-            transition: all 0.3s;
-        }
+        .upload-area { border: 2px dashed #b7472a; padding: 2.5rem 2rem; border-radius: 12px; cursor: pointer; background: #fdf5f2; display: block; transition: all 0.3s; }
         .upload-area:hover { background: #fbeae4; }
         input[type="file"] { display: none; }
-        .btn {
-            display: block;
-            width: 100%;
-            background: var(--primary-color);
-            color: white;
-            padding: 0.85rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            cursor: pointer;
-        }
+        .btn { display: block; width: 100%; background: var(--primary-color); color: white; padding: 0.85rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; margin-top: 1.5rem; cursor: pointer; }
         .btn:disabled { opacity: 0.6; cursor: not-allowed; }
         #status { margin-top: 1.2rem; font-size: 0.95rem; font-weight: 500; }
         .back-link { display: inline-block; margin-top: 1.5rem; color: var(--primary-color); text-decoration: none; font-size: 0.9rem; }
@@ -65,7 +29,7 @@
 <body>
 <div class="converter-box">
     <h2>📉 PDF to PowerPoint Converter</h2>
-    <p>Convert your PDF document layers into clean, editable Microsoft PowerPoint (.pptx) presentation slides.</p>
+    <p>Convert your PDF document layers into clean, editable Microsoft PowerPoint (.pptx) presentation slides with 100% style preservation.</p>
     <form id="pptForm">
         <label class="upload-area">
             <input type="file" id="pdfFile" accept=".pdf" required>
@@ -91,7 +55,7 @@
         formData.append('file', fileInput.files[0]);
         submitBtn.disabled = true;
         statusDiv.style.color = '#b7472a';
-        statusDiv.innerText = 'Structuring presentation slides... Please wait.';
+        statusDiv.innerText = 'Structuring presentation slides with high fidelity... Please wait.';
         
         try {
             const response = await fetch('/api/pdf-to-ppt', { method: 'POST', body: formData });
