@@ -3,242 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate PDF Tools</title>
+    <title>Ultimate PDF Tools Dashboard</title>
     <style>
         :root {
-            --primary-color: #4f46e5;
+            --primary-color: #6366f1;
             --secondary-color: #1e1b4b;
             --background-color: #f8fafc;
             --card-background: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 2rem 1rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            color: var(--secondary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            color: var(--secondary-color);
-            margin: 2rem 0 1rem 0;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .tool-card {
-            background: var(--card-background);
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-color);
-        }
-
-        .tool-card h3 {
-            font-size: 1.25rem;
-            color: var(--secondary-color);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .tool-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .icon {
-            font-size: 1.5rem;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 4rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--background-color); color: var(--text-main); line-height: 1.6; padding: 2rem 1rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 3.5rem; }
+        header h1 { font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 0.6rem; font-weight: 800; }
+        header p { color: var(--text-muted); font-size: 1.1rem; }
+        .section-title { font-size: 1.4rem; color: var(--secondary-color); margin: 2.5rem 0 1.2rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; font-weight: 700; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .tool-card { background: var(--card-background); border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.6rem; text-decoration: none; color: inherit; transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08); border-color: var(--primary-color); }
+        .tool-card h3 { font-size: 1.2rem; color: var(--secondary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem; }
+        .tool-card p { color: var(--text-muted); font-size: 0.92rem; }
+        .icon { font-size: 1.4rem; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <header>
         <h1>Secure PDF Tools Ultimate</h1>
-        <p>Fast, Secure, and Powerful PDF Management in One Place</p>
+        <p>Your local, clean, fast, and completely secure PDF processing engine.</p>
     </header>
 
-    <!-- NEW ADVANCED MS OFFICE CONVERSION TOOLS -->
-    <div class="section-title">💼 Convert PDF to Office (Source Format Preserved)</div>
+    <!-- NEW DOCUMENT CONVERTERS SECTION -->
+    <div class="section-title">💼 Convert PDF to Office Frameworks</div>
     <div class="tools-grid">
         <a href="/pdf-to-word" class="tool-card">
             <div>
                 <h3><span class="icon">📝</span> PDF to Word</h3>
-                <p>Convert PDF to DOCX format while flawlessly maintaining original styles, layout architecture, and fonts.</p>
+                <p>Convert PDF documents into highly editable Microsoft Word files perfectly.</p>
             </div>
         </a>
-
         <a href="/pdf-to-excel" class="tool-card">
             <div>
                 <h3><span class="icon">📊</span> PDF to Excel</h3>
-                <p>Extract structural data tables from your PDF files directly into clean, calculated spreadsheet rows.</p>
+                <p>Extract numerical row sheets and structured tables cleanly into Excel sheets.</p>
             </div>
         </a>
-
         <a href="/pdf-to-ppt" class="tool-card">
             <div>
                 <h3><span class="icon">📉</span> PDF to PowerPoint</h3>
-                <p>Transform document text frames and structural layers into fully compatible presentation slides.</p>
+                <p>Transform structural dynamic page layouts into editable presentation slides.</p>
             </div>
         </a>
     </div>
 
-    <!-- DOCUMENT INTELLIGENCE & STRUCTURE -->
-    <div class="section-title">✨ Advanced Document Engine</div>
+    <!-- STANDARD UTILITIES SECTION -->
+    <div class="section-title">⚙️ Standard PDF Optimizations</div>
+    <div class="tools-grid">
+        <a href="/compress" class="tool-card">
+            <div>
+                <h3><span class="icon">🗜️</span> Compress PDF</h3>
+                <p>Reduce file size dynamically without compromising document readability.</p>
+            </div>
+        </a>
+        <a href="/merge" class="tool-card">
+            <div>
+                <h3><span class="icon">🔗</span> Merge PDFs</h3>
+                <p>Combine multiple individual PDF files into a single master document easily.</p>
+            </div>
+        </a>
+        <a href="/pdf-to-image" class="tool-card">
+            <div>
+                <h3><span class="icon">🖼️</span> PDF to Image</h3>
+                <p>Convert separate PDF vector layers into regular image file formats.</p>
+            </div>
+        </a>
+        <a href="/image-to-pdf" class="tool-card">
+            <div>
+                <h3><span class="icon">📷</span> Image to PDF</h3>
+                <p>Compile a grid bundle of custom image items into a standalone clean PDF sheet.</p>
+            </div>
+        </a>
+    </div>
+
+    <!-- ADVANCED MANAGEMENT ENGINE SECTION -->
+    <div class="section-title">✨ Advanced Document Core</div>
     <div class="tools-grid">
         <a href="/ocr" class="tool-card">
             <div>
                 <h3><span class="icon">🔍</span> OCR PDF Engine</h3>
-                <p>Extract searchable text from scanned PDFs or images using advanced optical character recognition.</p>
+                <p>Extract searchable structured text out of completely flattened scanned documents.</p>
             </div>
         </a>
-
         <a href="/rearrange" class="tool-card">
             <div>
                 <h3><span class="icon">🔄</span> Rearrange Pages</h3>
-                <p>Drag, drop, and re-order the pages of your PDF document into your custom dynamic order.</p>
+                <p>Swap, rearrange, and reconstruct structural slide layout numbers visually.</p>
             </div>
         </a>
     </div>
-
-    <!-- ESSENTIAL TOOLS SECTION -->
-    <div class="section-title">🛠️ Essential PDF Tools</div>
-    <div class="tools-grid">
-        <a href="/compress" class="tool-card">
-            <div>
-                <h3><span class="icon">📉</span> Compress PDF</h3>
-                <p>Reduce the file size of your PDF while maintaining optimal visual document quality.</p>
-            </div>
-        </a>
-
-        <a href="/merge" class="tool-card">
-            <div>
-                <h3><span class="icon">🔗</span> Merge PDF</h3>
-                <p>Combine multiple PDF files together into a single organized document.</p>
-            </div>
-        </a>
-
-        <a href="/pdf-to-image" class="tool-card">
-            <div>
-                <h3><span class="icon">🖼️</span> PDF to Image</h3>
-                <p>Convert your PDF pages into high-quality standalone JPG or PNG images.</p>
-            </div>
-        </a>
-
-        <a href="/image-to-pdf" class="tool-card">
-            <div>
-                <h3><span class="icon">📄</span> Image to PDF</h3>
-                <p>Transform your images, photos, or scanned graphics into a clean PDF layout.</p>
-            </div>
-        </a>
-    </div>
-
-    <!-- PAGE MANAGEMENT SECTION -->
-    <div class="section-title">📐 Page Modification</div>
-    <div class="tools-grid">
-        <a href="/split" class="tool-card">
-            <div>
-                <h3><span class="icon">✂️</span> Split PDF</h3>
-                <p>Extract specific ranges or separate specific pages into unique files.</p>
-            </div>
-        </a>
-
-        <a href="/rotate" class="tool-card">
-            <div>
-                <h3><span class="icon">🔄</span> Rotate PDF</h3>
-                <p>Turn and save your landscape or upside-down PDF pages into portrait orientation.</p>
-            </div>
-        </a>
-
-        <a href="/delete-pages" class="tool-card">
-            <div>
-                <h3><span class="icon">🗑️</span> Delete Pages</h3>
-                <p>Permanently remove unwanted pages from your existing PDF files.</p>
-            </div>
-        </a>
-    </div>
-
-    <!-- SECURITY SECTION -->
-    <div class="section-title">🔒 Privacy & Security</div>
-    <div class="tools-grid">
-        <a href="/lock" class="tool-card">
-            <div>
-                <h3><span class="icon">🔐</span> Protect PDF</h3>
-                <p>Encrypt your files with a secure password to prevent unauthorized access.</p>
-            </div>
-        </a>
-
-        <a href="/unlock" class="tool-card">
-            <div>
-                <h3><span class="icon">🔓</span> Unlock PDF</h3>
-                <p>Remove passwords and protection restrictions from authorized PDF files.</p>
-            </div>
-        </a>
-    </div>
-
-    <footer>
-        <p>&copy; 2026 Secure PDF Tools Ultimate. All processing is secure and private.</p>
-    </footer>
 </div>
-
 </body>
 </html>
