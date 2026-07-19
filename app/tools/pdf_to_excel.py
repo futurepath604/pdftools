@@ -1,12 +1,12 @@
 import os
-from collections import defaultdict
+import re
 
 def convert_pdf_to_excel(input_path: str, output_path: str):
     """
-    AI-Optimized Geometrical PDF to Tabular Excel Converter.
-    - Groups words by their precise vertical and horizontal coordinate bounds.
-    - Ensures multi-column alignments are perfectly preserved without row compression.
-    - Formats the consolidated sheet uniformly with Font Size 9.
+    Dashboard-Optimized PDF to Tabular Excel Converter.
+    - Specifically designed to parse horizontal data structures separated by vertical bars '|'.
+    - Implements direct openpyxl row feeding to ensure clean separation into separate cells.
+    - Locks formatting properties globally to Calibri, Font Size 9, and forces standard gridlines.
     """
     try:
         import pdfplumber
@@ -14,101 +14,65 @@ def convert_pdf_to_excel(input_path: str, output_path: str):
         raise RuntimeError("Missing pdfplumber dependency.")
         
     try:
-        import pandas as pd
+        import openpyxl
+        from openpyxl.styles import Font, Alignment
+        from openpyxl.utils import get_column_letter
     except ImportError:
-        raise RuntimeError("Missing pandas dependency.")
+        raise RuntimeError("Missing openpyxl dependency.")
 
-    all_rows = []
+    # Step 1: Initialize openpyxl structures directly to bypass data compression issues
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Partner Dashboard Details"
+    
+    # Enforce standard spreadsheet layout with visible gridlines
+    ws.views.sheetView[0].showGridLines = True
+    
+    font_config = Font(name="Calibri", size=9)
+    align_left = Alignment(horizontal="left", vertical="center")
+    
+    current_row_idx = 1
 
+    # Step 2: Extract text components page by page using fine visual layouts
     with pdfplumber.open(input_path) as pdf:
         for page in pdf.pages:
-            # First, check if a clean tabular graph exists natively
-            tables = page.extract_tables()
-            if tables:
-                for table in tables:
-                    for row in table:
-                        if row and any(cell is not None and str(cell).strip() for cell in row):
-                            all_rows.append([str(cell).strip() if cell else "" for cell in row])
+            raw_text = page.extract_text(layout=True)
+            if not raw_text:
                 continue
-
-            # Advanced AI Fallback: Parse structural coordinate bounds if extract_tables fails
-            words = page.extract_words(x_tolerance=3, y_tolerance=3)
-            if not words:
-                continue
-
-            # Group words that share nearly identical vertical (top) baselines
-            lines_dict = defaultdict(list)
-            for w in words:
-                # Rounding to cluster items belonging to the same visual horizontal line
-                top_coord = round(w['top'], 1)
-                lines_dict[top_coord].append(w)
-
-            # Sort lines chronologically from top to bottom
-            for top_coord in sorted(lines_dict.keys()):
-                line_words = lines_dict[top_coord]
-                # Sort words inside the line from left to right (x0 bound)
-                line_words.sort(key=lambda x: x['x0'])
                 
-                # Consolidate strings that are too close, separate those that belong to new columns
-                row_cells = []
-                current_cell = ""
-                last_x1 = None
-
-                for w in line_words:
-                    if last_x1 is not None and (w['x0'] - last_x1) > 8:
-                        # Significant horizontal gap implies a new column matrix field
-                        row_cells.append(current_cell.strip())
-                        current_cell = w['text']
-                    else:
-                        current_cell += " " + w['text'] if current_cell else w['text']
-                    last_x1 = w['x1']
+            lines = raw_text.split("\n")
+            for line in lines:
+                if not line.strip():
+                    continue
                 
-                if current_cell:
-                    row_cells.append(current_cell.strip())
+                # Check if the line is explicitly separated by pipeline matrix markers
+                if "|" in line:
+                    row_cells = [cell.strip() for cell in line.split("|")]
+                else:
+                    # Fallback for header parameters blocks: split by 2 or more space blocks
+                    row_cells = [cell.strip() for cell in re.split(r'\s{2,}', line.strip()) if cell.strip()]
+                
+                if row_cells:
+                    # Inject data sequentially into separate column cells
+                    for col_idx, cell_value in enumerate(row_cells, start=1):
+                        cell = ws.cell(row=current_row_idx, column=col_idx, value=str(cell_value))
+                        cell.font = font_config
+                        cell.alignment = align_left
+                    current_row_idx += 1
 
-                if row_cells and any(cell for cell in row_cells):
-                    all_rows.append(row_cells)
+    # Safe layout check: insert data notice if file parsing fetched nothing
+    if current_row_idx == 1:
+        ws.cell(row=1, column=1, value="No dashboard report entries detected.").font = font_config
 
-    if not all_rows:
-        all_rows = [["Data Extraction Status", "No clean graphical or coordinate rows found."]]
+    # Step 3: Dynamic Adaptive Autofit Columns Algorithm
+    for col in ws.columns:
+        max_len = 0
+        col_letter = get_column_letter(col[0].column)
+        for cell in col:
+            if cell.value:
+                max_len = max(max_len, len(str(cell.value)))
+        # Allocate spacing buffer so large titles/numbers don't clip
+        ws.column_dimensions[col_letter].width = max(max_len + 3, 12)
 
-    # Step 2: Formulate structured DataFrame
-    df = pd.DataFrame(all_rows)
-
-    # Step 3: Extract and promote the first non-empty structural row as column headers
-    for i, row in df.iterrows():
-        if any(str(cell).strip() != '' for cell in row):
-            df.columns = row
-            df = df.drop(i).reset_index(drop=True)
-            break
-
-    # Step 4 & 5: Save workbook matrix and enforce font configurations cleanly
-    try:
-        with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name="Partner Onboarding", index=False)
-            
-            worksheet = writer.sheets["Partner Onboarding"]
-            
-            from openpyxl.styles import Font
-            font_config = Font(name="Calibri", size=9)
-            
-            # Formatting cells uniformly
-            for row in worksheet.iter_rows(min_row=1, max_row=worksheet.max_row, min_col=1, max_col=worksheet.max_column):
-                for cell in row:
-                    cell.font = font_config
-
-            # Force gridlines visibility
-            worksheet.views.sheetView[0].showGridLines = True
-            
-            # Dynamic calculation of spacing widths
-            from openpyxl.utils import get_column_letter
-            for col in worksheet.columns:
-                max_len = 0
-                col_letter = get_column_letter(col[0].column)
-                for cell in col:
-                    if cell.value:
-                        max_len = max(max_len, len(str(cell.value)))
-                worksheet.column_dimensions[col_letter].width = max(max_len + 4, 12)
-
-    except Exception as export_error:
-        raise RuntimeError(f"Excel Coordinate Rendering failure: {str(export_error)}")
+    # Step 4: Output stream to clean Excel spreadsheet format
+    wb.save(output_path)
