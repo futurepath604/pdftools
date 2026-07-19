@@ -3,7 +3,10 @@ import pandas as pd
 import pdfplumber
 
 def convert_pdf_to_excel(input_path: str, output_path: str):
-    """Extracts tables or raw text from PDF into structured Excel sheets safely."""
+    """
+    Extracts tables into an structured Excel spreadsheet workbook.
+    Falls back to text-to-rows extraction to prevent failure if no structural tables exist.
+    """
     all_tables = []
     
     with pdfplumber.open(input_path) as pdf:
