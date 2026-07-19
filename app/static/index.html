@@ -3,157 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure PDF Tools Pro - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ultimate PDF Tools</title>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #1e1b4b;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
         .tool-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--card-background);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
+
         .tool-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .tool-card h3 {
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-indigo-600 font-extrabold text-2xl tracking-tight">🛠️ Secure PDF Tools Pro</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full">v2.0 Stable</span>
-                </div>
+<div class="container">
+    <header>
+        <h1>Secure PDF Tools Ultimate</h1>
+        <p>Fast, Secure, and Powerful PDF Management in One Place</p>
+    </header>
+
+    <!-- NEW ADVANCED TOOLS SECTION -->
+    <div class="section-title">✨ New Advanced Features</div>
+    <div class="tools-grid">
+        <a href="/office" class="tool-card">
+            <div>
+                <h3><span class="icon">💼</span> PDF to Office</h3>
+                <p>Convert your PDF documents flawlessly into editable Word, Excel, or PowerPoint presentation files.</p>
             </div>
-        </div>
-    </nav>
+        </a>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl tracking-tight">
-                All-In-One PDF Workspace
-            </h1>
-            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
-                Fast, secure, and entirely processed in-memory. No file logs, no leaks.
-            </p>
-        </div>
+        <a href="/ocr" class="tool-card">
+            <div>
+                <h3><span class="icon">🔍</span> OCR PDF Engine</h3>
+                <p>Extract searchable text from scanned PDFs or images using advanced optical character recognition.</p>
+            </div>
+        </a>
 
-        <!-- 10 Core Tools Grid System -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            
-            <!-- 1. Compress PDF -->
-            <a href="/compress" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">📉</div>
-                    <h3 class="text-lg font-bold text-gray-900">Compress PDF</h3>
-                    <p class="text-gray-500 text-sm mt-2">Reduce the file size of your PDF documents instantly.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+        <a href="/rearrange" class="tool-card">
+            <div>
+                <h3><span class="icon">🔄</span> Rearrange Pages</h3>
+                <p>Drag, drop, and re-order the pages of your PDF document into your custom dynamic order.</p>
+            </div>
+        </a>
+    </div>
 
-            <!-- 2. Merge PDF -->
-            <a href="/merge" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">🔀</div>
-                    <h3 class="text-lg font-bold text-gray-900">Merge PDF</h3>
-                    <p class="text-gray-500 text-sm mt-2">Combine multiple PDFs into a single organized document.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+    <!-- ESSENTIAL TOOLS SECTION -->
+    <div class="section-title">🛠️ Essential PDF Tools</div>
+    <div class="tools-grid">
+        <a href="/compress" class="tool-card">
+            <div>
+                <h3><span class="icon">📉</span> Compress PDF</h3>
+                <p>Reduce the file size of your PDF while maintaining optimal visual document quality.</p>
+            </div>
+        </a>
 
-            <!-- 3. PDF to Image -->
-            <a href="/pdf-to-image" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">🖼️</div>
-                    <h3 class="text-lg font-bold text-gray-900">PDF to Image</h3>
-                    <p class="text-gray-500 text-sm mt-2">Convert and extract PDF pages to JPG, PNG, or WebP.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+        <a href="/merge" class="tool-card">
+            <div>
+                <h3><span class="icon">🔗</span> Merge PDF</h3>
+                <p>Combine multiple PDF files together into a single organized document.</p>
+            </div>
+        </a>
 
-            <!-- 4. Image to PDF -->
-            <a href="/image-to-pdf" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">📸</div>
-                    <h3 class="text-lg font-bold text-gray-900">Image to PDF</h3>
-                    <p class="text-gray-500 text-sm mt-2">Convert your photos or documents straight into PDF format.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+        <a href="/pdf-to-image" class="tool-card">
+            <div>
+                <h3><span class="icon">🖼️</span> PDF to Image</h3>
+                <p>Convert your PDF pages into high-quality standalone JPG or PNG images.</p>
+            </div>
+        </a>
 
-            <!-- 5. Split PDF -->
-            <a href="/split" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">✂️</div>
-                    <h3 class="text-lg font-bold text-gray-900">Split PDF</h3>
-                    <p class="text-gray-500 text-sm mt-2">Extract specific pages or separate chunks from your files.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+        <a href="/image-to-pdf" class="tool-card">
+            <div>
+                <h3><span class="icon">📄</span> Image to PDF</h3>
+                <p>Transform your images, photos, or scanned graphics into a clean PDF layout.</p>
+            </div>
+        </a>
+    </div>
 
-            <!-- 6. Rotate PDF -->
-            <a href="/rotate" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">🔄</div>
-                    <h3 class="text-lg font-bold text-gray-900">Rotate PDF</h3>
-                    <p class="text-gray-500 text-sm mt-2">Turn upside down pages right side up instantly.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+    <!-- PAGE MANAGEMENT SECTION -->
+    <div class="section-title">📐 Page Modification</div>
+    <div class="tools-grid">
+        <a href="/split" class="tool-card">
+            <div>
+                <h3><span class="icon">✂️</span> Split PDF</h3>
+                <p>Extract specific ranges or separate specific pages into unique files.</p>
+            </div>
+        </a>
 
-            <!-- 7. Delete Pages -->
-            <a href="/delete-pages" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">🗑️</div>
-                    <h3 class="text-lg font-bold text-gray-900">Delete Pages</h3>
-                    <p class="text-gray-500 text-sm mt-2">Remove unnecessary or junk pages from your files.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+        <a href="/rotate" class="tool-card">
+            <div>
+                <h3><span class="icon">🔄</span> Rotate PDF</h3>
+                <p>Turn and save your landscape or upside-down PDF pages into portrait orientation.</p>
+            </div>
+        </a>
 
-            <!-- 8. Lock PDF -->
-            <a href="/lock" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">🔒</div>
-                    <h3 class="text-lg font-bold text-gray-900">Lock PDF</h3>
-                    <p class="text-gray-500 text-sm mt-2">Add professional-grade secure password to your documents.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+        <a href="/delete-pages" class="tool-card">
+            <div>
+                <h3><span class="icon">🗑️</span> Delete Pages</h3>
+                <p>Permanently remove unwanted pages from your existing PDF files.</p>
+            </div>
+        </a>
+    </div>
 
-            <!-- 9. Unlock PDF -->
-            <a href="/unlock" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md">
-                <div>
-                    <div class="text-3xl mb-4">🔓</div>
-                    <h3 class="text-lg font-bold text-gray-900">Unlock PDF</h3>
-                    <p class="text-gray-500 text-sm mt-2">Remove password protections and access restrictions.</p>
-                </div>
-                <span class="text-indigo-600 font-medium text-xs mt-4 inline-flex items-center">Open Tool →</span>
-            </a>
+    <!-- SECURITY SECTION -->
+    <div class="section-title">🔒 Privacy & Security</div>
+    <div class="tools-grid">
+        <a href="/lock" class="tool-card">
+            <div>
+                <h3><span class="icon">🔐</span> Protect PDF</h3>
+                <p>Encrypt your files with a secure password to prevent unauthorized access.</p>
+            </div>
+        </a>
 
-            <!-- 10. Office to PDF -->
-            <a href="/office" class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md opacity-75 border-dashed">
-                <div>
-                    <div class="text-3xl mb-4">📊</div>
-                    <h3 class="text-lg font-bold text-gray-900">Office to PDF <span class="text-xs text-purple-600 font-bold ml-1">PRO</span></h3>
-                    <p class="text-gray-500 text-sm mt-2">Convert Word, Excel, PowerPoint directly to PDF binary.</p>
-                </div>
-                <span class="text-purple-600 font-medium text-xs mt-4 inline-flex items-center">Premium Tier →</span>
-            </a>
+        <a href="/unlock" class="tool-card">
+            <div>
+                <h3><span class="icon">🔓</span> Unlock PDF</h3>
+                <p>Remove passwords and protection restrictions from authorized PDF files.</p>
+            </div>
+        </a>
+    </div>
 
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
-        &copy; 2026 FFuture's Workspace. All rights reserved.
+    <footer>
+        <p>&copy; 2026 Secure PDF Tools Ultimate. All processing is secure and private.</p>
     </footer>
+</div>
 
 </body>
 </html>
