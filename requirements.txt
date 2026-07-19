@@ -6,3 +6,4 @@ Pillow
 pypdf
 pdf2image
 pytesseract
+PdfFileWriter
