@@ -108,7 +108,6 @@ async def api_pdf_to_excel(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Excel Core Import Failure: {str(import_error)}")
         
     input_path = f"temp_{file.filename}"
-    # Reverting to true native standard .xlsx format for standard response
     output_filename = f"{os.path.splitext(file.filename)[0]}.xlsx"
     output_path = output_filename
     
