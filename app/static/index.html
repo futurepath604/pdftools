@@ -3,106 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate PDF Tools Dashboard</title>
+    <title>Secure PDF Tools Ultimate - Free Online PDF Editor & Converter</title>
+    <meta name="description" content="Free, secure, and professional online PDF tools. Compress, merge, split, encrypt, and convert PDF to Word, Excel, and PPT instantly without quality loss.">
+    <!-- Tailwind CSS for Modern UI -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #6366f1;
-            --secondary-color: #1e1b4b;
-            --background-color: #f8fafc;
-            --card-background: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background-color: var(--background-color); color: var(--text-main); line-height: 1.6; padding: 2rem 1rem; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 3.5rem; }
-        header h1 { font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 0.6rem; font-weight: 800; }
-        header p { color: var(--text-muted); font-size: 1.1rem; }
-        .section-title { font-size: 1.4rem; color: var(--secondary-color); margin: 2.5rem 0 1.2rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; font-weight: 700; }
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        .tool-card { background: var(--card-background); border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.6rem; text-decoration: none; color: inherit; transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; }
-        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08); border-color: var(--primary-color); }
-        .tool-card h3 { font-size: 1.2rem; color: var(--secondary-color); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem; }
-        .tool-card p { color: var(--text-muted); font-size: 0.92rem; }
-        .icon { font-size: 1.4rem; }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
-<div class="container">
-    <header>
-        <h1>Secure PDF Tools Ultimate</h1>
-        <p>Your local, clean, fast, and completely secure PDF processing engine.</p>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+
+    <!-- NAVIGATION BAR (AdSense Compliance Layout) -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-file-pdf text-red-600 text-3xl mr-2"></i>
+                    <span class="text-xl font-bold tracking-tight text-slate-800">SecurePDF<span class="text-red-600">Tools</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
+                    <a href="#tools" class="hover:text-red-600 transition">All Tools</a>
+                    <a href="#how-it-works" class="hover:text-red-600 transition">How It Works</a>
+                    <a href="#about" class="hover:text-red-600 transition">About Us</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TOP HEADER AD PLACEHOLDER (Crucial for AdSense Strategy) -->
+    <div class="max-w-7xl mx-auto px-4 w-full mt-6">
+        <div class="bg-white border border-dashed border-slate-300 rounded-lg p-4 text-center text-xs text-slate-400 tracking-wider uppercase">
+            <!-- AdSense Top Banner Placement Area -->
+            <span class="block mb-1">Advertisement</span>
+            <div class="h-24 bg-slate-100 rounded flex items-center justify-center font-mono">
+                [ Responsive Leaderboard Ad Unit ]
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 text-center">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight max-w-3xl mx-auto leading-tight">
+            Every PDF Tool You Need, <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500">100% Free & Secure</span>
+        </h1>
+        <p class="mt-4 text-lg text-slate-500 max-w-2xl mx-auto">
+            Process your documents locally with military-grade privacy. No registration required, fast conversion, and clean industry-standard layouts.
+        </p>
     </header>
 
-    <!-- NEW DOCUMENT CONVERTERS SECTION -->
-    <div class="section-title">💼 Convert PDF to Office Frameworks</div>
-    <div class="tools-grid">
-        <a href="/pdf-to-word" class="tool-card">
-            <div>
-                <h3><span class="icon">📝</span> PDF to Word</h3>
-                <p>Convert PDF documents into highly editable Microsoft Word files perfectly.</p>
-            </div>
-        </a>
-        <a href="/pdf-to-excel" class="tool-card">
-            <div>
-                <h3><span class="icon">📊</span> PDF to Excel</h3>
-                <p>Extract numerical row sheets and structured tables cleanly into Excel sheets.</p>
-            </div>
-        </a>
-        <a href="/pdf-to-ppt" class="tool-card">
-            <div>
-                <h3><span class="icon">📉</span> PDF to PowerPoint</h3>
-                <p>Transform structural dynamic page layouts into editable presentation slides.</p>
-            </div>
-        </a>
-    </div>
+    <!-- CORE TOOLS GRID SECTION -->
+    <main id="tools" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        
+        <!-- Category: Conversion Tools -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fa-solid fa-right-left-arrows text-red-500 mr-3"></i> Premium Converters
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- PDF to Excel -->
+                <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-green-50 text-green-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-file-excel"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">PDF to Excel</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                            Extract structural matrix grids, bank statements, and tables from PDF into dynamic Excel spreadsheets accurately.
+                        </p>
+                    </div>
+                    <a href="/pdf-to-excel" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition block">
+                        Launch Tool
+                    </a>
+                </div>
 
-    <!-- STANDARD UTILITIES SECTION -->
-    <div class="section-title">⚙️ Standard PDF Optimizations</div>
-    <div class="tools-grid">
-        <a href="/compress" class="tool-card">
-            <div>
-                <h3><span class="icon">🗜️</span> Compress PDF</h3>
-                <p>Reduce file size dynamically without compromising document readability.</p>
-            </div>
-        </a>
-        <a href="/merge" class="tool-card">
-            <div>
-                <h3><span class="icon">🔗</span> Merge PDFs</h3>
-                <p>Combine multiple individual PDF files into a single master document easily.</p>
-            </div>
-        </a>
-        <a href="/pdf-to-image" class="tool-card">
-            <div>
-                <h3><span class="icon">🖼️</span> PDF to Image</h3>
-                <p>Convert separate PDF vector layers into regular image file formats.</p>
-            </div>
-        </a>
-        <a href="/image-to-pdf" class="tool-card">
-            <div>
-                <h3><span class="icon">📷</span> Image to PDF</h3>
-                <p>Compile a grid bundle of custom image items into a standalone clean PDF sheet.</p>
-            </div>
-        </a>
-    </div>
+                <!-- PDF to Word -->
+                <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-file-word"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">PDF to Word</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                            Convert immutable PDF layouts into fully editable Microsoft Word documents while preserving original typography and styling.
+                        </p>
+                    </div>
+                    <a href="/pdf-to-word" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition block">
+                        Launch Tool
+                    </a>
+                </div>
 
-    <!-- ADVANCED MANAGEMENT ENGINE SECTION -->
-    <div class="section-title">✨ Advanced Document Core</div>
-    <div class="tools-grid">
-        <a href="/ocr" class="tool-card">
-            <div>
-                <h3><span class="icon">🔍</span> OCR PDF Engine</h3>
-                <p>Extract searchable structured text out of completely flattened scanned documents.</p>
+                <!-- PDF to PPT -->
+                <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-file-powerpoint"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">PDF to PowerPoint</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                            Transform document flows and analytical decks into fully native, modular, and editable multi-column presentation slides.
+                        </p>
+                    </div>
+                    <a href="/pdf-to-ppt" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition block">
+                        Launch Tool
+                    </a>
+                </div>
+
             </div>
-        </a>
-        <a href="/rearrange" class="tool-card">
-            <div>
-                <h3><span class="icon">🔄</span> Rearrange Pages</h3>
-                <p>Swap, rearrange, and reconstruct structural slide layout numbers visually.</p>
+        </div>
+
+        <!-- MID-GRID AD BREAK -->
+        <div class="bg-white border border-dashed border-slate-300 rounded-lg p-4 text-center text-xs text-slate-400 tracking-wider uppercase my-8">
+            <span class="block mb-1">Advertisement</span>
+            <div class="h-32 bg-slate-100 rounded flex items-center justify-center font-mono">
+                [ In-Feed Native Ad Content Block ]
             </div>
-        </a>
-    </div>
-</div>
+        </div>
+
+        <!-- Category: Optimization & Security -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fa-solid fa-shield-halved text-red-500 mr-3"></i> Security & Utilities
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Compress PDF -->
+                <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-red-50 text-red-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-compress"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Compress PDF</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                            Reduce the file footprint size of your bloated PDF documents dynamically while keeping high resolution print qualities.
+                        </p>
+                    </div>
+                    <a href="/compress" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition block">
+                        Launch Tool
+                    </a>
+                </div>
+
+                <!-- Merge PDF -->
+                <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-object-group"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Merge PDF</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                            Combine multiple discrete files, scanned records, and structural pages together into one clean consolidated PDF.
+                        </p>
+                    </div>
+                    <a href="/merge" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition block">
+                        Launch Tool
+                    </a>
+                </div>
+
+                <!-- Lock PDF -->
+                <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Lock PDF</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                            Secure confidential records with explicit multi-bit user passwords and military-grade custom encryption algorithms.
+                        </p>
+                    </div>
+                    <a href="/lock" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition block">
+                        Launch Tool
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- VALUABLE TEXT CONTENT AREA (AdSense Low-Value Content Policy Fix) -->
+    <section id="how-it-works" class="bg-white border-t border-b border-slate-200 py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <h2 class="text-3xl font-extrabold text-slate-900 text-center mb-10">Why Choose Our Professional PDF Pipeline?</h2>
+            
+            <div class="space-y-8 text-slate-600 text-base leading-relaxed">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">1. Fully Editable Layout Reconstruction</h3>
+                    <p>Unlike standard generic tools that convert tables into flat image blocks, our backend uses custom semantic alignment engines. When converting from PDF to Excel or Word, text properties, tabular bording grids, and column workflows remain fully editable and beautifully formatted.</p>
+                </div>
+                <hr class="border-slate-100">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">2. Strict Privacy and Security Compliance</h3>
+                    <p>We respect your corporate documents. Files processed through our API endpoints are transient and are safely sandbox-purged immediately following execution cycles. Your private data never leaves the staging environments.</p>
+                </div>
+                <hr class="border-slate-100">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">3. Optimized Cloud Architectures</h3>
+                    <p>Our platform handles calculations natively within strict high-performance pipelines. This delivers rapid, lightweight execution times without imposing bandwidth restrictions or premium tier payment requirements on end-users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SECTION (AdSense Mandatory Policy Links Area) -->
+    <footer id="about" class="bg-slate-900 text-slate-400 py-12 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <div>
+                    <p class="font-medium text-white">&copy; 2026 SecurePDFTools. All rights reserved.</p>
+                    <p class="text-xs text-slate-500 mt-1">Enterprise-grade document utility automation pipelines.</p>
+                </div>
+                <!-- CRUCIAL: AdSense Policy Links. If these are missing, AdSense will Reject instantly -->
+                <div class="flex flex-wrap justify-center gap-6 text-slate-300">
+                    <a href="/privacy-policy" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="/terms-of-service" class="hover:text-white transition">Terms of Service</a>
+                    <a href="/contact-us" class="hover:text-white transition">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
