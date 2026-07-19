@@ -7,13 +7,13 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-# Setup path environments
+# Setup paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 if current_dir not in sys.path: sys.path.append(current_dir)
 if parent_dir not in sys.path: sys.path.append(parent_dir)
 
-# --- SAFE IMPORTS BLOCK FOR CORE MODULES ---
+# --- CORE INTEGRATED UTILITIES ---
 try: from app.tools.compressor import compress_pdf_file
 except Exception: compress_pdf_file = None
 
@@ -35,7 +35,7 @@ except Exception: process_pdf_ocr = None
 try: from app.tools.rearrange_backend import rearrange_pdf_pages
 except Exception: rearrange_pdf_pages = None
 
-# Separate Office Converter Imports
+# Office Converter Modules
 try: from app.tools.pdf_to_word import convert_pdf_to_word
 except Exception: convert_pdf_to_word = None
 
@@ -47,19 +47,15 @@ except Exception: convert_pdf_to_ppt = None
 
 
 def merge_pdf_files(input_paths: list, output_path: str):
-    try:
-        from pypdf import PdfMerger
-        merger = PdfMerger()
-        for path in input_paths: merger.append(path)
-        merger.write(output_path)
-        merger.close()
-    except Exception as e:
-        raise Exception(f"Merge operation error: {str(e)}")
+    from pypdf import PdfMerger
+    merger = PdfMerger()
+    for path in input_paths: merger.append(path)
+    merger.write(output_path)
+    merger.close()
 
 
 app = FastAPI(title="Secure PDF Tools Ultimate API")
 
-# Mount Static Files securely
 if os.path.exists("app/static"):
     app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
@@ -110,126 +106,10 @@ async def read_pdf_to_excel(): return FileResponse("app/static/pdf-to-excel.html
 async def read_pdf_to_ppt(): return FileResponse("app/static/pdf-to-ppt.html")
 
 
-# --- CORE API ENGINE ENDPOINTS ---
-@app.post("/api/compress")
-async def compress_pdf(file: UploadFile = File(...)):
-    if not compress_pdf_file: raise HTTPException(status_code=501, detail="Compress module missing")
-    input_path = f"temp_{file.filename}"
-    output_path = f"compressed_{file.filename}"
-    with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-    try:
-        compress_pdf_file(input_path, output_path)
-        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        if os.path.exists(input_path): os.remove(input_path)
-
-@app.post("/api/merge")
-async def merge_pdfs(files: List[UploadFile] = File(...)):
-    input_paths = []
-    output_path = "merged_document.pdf"
-    for file in files:
-        path = f"temp_{file.filename}"
-        with open(path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-        input_paths.append(path)
-    try:
-        merge_pdf_files(input_paths, output_path)
-        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        for path in input_paths:
-            if os.path.exists(path): os.remove(path)
-
-@app.post("/api/pdf-to-image")
-async def pdf_to_img(file: UploadFile = File(...)):
-    if not pdf_to_images: raise HTTPException(status_code=501, detail="Converter module missing")
-    input_path = f"temp_{file.filename}"
-    output_zip = f"images_{file.filename}.zip"
-    with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-    try:
-        pdf_to_images(input_path, output_zip)
-        return FileResponse(output_zip, media_type="application/zip", filename=output_zip)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        if os.path.exists(input_path): os.remove(input_path)
-
-@app.post("/api/image-to-pdf")
-async def img_to_pdf(files: List[UploadFile] = File(...)):
-    if not images_to_pdf: raise HTTPException(status_code=501, detail="Converter module missing")
-    input_paths = []
-    output_path = "images_converted.pdf"
-    for file in files:
-        path = f"temp_{file.filename}"
-        with open(path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-        input_paths.append(path)
-    try:
-        images_to_pdf(input_paths, output_path)
-        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        for path in input_paths:
-            if os.path.exists(path): os.remove(path)
-
-@app.post("/api/modify-pdf")
-async def modify_pdf(file: UploadFile = File(...), mode: str = Form(...), params: str = Form(...)):
-    if not modify_pdf_pages: raise HTTPException(status_code=501, detail="Modify module missing")
-    input_path = f"temp_{file.filename}"
-    output_path = f"modified_{file.filename}"
-    with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-    try:
-        param_dict = json.loads(params)
-        modify_pdf_pages(input_path, output_path, mode, param_dict)
-        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        if os.path.exists(input_path): os.remove(input_path)
-
-@app.post("/api/security-pdf")
-async def security_pdf(file: UploadFile = File(...), mode: str = Form(...), password: str = Form(...)):
-    if not lock_pdf_file: raise HTTPException(status_code=501, detail="Security module missing")
-    input_path = f"temp_{file.filename}"
-    output_path = f"secured_{file.filename}"
-    with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-    try:
-        if mode == "lock": lock_pdf_file(input_path, output_path, password)
-        elif mode == "unlock": unlock_pdf_file(input_path, output_path, password)
-        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        if os.path.exists(input_path): os.remove(input_path)
-
-@app.post("/api/ocr")
-async def ocr_pdf(file: UploadFile = File(...)):
-    if not process_pdf_ocr: raise HTTPException(status_code=501, detail="OCR Engine missing")
-    input_path = f"temp_{file.filename}"
-    output_path = f"ocr_{file.filename}"
-    with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-    try:
-        process_pdf_ocr(input_path, output_path)
-        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        if os.path.exists(input_path): os.remove(input_path)
-
-@app.post("/api/rearrange")
-async def rearrange_pdf(file: UploadFile = File(...), page_order: str = Form(...)):
-    if not rearrange_pdf_pages: raise HTTPException(status_code=501, detail="Rearrange module missing")
-    input_path = f"temp_{file.filename}"
-    output_path = f"rearranged_{file.filename}"
-    with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
-    try:
-        order_list = json.loads(page_order)
-        rearrange_pdf_pages(input_path, output_path, order_list)
-        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        if os.path.exists(input_path): os.remove(input_path)
-
-
-# --- DEDICATED NEW OFFICE API ENDPOINTS ---
+# --- DEDICATED API ENGINE ROUTES ---
 @app.post("/api/pdf-to-word")
 async def api_pdf_to_word(file: UploadFile = File(...)):
-    if not convert_pdf_to_word: raise HTTPException(status_code=501, detail="Word core setup missing")
+    if not convert_pdf_to_word: raise HTTPException(status_code=501, detail="Word Core Missing")
     input_path = f"temp_{file.filename}"
     output_path = f"{os.path.splitext(file.filename)[0]}.docx"
     with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
@@ -242,7 +122,7 @@ async def api_pdf_to_word(file: UploadFile = File(...)):
 
 @app.post("/api/pdf-to-excel")
 async def api_pdf_to_excel(file: UploadFile = File(...)):
-    if not convert_pdf_to_excel: raise HTTPException(status_code=501, detail="Excel core setup missing")
+    if not convert_pdf_to_excel: raise HTTPException(status_code=501, detail="Excel Core Missing")
     input_path = f"temp_{file.filename}"
     output_path = f"{os.path.splitext(file.filename)[0]}.xlsx"
     with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
@@ -255,7 +135,7 @@ async def api_pdf_to_excel(file: UploadFile = File(...)):
 
 @app.post("/api/pdf-to-ppt")
 async def api_pdf_to_ppt(file: UploadFile = File(...)):
-    if not convert_pdf_to_ppt: raise HTTPException(status_code=501, detail="PowerPoint core setup missing")
+    if not convert_pdf_to_ppt: raise HTTPException(status_code=501, detail="PPT Engine Error or Missing Libraries")
     input_path = f"temp_{file.filename}"
     output_path = f"{os.path.splitext(file.filename)[0]}.pptx"
     with open(input_path, "wb") as buffer: shutil.copyfileobj(file.file, buffer)
