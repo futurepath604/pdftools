@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import shutil
 from typing import List
@@ -6,19 +7,36 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-# Corrected Imports (Removed 'pdftools.' prefix)
-from app.tools.compressor import compress_pdf_file
-from app.tools.merger import merge_pdf_files
-from app.tools.converter import pdf_to_images, images_to_pdf
-from app.tools.modifier import modify_pdf_pages
-from app.tools.security import lock_pdf_file, unlock_pdf_file
+# Render এবং ডকার এনভায়রনমেন্টের পাইথন পাথ ফিক্স করার পার্মানেন্ট সলিউশন
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+# আপনার রিয়েল ফাইল নামের ওপর ভিত্তি করে ডাইরেক্ট ইমপোর্ট
+try:
+    from app.tools.compressor import compress_pdf_file
+    from app.tools.merger import merge_pdf_files
+    from app.tools.pdf_to_image import pdf_to_images
+    from app.tools.image_to_pdf import images_to_pdf
+    from app.tools.modify import modify_pdf_pages
+    from app.tools.security import lock_pdf_file, unlock_pdf_file
+except ImportError:
+    from tools.compressor import compress_pdf_file
+    from tools.merger import merge_pdf_files
+    from tools.pdf_to_image import pdf_to_images
+    from tools.image_to_pdf import images_to_pdf
+    from tools.modify import modify_pdf_pages
+    from tools.security import lock_pdf_file, unlock_pdf_file
 
 app = FastAPI(title="Secure PDF Tools API")
 
 # Mount Static Files for Frontend UI
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-# Helper HTML Response Route
+# --- HTML ROUTES ---
 @app.get("/")
 async def read_index():
     return FileResponse("app/static/index.html")
@@ -66,10 +84,8 @@ async def read_unlock():
 async def compress_pdf(file: UploadFile = File(...)):
     input_path = f"temp_input_{file.filename}"
     output_path = f"compressed_{file.filename}"
-    
     with open(input_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-        
     try:
         compress_pdf_file(input_path, output_path)
         return FileResponse(output_path, media_type="application/pdf", filename=output_path)
@@ -83,13 +99,11 @@ async def compress_pdf(file: UploadFile = File(...)):
 async def merge_pdfs(files: List[UploadFile] = File(...)):
     input_paths = []
     output_path = "merged_document.pdf"
-    
     for file in files:
         path = f"temp_{file.filename}"
         with open(path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         input_paths.append(path)
-        
     try:
         merge_pdf_files(input_paths, output_path)
         return FileResponse(output_path, media_type="application/pdf", filename=output_path)
@@ -104,10 +118,8 @@ async def merge_pdfs(files: List[UploadFile] = File(...)):
 async def pdf_to_img(file: UploadFile = File(...)):
     input_path = f"temp_{file.filename}"
     output_zip = f"images_{file.filename}.zip"
-    
     with open(input_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-        
     try:
         pdf_to_images(input_path, output_zip)
         return FileResponse(output_zip, media_type="application/zip", filename=output_zip)
@@ -121,13 +133,11 @@ async def pdf_to_img(file: UploadFile = File(...)):
 async def img_to_pdf(files: List[UploadFile] = File(...)):
     input_paths = []
     output_path = "images_converted.pdf"
-    
     for file in files:
         path = f"temp_{file.filename}"
         with open(path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         input_paths.append(path)
-        
     try:
         images_to_pdf(input_paths, output_path)
         return FileResponse(output_path, media_type="application/pdf", filename=output_path)
@@ -146,10 +156,8 @@ async def modify_pdf(
 ):
     input_path = f"temp_{file.filename}"
     output_path = f"modified_{file.filename}"
-    
     with open(input_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-        
     try:
         param_dict = json.loads(params)
         modify_pdf_pages(input_path, output_path, mode, param_dict)
@@ -168,10 +176,8 @@ async def security_pdf(
 ):
     input_path = f"temp_{file.filename}"
     output_path = f"secured_{file.filename}"
-    
     with open(input_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-        
     try:
         if mode == "lock":
             lock_pdf_file(input_path, output_path, password)
@@ -179,7 +185,6 @@ async def security_pdf(
             unlock_pdf_file(input_path, output_path, password)
         else:
             raise HTTPException(status_code=400, detail="Invalid security mode")
-            
         return FileResponse(output_path, media_type="application/pdf", filename=output_path)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
