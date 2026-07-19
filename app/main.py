@@ -108,8 +108,8 @@ async def api_pdf_to_excel(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Excel Core Import Failure: {str(import_error)}")
         
     input_path = f"temp_{file.filename}"
-    # Extension set to true .xlsx to match the frontend expectations perfectly
-    output_filename = f"{os.path.splitext(file.filename)[0]}.xlsx"
+    # Setting extension to .xlsb for clean binary validation
+    output_filename = f"{os.path.splitext(file.filename)[0]}.xlsb"
     output_path = output_filename
     
     with open(input_path, "wb") as buffer: 
@@ -118,15 +118,15 @@ async def api_pdf_to_excel(file: UploadFile = File(...)):
     try:
         convert_pdf_to_excel(input_path, output_path)
         
-        # Enforcing formal binary stream response type for exact spreadsheet binaries (.xlsx)
+        # Enforcing formal binary stream response type for direct Excel Binary Workbook (.xlsb)
         return FileResponse(
             output_path, 
-            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+            media_type="application/vnd.ms-excel.sheet.binary.macroEnabled.12", 
             filename=output_filename,
             headers={"Content-Disposition": f"attachment; filename={output_filename}"}
         )
     except Exception as e: 
-        raise HTTPException(status_code=500, detail=f"Excel Engine Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Excel Binary Engine Error: {str(e)}")
     finally:
         if os.path.exists(input_path): 
             os.remove(input_path)
