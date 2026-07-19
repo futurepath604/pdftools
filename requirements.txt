@@ -6,7 +6,6 @@ Pillow
 pypdf
 pdf2image
 pytesseract
-PdfFileWriter
 pdf2docx
 pdfplumber
 python-pptx
