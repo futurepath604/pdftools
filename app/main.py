@@ -1,225 +1,187 @@
-import json
 import os
-import uuid
-import zipfile
+import json
+import shutil
 from typing import List
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import FileResponse
-from fastapi.middleware.cors import CORSMiddleware
-import pypdf
+from fastapi.staticfiles import StaticFiles
 
-# আপনার আগের তৈরি করা টুলস মডিউল ইমপোর্ট (পাথ প্রজেক্ট অনুযায়ী চেক করে নেবেন)
-from pdftools.app.tools.compressor import compress_pdf_file
-from app.tools.ocr_engine import process_pdf_ocr
+# Corrected Imports (Removed 'pdftools.' prefix)
+from app.tools.compressor import compress_pdf_file
+from app.tools.merger import merge_pdf_files
+from app.tools.converter import pdf_to_images, images_to_pdf
+from app.tools.modifier import modify_pdf_pages
+from app.tools.security import lock_pdf_file, unlock_pdf_file
 
-app = FastAPI(title="Secure PDF Tools API", version="1.0.0")
+app = FastAPI(title="Secure PDF Tools API")
 
-# CORS Middleware (যদি ফ্রন্টএন্ড আলাদা পোর্টে চলে)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Mount Static Files for Frontend UI
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-# ----------------------------------------------------------------
-# ১. PDF Compress API
-# ----------------------------------------------------------------
-@app.post("/api/compress-pdf")
-async def api_compress_pdf(
-    file: UploadFile = File(...),
-    params: str = Form("{}")
-):
-    input_path = f"temp_in_{uuid.uuid4().hex}_{file.filename}"
-    output_path = f"compressed_{uuid.uuid4().hex}_{file.filename}"
+# Helper HTML Response Route
+@app.get("/")
+async def read_index():
+    return FileResponse("app/static/index.html")
+
+@app.get("/compress")
+async def read_compress():
+    return FileResponse("app/static/compress.html")
+
+@app.get("/merge")
+async def read_merge():
+    return FileResponse("app/static/merge.html")
+
+@app.get("/pdf-to-image")
+async def read_pdf_to_image():
+    return FileResponse("app/static/pdf-to-image.html")
+
+@app.get("/image-to-pdf")
+async def read_image_to_pdf():
+    return FileResponse("app/static/image-to-pdf.html")
+
+@app.get("/split")
+async def read_split():
+    return FileResponse("app/static/split.html")
+
+@app.get("/rotate")
+async def read_rotate():
+    return FileResponse("app/static/rotate.html")
+
+@app.get("/delete-pages")
+async def read_delete_pages():
+    return FileResponse("app/static/delete-pages.html")
+
+@app.get("/lock")
+async def read_lock():
+    return FileResponse("app/static/lock.html")
+
+@app.get("/unlock")
+async def read_unlock():
+    return FileResponse("app/static/unlock.html")
+
+
+# --- API ENDPOINTS ---
+
+@app.post("/api/compress")
+async def compress_pdf(file: UploadFile = File(...)):
+    input_path = f"temp_input_{file.filename}"
+    output_path = f"compressed_{file.filename}"
     
-    try:
-        with open(input_path, "wb") as buffer:
-            buffer.write(await file.read())
-            
-        success = compress_pdf_file(input_path, output_path, params_str=params)
+    with open(input_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
         
-        if not success or not os.path.exists(output_path):
-            raise HTTPException(status_code=500, detail="Compression engine failed.")
-            
-        return FileResponse(
-            output_path, 
-            media_type="application/pdf", 
-            filename=f"compressed_{file.filename}"
-        )
+    try:
+        compress_pdf_file(input_path, output_path)
+        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         if os.path.exists(input_path): os.remove(input_path)
 
 
-# ----------------------------------------------------------------
-# ২. PDF Unlock API (Legally Compliant Optional Mode)
-# ----------------------------------------------------------------
-@app.post("/api/unlock-pdf")
-async def api_unlock_pdf(
-    file: UploadFile = File(...),
-    password: str = Form(...)
-):
-    input_path = f"temp_lock_{uuid.uuid4().hex}_{file.filename}"
-    output_path = f"unlocked_{uuid.uuid4().hex}_{file.filename}"
+@app.post("/api/merge")
+async def merge_pdfs(files: List[UploadFile] = File(...)):
+    input_paths = []
+    output_path = "merged_document.pdf"
     
+    for file in files:
+        path = f"temp_{file.filename}"
+        with open(path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        input_paths.append(path)
+        
     try:
-        with open(input_path, "wb") as buffer:
-            buffer.write(await file.read())
-            
-        reader = pypdf.PdfReader(input_path)
-        
-        # পাসওয়ার্ড চেক করা
-        if reader.is_encrypted:
-            try:
-                decrypted = reader.decrypt(password)
-                if decrypted == 0:
-                    raise HTTPException(status_code=401, detail="Incorrect password.")
-            except Exception:
-                raise HTTPException(status_code=401, detail="Incorrect password.")
-        
-        writer = pypdf.PdfWriter()
-        for page in reader.pages:
-            writer.add_page(page)
-            
-        with open(output_path, "wb") as f:
-            writer.write(f)
-            
-        return FileResponse(
-            output_path, 
-            media_type="application/pdf", 
-            filename=f"unlocked_{file.filename}"
-        )
-    except HTTPException as he:
-        raise he
+        merge_pdf_files(input_paths, output_path)
+        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Unlock failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        for path in input_paths:
+            if os.path.exists(path): os.remove(path)
+
+
+@app.post("/api/pdf-to-image")
+async def pdf_to_img(file: UploadFile = File(...)):
+    input_path = f"temp_{file.filename}"
+    output_zip = f"images_{file.filename}.zip"
+    
+    with open(input_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    try:
+        pdf_to_images(input_path, output_zip)
+        return FileResponse(output_zip, media_type="application/zip", filename=output_zip)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
         if os.path.exists(input_path): os.remove(input_path)
 
 
-# ----------------------------------------------------------------
-# ৩. NEW: PDF Page Rearrange & Merge API
-# ----------------------------------------------------------------
-@app.post("/api/rearrange-pdf")
-async def api_rearrange_pdf(
-    files: List[UploadFile] = File(...),
-    sequence: str = Form(...)
-):
-    temp_files = []
-    output_filename = f"arranged_{uuid.uuid4().hex}.pdf"
+@app.post("/api/image-to-pdf")
+async def img_to_pdf(files: List[UploadFile] = File(...)):
+    input_paths = []
+    output_path = "images_converted.pdf"
     
-    try:
-        # সব ফাইল টেম্পোরারি সেভ করা
-        for uploaded_file in files:
-            temp_path = f"temp_arr_{uuid.uuid4().hex}_{uploaded_file.filename}"
-            with open(temp_path, "wb") as buffer:
-                buffer.write(await uploaded_file.read())
-            temp_files.append(temp_path)
-            
-        try:
-            sequence_rules = json.loads(sequence)
-        except Exception:
-            raise HTTPException(status_code=400, detail="Invalid sequence compilation payload.")
-            
-        writer = pypdf.PdfWriter()
+    for file in files:
+        path = f"temp_{file.filename}"
+        with open(path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        input_paths.append(path)
         
-        # ফ্রন্টএন্ডের রুলস অনুযায়ী পেজ অ্যারেঞ্জ করা
-        for block in sequence_rules:
-            file_idx = block.get("file_index")
-            pages_to_add = block.get("pages", [])
-            
-            if file_idx < 0 or file_idx >= len(temp_files):
-                raise HTTPException(status_code=400, detail="File identifier index out of bounds.")
-                
-            reader = pypdf.PdfReader(temp_files[file_idx])
-            total_pages = len(reader.pages)
-            
-            for p_num in pages_to_add:
-                if 0 <= p_num < total_pages:
-                    writer.add_page(reader.pages[p_num])
-                    
-        with open(output_filename, "wb") as out_f:
-            writer.write(out_f)
-            
-        return FileResponse(
-            output_filename, 
-            media_type="application/pdf", 
-            filename="arranged_document.pdf"
-        )
-        
-    except Exception as e:
-        if os.path.exists(output_filename): os.remove(output_filename)
-        raise HTTPException(status_code=500, detail=f"Arrangement failure: {str(e)}")
-    finally:
-        for t_file in temp_files:
-            if os.path.exists(t_file): os.remove(t_file)
-
-
-# ----------------------------------------------------------------
-# ৪. NEW: PDF OCR Converter API
-# ----------------------------------------------------------------
-@app.post("/api/ocr-pdf")
-async def api_ocr_pdf(
-    files: List[UploadFile] = File(...),
-    lang: str = Form("eng")
-):
-    uploaded_temps = []
-    processed_temps = []
-    zip_output_path = f"ocr_bundle_{uuid.uuid4().hex}.zip"
-
     try:
-        for file in files:
-            t_input = f"input_ocr_{uuid.uuid4().hex}_{file.filename}"
-            t_output = f"searchable_{uuid.uuid4().hex}_{file.filename}"
-            
-            with open(t_input, "wb") as buffer:
-                buffer.write(await file.read())
-            
-            uploaded_temps.append(t_input)
-
-            # OCR প্রসেস রান করা
-            success = process_pdf_ocr(t_input, t_output, lang=lang)
-            if not success or not os.path.exists(t_output):
-                raise HTTPException(status_code=500, detail=f"OCR failed on file: {file.filename}")
-                
-            processed_temps.append((t_output, file.filename))
-
-        # সিঙ্গেল ফাইল হলে সরাসরি PDF ডাউনলোড হবে
-        if len(processed_temps) == 1:
-            single_path, original_name = processed_temps[0]
-            return FileResponse(
-                single_path, 
-                media_type="application/pdf", 
-                filename=f"searchable_{original_name}"
-            )
-        # মাল্টিপল ফাইল হলে ZIP আকারে ডাউনলোড হবে
-        else:
-            with zipfile.ZipFile(zip_output_path, 'w') as zipf:
-                for file_path, original_name in processed_temps:
-                    zipf.write(file_path, arcname=f"searchable_{original_name}")
-            
-            return FileResponse(
-                zip_output_path, 
-                media_type="application/zip", 
-                filename="ocr_searchable_documents.zip"
-            )
-
+        images_to_pdf(input_paths, output_path)
+        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"OCR pipeline failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
-        for path in uploaded_temps:
+        for path in input_paths:
             if os.path.exists(path): os.remove(path)
-        if len(processed_temps) > 1:
-            for path, _ in processed_temps:
-                if os.path.exists(path): os.remove(path)
 
 
-# ----------------------------------------------------------------
-# সার্ভার রান করার জন্য রুট পাথ (اختياري)
-# ----------------------------------------------------------------
-@app.get("/")
-async def root():
-    return {"message": "Secure PDF Tools Backend is Running Perfect!"}
+@app.post("/api/modify-pdf")
+async def modify_pdf(
+    file: UploadFile = File(...),
+    mode: str = Form(...),
+    params: str = Form(...)
+):
+    input_path = f"temp_{file.filename}"
+    output_path = f"modified_{file.filename}"
+    
+    with open(input_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    try:
+        param_dict = json.loads(params)
+        modify_pdf_pages(input_path, output_path, mode, param_dict)
+        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if os.path.exists(input_path): os.remove(input_path)
+
+
+@app.post("/api/security-pdf")
+async def security_pdf(
+    file: UploadFile = File(...),
+    mode: str = Form(...),
+    password: str = Form(...)
+):
+    input_path = f"temp_{file.filename}"
+    output_path = f"secured_{file.filename}"
+    
+    with open(input_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    try:
+        if mode == "lock":
+            lock_pdf_file(input_path, output_path, password)
+        elif mode == "unlock":
+            unlock_pdf_file(input_path, output_path, password)
+        else:
+            raise HTTPException(status_code=400, detail="Invalid security mode")
+            
+        return FileResponse(output_path, media_type="application/pdf", filename=output_path)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if os.path.exists(input_path): os.remove(input_path)
