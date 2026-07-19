@@ -3,9 +3,11 @@ uvicorn
 PyPDF2
 python-multipart
 Pillow
-pypdf
+pypdf>=4.0.0
 pdf2image
 pytesseract
 pdf2docx
 pdfplumber
 python-pptx
+pandas>=2.0.0
+openpyxl>=3.1.0
