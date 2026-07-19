@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Excel Converter</title>
+    <style>
+        :root {
+            --primary-color: #217346; /* Microsoft Excel Green Theme */
+            --secondary-color: #1e1b4b;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-main);
+            padding: 3rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+        .converter-box {
+            background: var(--card-background);
+            max-width: 500px;
+            width: 100%;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        h2 { color: var(--primary-color); margin-bottom: 0.5rem; }
+        p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
+        .upload-area {
+            border: 2px dashed #217346;
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #f4faf6;
+            display: block;
+            transition: all 0.3s;
+        }
+        .upload-area:hover { background: #e6f4ea; }
+        input[type="file"] { display: none; }
+        .btn {
+            display: block;
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            cursor: pointer;
+        }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        #status { margin-top: 1.2rem; font-size: 0.95rem; font-weight: 500; }
+        .back-link { display: inline-block; margin-top: 1.5rem; color: var(--primary-color); text-decoration: none; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+<div class="converter-box">
+    <h2>📊 PDF to Excel Converter</h2>
+    <p>Extract all structural matrices, tables, and tabular grid rows from PDF into dynamic spreadsheet files.</p>
+    <form id="excelForm">
+        <label class="upload-area">
+            <input type="file" id="pdfFile" accept=".pdf" required>
+            <span id="fileName">📁 Choose or Drag PDF File</span>
+        </label>
+        <button type="submit" class="btn" id="submitBtn">Extract to Excel</button>
+    </form>
+    <div id="status"></div>
+    <a href="/" class="back-link">← Back to Dashboard</a>
+</div>
+<script>
+    document.getElementById('pdfFile').addEventListener('change', function(e) {
+        if(e.target.files.length > 0) document.getElementById('fileName').innerText = e.target.files[0].name;
+    });
+    document.getElementById('excelForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById('pdfFile');
+        const statusDiv = document.getElementById('status');
+        const submitBtn = document.getElementById('submitBtn');
+        if (!fileInput.files.length) return;
+        
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        submitBtn.disabled = true;
+        statusDiv.style.color = '#217346';
+        statusDiv.innerText = 'Extracting tabular data columns... Please wait.';
+        
+        try {
+            const response = await fetch('/api/pdf-to-excel', { method: 'POST', body: formData });
+            if (!response.ok) throw new Error('Data extraction failed.');
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileInput.files[0].name.replace('.pdf', '') + '.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            statusDiv.style.color = '#16a34a';
+            statusDiv.innerText = 'Success! Spreadsheet downloaded.';
+        } catch (error) {
+            statusDiv.style.color = '#dc2626';
+            statusDiv.innerText = error.message;
+        } finally { submitBtn.disabled = false; }
+    });
+</script>
+</body>
+</html>
