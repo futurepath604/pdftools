@@ -60,6 +60,13 @@ try:
 except Exception as e:
     print(f"⚠️ Failed to load PDF OCR Router: {e}")
 
+# ৭. PDF to Image রাউটার লোড
+try:
+    from app.tools.pdf_to_image import router as pdf_to_image_router
+    app.include_router(pdf_to_image_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF to Image Router: {e}")
+
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
