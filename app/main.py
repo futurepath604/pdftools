@@ -32,6 +32,13 @@ try:
 except Exception as e:
     print(f"⚠️ Failed to load PDF to Excel Router: {e}")
 
+# ৩. Image to PDF রাউটার লোড
+try:
+    from app.tools.image_to_pdf import router as image_to_pdf_router
+    app.include_router(image_to_pdf_router)
+except Exception as e:
+    print(f"⚠️ Failed to load Image to PDF Router: {e}")
+
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
