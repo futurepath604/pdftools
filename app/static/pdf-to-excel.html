@@ -13,10 +13,15 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- [ADSENSE CODE INITIALIZER PLACEHOLDER] -->
+    <!-- Copy and paste your Google AdSense Auto Ads code inside the head here -->
+
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .ad-container { min-height: 90px; background: #f8fafc; border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #94a3b8; border-radius: 12px; margin: 15px 0; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col md:flex-row antialiased">
@@ -28,7 +33,6 @@
                 <i class="fa-solid fa-screwdriver-wrench text-xl text-emerald-500"></i>
                 <span class="font-bold text-lg text-white tracking-tight">Secure PDF Tools</span>
             </div>
-            <!-- Mobile Menu Toggle Button -->
             <button id="mobileMenuBtn" class="md:hidden text-slate-400 hover:text-white transition focus:outline-none">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
@@ -38,14 +42,13 @@
         <div id="sidebarMenu" class="hidden md:flex flex-col flex-grow p-4 space-y-1 overflow-y-auto custom-scrollbar">
             <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Navigation Dashboard</div>
             
-            <!-- ALL TOOLS TRIGGER -->
             <button id="allToolsTriggerBtn" type="button" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-emerald-600 text-white transition font-medium shadow-md hover:bg-emerald-700 text-left">
                 <i class="fa-solid fa-layer-group"></i>
                 <span class="text-sm">All Document Tools</span>
             </button>
             
             <div class="pt-5 space-y-1">
-                <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Quick Actions</div>
+                <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Document Tools</div>
                 <a href="pdf-to-excel.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm bg-slate-800 text-white transition font-medium">
                     <i class="fa-solid fa-file-excel w-5 text-center text-emerald-400"></i> <span>PDF to Excel</span>
                 </a>
@@ -55,6 +58,24 @@
                 <a href="pdf-to-ppt.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
                     <i class="fa-solid fa-file-powerpoint w-5 text-center text-orange-400"></i> <span>PDF to PPT</span>
                 </a>
+                <a href="compress-pdf.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-contract w-5 text-center text-rose-400"></i> <span>Compress PDF</span>
+                </a>
+                <a href="merge-pdf.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-object-group w-5 text-center text-indigo-400"></i> <span>Merge PDF</span>
+                </a>
+                <a href="lock-pdf.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-lock w-5 text-center text-amber-400"></i> <span>Lock PDF</span>
+                </a>
+            </div>
+
+            <!-- MONETIZATION SLOT: Sidebar Sticky Responsive Banner -->
+            <div class="mt-auto pt-6">
+                <div class="ad-container w-full h-48 flex-col p-2 text-center border-slate-700 bg-slate-800/50">
+                    <span>[AdSense Sidebar Vertical Banner]</span>
+                    <span class="text-[9px] text-slate-600 block mt-1">Advertisement</span>
+                    <!-- Paste your 160x600 or responsive sidebar AdSense code here -->
+                </div>
             </div>
         </div>
     </div>
@@ -66,17 +87,28 @@
             <button id="navAllToolsBtn" class="inline-flex items-center text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-grid-2x2 mr-2"></i> Open Tools Menu
             </button>
-            <!-- Social Sharing Fast Triggers -->
             <div class="flex items-center space-x-2 md:space-x-3">
+                <!-- PREMIUM TIERS / DONATION BUTTON (Additional Monetization Option) -->
+                <a href="#premium" class="text-xs bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center space-x-1">
+                    <i class="fa-solid fa-crown text-[10px]"></i> <span>Go Premium</span>
+                </a>
                 <a href="https://t.me/share/url?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-telegram"></i></a>
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
         </nav>
 
         <!-- Main Workspace Core -->
-        <div class="flex-grow w-full max-w-4xl mx-auto px-4 md:px-6 py-10 flex flex-col justify-center">
+        <div class="flex-grow w-full max-w-4xl mx-auto px-4 md:px-6 py-6 flex flex-col justify-center">
             
-            <div class="text-center mb-8">
+            <!-- MONETIZATION SLOT: Top Responsive Leaderboard Banner -->
+            <div class="ad-container w-full max-w-2xl mx-auto h-24 mb-4">
+                <div class="text-center">
+                    <span>[AdSense Top Display Horizontal Banner - 728x90 Recommended]</span>
+                    <span class="text-[9px] text-slate-400 block">Advertisement Area</span>
+                </div>
+                <!-- Paste your AdSense Leaderboard code here -->
+            </div>
+
+            <div class="text-center mb-6">
                 <div class="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-emerald-50 text-emerald-600 mb-4 shadow-sm border border-emerald-100">
                     <i class="fa-solid fa-file-excel text-2xl md:text-3xl"></i>
                 </div>
@@ -85,7 +117,7 @@
             </div>
 
             <!-- Upload Container Dropzone Architecture -->
-            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-4 md:p-8 max-w-2xl w-full mx-auto mb-12">
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-4 md:p-8 max-w-2xl w-full mx-auto mb-6">
                 <form id="toolForm" class="space-y-6">
                     <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-2xl p-8 md:p-12 text-center hover:border-emerald-500 transition cursor-pointer bg-slate-50/60 group relative flex flex-col items-center justify-center">
                         <input type="file" id="fileInput" accept=".pdf" class="hidden">
@@ -94,7 +126,6 @@
                         <h3 class="text-base md:text-lg font-bold text-slate-800 mb-1">Drag and drop your PDF here to convert to Excel</h3>
                         <p class="text-[11px] text-slate-400 mb-6">Max file threshold limit: 50MB</p>
                         
-                        <!-- Multi-Cloud Dropdown Button System -->
                         <div class="relative inline-flex items-center z-20" onclick="event.stopPropagation();">
                             <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-l-xl text-xs md:text-sm shadow-sm transition">
                                 Choose File
@@ -104,7 +135,6 @@
                                     <i class="fa-solid fa-chevron-down text-xs"></i>
                                 </button>
                                 
-                                <!-- Cloud Dropdown List (Top 5 Popular Drives Only) -->
                                 <div id="cloudDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5 max-h-64 overflow-y-auto custom-scrollbar text-left">
                                     <button type="button" data-cloud="Google Drive" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-google-drive text-amber-500 text-base"></i> <span>Google Drive</span></button>
                                     <button type="button" data-cloud="OneDrive" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-cloud text-blue-500 text-base"></i> <span>Microsoft OneDrive</span></button>
@@ -116,7 +146,6 @@
                         </div>
                     </div>
 
-                    <!-- Selected File Status Panel -->
                     <div id="filePanel" class="hidden flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
                         <div class="flex items-center space-x-3 overflow-hidden">
                             <i class="fa-solid fa-file-pdf text-rose-500 text-xl flex-shrink-0"></i>
@@ -125,24 +154,30 @@
                         <button type="button" id="removeFile" class="text-slate-400 hover:text-rose-500 transition px-2 py-1"><i class="fa-solid fa-xmark"></i></button>
                     </div>
 
-                    <!-- Convert Button -->
                     <button type="submit" id="submitBtn" disabled class="w-full bg-slate-400 text-white font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center space-x-2 cursor-not-allowed text-xs md:text-sm transition">
                         <i class="fa-solid fa-file-export"></i> <span>Convert to Excel XLSX</span>
                     </button>
                 </form>
 
-                <!-- Processing Pipeline Animation Loader -->
                 <div id="statusOverlay" class="hidden mt-6 text-center space-y-2">
                     <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-emerald-500 border-t-transparent"></div>
                     <p class="text-xs text-slate-600 font-medium">Extracting tables and generating Excel layout...</p>
                 </div>
             </div>
 
-            <!-- ================= NEW: SEO & AI SEARCH CONTENT MATRIX ================= -->
+            <!-- MONETIZATION SLOT: In-Feed Banner (High CTR Spot) -->
+            <div class="ad-container w-full max-w-2xl mx-auto h-28 my-2">
+                <div class="text-center">
+                    <span>[AdSense In-Feed Native Ad - Middle Dynamic Placement]</span>
+                    <span class="text-[9px] text-slate-400 block">Advertisement</span>
+                </div>
+                <!-- Paste your In-Feed AdSense code here -->
+            </div>
+
+            <!-- SEO, VALUE RETENTION & CRAWLER OPTIMIZATION CONTAINER -->
             <hr class="border-slate-200 my-4">
             
             <section class="prose prose-slate max-w-none mt-4 space-y-8">
-                <!-- How to Process Content Grid -->
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4 flex items-center"><i class="fa-solid fa-list-check text-emerald-600 mr-2.5"></i> How to Convert PDF to Excel Online</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -164,7 +199,6 @@
                     </div>
                 </div>
 
-                <!-- Deep-Dive Tool Details for AI Crawlers & SEO Engines -->
                 <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
                     <div>
                         <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">Smart Tabular Extraction Layer</h2>
@@ -191,7 +225,14 @@
                     </div>
                 </div>
 
-                <!-- FAQ Schema Matrix for Search Engines -->
+                <!-- ADDED: High-Value Content Rich Section to fulfill AdSense Quality Requirements -->
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold text-slate-900">Why Use Our Native XLSX Extraction System?</h2>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Manual data re-entry wastes valuable business hours. By leveraging our automation system, financial analysts, accountants, and researchers can rapidly process invoices, bank statements, and inventories. Our architecture supports heavy workflows without altering text font styles, structure layouts, or row configurations.
+                    </p>
+                </div>
+
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4 flex items-center"><i class="fa-solid fa-circle-question text-emerald-600 mr-2.5"></i> Frequently Asked Questions</h2>
                     <div class="space-y-4">
@@ -206,13 +247,22 @@
                     </div>
                 </div>
             </section>
+
+            <!-- MONETIZATION SLOT: Bottom Content Banner -->
+            <div class="ad-container w-full max-w-2xl mx-auto h-24 mt-6">
+                <div class="text-center">
+                    <span>[AdSense Bottom Native Matched Content / Banner Slot]</span>
+                    <span class="text-[9px] text-slate-400 block">Advertisement</span>
+                </div>
+                <!-- Paste your final bottom responsive banner code here -->
+            </div>
+
         </div>
     </div>
 
-    <!-- ================= FULL DYNAMIC ALL TOOLS MODAL MATRIX ================= -->
+    <!-- FULL DYNAMIC ALL TOOLS MODAL MATRIX -->
     <div id="allToolsModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
-            <!-- Modal Header -->
             <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900">All Document Conversion Tools</h2>
@@ -223,39 +273,32 @@
                 </button>
             </div>
             
-            <!-- Modal Grid System -->
             <div class="p-6 overflow-y-auto custom-scrollbar grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 bg-white">
-                <!-- Tool 1 -->
                 <a href="pdf-to-excel.html" class="p-4 rounded-2xl border border-emerald-500 bg-emerald-50/20 transition group flex flex-col items-start">
                     <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-excel text-lg"></i></div>
                     <h4 class="font-bold text-sm text-emerald-600 transition">PDF to Excel</h4>
                     <p class="text-[11px] text-slate-400 mt-1">Extract structural tables to XLSX cells.</p>
                 </a>
-                <!-- Tool 2 -->
                 <a href="pdf-to-word.html" class="p-4 rounded-2xl border border-slate-100 hover:border-sky-500 bg-slate-50/50 hover:bg-sky-50/20 transition group flex flex-col items-start">
                     <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-word text-lg"></i></div>
                     <h4 class="font-bold text-sm text-slate-800 group-hover:text-sky-600 transition">PDF to Word</h4>
                     <p class="text-[11px] text-slate-400 mt-1">Convert PDF to editable DOCX text.</p>
                 </a>
-                <!-- Tool 3 -->
                 <a href="pdf-to-ppt.html" class="p-4 rounded-2xl border border-slate-100 hover:border-orange-500 bg-slate-50/50 hover:bg-orange-50/20 transition group flex flex-col items-start">
                     <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-powerpoint text-lg"></i></div>
                     <h4 class="font-bold text-sm text-slate-800 group-hover:text-orange-600 transition">PDF to PPT</h4>
                     <p class="text-[11px] text-slate-400 mt-1">Convert slides into PowerPoint decks.</p>
                 </a>
-                <!-- Tool 4 -->
                 <a href="compress-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-rose-500 bg-slate-50/50 hover:bg-rose-50/20 transition group flex flex-col items-start">
                     <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-contract text-lg"></i></div>
                     <h4 class="font-bold text-sm text-slate-800 group-hover:text-rose-600 transition">Compress PDF</h4>
                     <p class="text-[11px] text-slate-400 mt-1">Reduce total document size footprint.</p>
                 </a>
-                <!-- Tool 5 -->
                 <a href="merge-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-indigo-500 bg-slate-50/50 hover:bg-indigo-50/20 transition group flex flex-col items-start">
                     <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3"><i class="fa-solid fa-object-group text-lg"></i></div>
                     <h4 class="font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition">Merge PDF</h4>
                     <p class="text-[11px] text-slate-400 mt-1">Combine multiple files into one.</p>
                 </a>
-                <!-- Tool 6 -->
                 <a href="lock-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-amber-500 bg-slate-50/50 hover:bg-amber-50/20 transition group flex flex-col items-start">
                     <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3"><i class="fa-solid fa-lock text-lg"></i></div>
                     <h4 class="font-bold text-sm text-slate-800 group-hover:text-amber-600 transition">Lock PDF</h4>
@@ -280,13 +323,11 @@
         const toolForm = document.getElementById('toolForm');
         const statusOverlay = document.getElementById('statusOverlay');
         
-        // Modal Selectors
         const allToolsModal = document.getElementById('allToolsModal');
         const allToolsTriggerBtn = document.getElementById('allToolsTriggerBtn');
         const navAllToolsBtn = document.getElementById('navAllToolsBtn');
         const closeToolsModal = document.getElementById('closeToolsModal');
 
-        // All Tools Modal Visibility Controls
         function showModal() { allToolsModal.classList.remove('hidden'); }
         function closeModal() { allToolsModal.classList.add('hidden'); }
         
@@ -295,14 +336,11 @@
         closeToolsModal.addEventListener('click', closeModal);
         allToolsModal.addEventListener('click', (e) => { if(e.target === allToolsModal) closeModal(); });
 
-        // Toggle Sidebar Navigation on Mobile Devices
         mobileMenuBtn.addEventListener('click', () => sidebarMenu.classList.toggle('hidden'));
 
-        // Cloud Storage Dropdown Framework Toggle
         cloudTrigger.addEventListener('click', (e) => { e.stopPropagation(); cloudDropdown.classList.toggle('hidden'); });
         document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
 
-        // Functional Cloud Picker Handler (Top 5 Active Cloud Pipeline)
         document.querySelectorAll('.cloud-item').forEach(item => {
             item.addEventListener('click', function() {
                 const cloudName = this.getAttribute('data-cloud');
@@ -311,7 +349,6 @@
             });
         });
 
-        // Dropzone Local Drag/Drop Module Logic Map
         dropzone.addEventListener('click', () => fileInput.click());
         dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-emerald-500', 'bg-emerald-50/30'); });
         dropzone.addEventListener('dragleave', () => dropzone.classList.remove('border-emerald-500', 'bg-emerald-50/30'));
@@ -328,7 +365,6 @@
             injectFileToSystemState(file.name);
         }
 
-        // Shared State Modifier Function
         function injectFileToSystemState(name) {
             fileName.textContent = name;
             filePanel.classList.remove('hidden');
@@ -338,7 +374,6 @@
             submitBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
         }
 
-        // Remove and Clear File Reset Token
         removeFile.addEventListener('click', () => {
             fileInput.value = '';
             filePanel.classList.add('hidden');
@@ -348,13 +383,11 @@
             submitBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
         });
 
-        // Convert Submit Core Pipeline Handshake Simulation
         toolForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             submitBtn.disabled = true;
             statusOverlay.classList.remove('hidden');
             
-            // Simulating Conversion API Process (2 Seconds delay)
             setTimeout(() => {
                 statusOverlay.classList.add('hidden');
                 submitBtn.disabled = false;
