@@ -15,8 +15,17 @@ app = FastAPI(title="Secure PDF Tools Ultimate API")
 if os.path.exists("app/static"):
     app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
+
 # --- DYNAMICALLY INCLUDE SELF-CONTAINED ROUTERS ---
-# ১. PDF to Excel রাউটার লোড (অন্যান্য টুলের জন্য ঠিক এভাবেই ১ লাইনে ইনক্লুড করে দেবেন)
+
+# ১. PDF Compressor রাউটার লোড
+try:
+    from app.tools.compressor import router as compress_router
+    app.include_router(compress_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF Compressor Router: {e}")
+
+# ২. PDF to Excel রাউটার লোড
 try:
     from app.tools.pdf_to_excel import router as pdf_to_excel_router
     app.include_router(pdf_to_excel_router)
