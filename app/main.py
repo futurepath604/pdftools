@@ -18,7 +18,7 @@ if os.path.exists("app/static"):
 
 # --- DYNAMICALLY INCLUDE SELF-CONTAINED ROUTERS ---
 
-# ১. PDF Compressor রাউটার লোড
+# ১. PDF Compressor রাуটার লোড
 try:
     from app.tools.compressor import router as compress_router
     app.include_router(compress_router)
@@ -45,6 +45,13 @@ try:
     app.include_router(merge_router)
 except Exception as e:
     print(f"⚠️ Failed to load PDF Merger Router: {e}")
+
+# ৫. PDF Modify (Split, Rotate, Delete) রাউটার লোড
+try:
+    from app.tools.modify import router as modify_router
+    app.include_router(modify_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF Modify Router: {e}")
 
 
 # --- HTML UI ENDPOINTS ---
