@@ -81,6 +81,13 @@ try:
 except Exception as e:
     print(f"⚠️ Failed to load PDF to Word Router: {e}")
 
+# ১০. PDF Rearrange রাউটার লোড
+try:
+    from app.tools.rearrange_backend import router as rearrange_router
+    app.include_router(rearrange_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF Rearrange Router: {e}")
+
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
