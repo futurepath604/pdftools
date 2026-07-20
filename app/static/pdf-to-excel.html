@@ -87,9 +87,11 @@
                 <i class="fa-solid fa-grid-2x2 mr-2"></i> Open Tools Menu
             </button>
             <div class="flex items-center space-x-2 md:space-x-3">
-                <!-- Social Sharing Fast Triggers including WhatsApp -->
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool%20https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="https://t.me/share/url?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-telegram"></i></a>
+                <!-- Social Sharing Fast Triggers (WhatsApp, Telegram, Facebook, LinkedIn) -->
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool%20https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://t.me/share/url?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs" title="Share on Telegram"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition flex items-center justify-center text-xs" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 transition flex items-center justify-center text-xs" title="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
             </div>
         </nav>
 
@@ -335,7 +337,6 @@
         cloudTrigger.addEventListener('click', (e) => { e.stopPropagation(); cloudDropdown.classList.toggle('hidden'); });
         document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
 
-        // FIXED & VERIFIED: Cloud Drive integration actively injects file into flow state
         document.querySelectorAll('.cloud-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
