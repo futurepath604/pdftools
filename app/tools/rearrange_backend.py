@@ -1,15 +1,25 @@
 import json
-from typing import List
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from fastapi.responses import FileResponse
-import pypdf
 import os
 import uuid
+from typing import List
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks
+from fastapi.responses import FileResponse
+import pypdf
 
-router = APIRouter()
+# Create a clean dedicated router for PDF Rearrange tool
+router = APIRouter(prefix="/api", tags=["Rearrange PDF"])
 
-@router.post("/api/rearrange-pdf")
+def remove_file(path: str):
+    """Background task to safely remove the output file after streaming."""
+    if os.path.exists(path):
+        try:
+            os.remove(path)
+        except Exception:
+            pass
+
+@router.post("/rearrange-pdf")
 async def rearrange_pdf(
+    background_tasks: BackgroundTasks,
     files: List[UploadFile] = File(...),
     sequence: str = Form(...)
 ):
@@ -24,6 +34,9 @@ async def rearrange_pdf(
     try:
         # 1. Save all uploaded files locally into a temporary workspace safely
         for uploaded_file in files:
+            if not uploaded_file.filename.lower().endswith('.pdf'):
+                raise HTTPException(status_code=400, detail="All uploaded files must be PDFs.")
+            
             temp_path = f"temp_{uuid.uuid4().hex}_{uploaded_file.filename}"
             with open(temp_path, "wb") as buffer:
                 buffer.write(await uploaded_file.read())
@@ -43,8 +56,8 @@ async def rearrange_pdf(
             pages_to_add = block.get("pages", [])
             
             # Validation check
-            if file_idx < 0 or file_idx >= len(temp_files):
-                raise HTTPException(status_code=400, detail=f"File identifier index {file_idx + 1} out of bounds.")
+            if file_idx is None or file_idx < 0 or file_idx >= len(temp_files):
+                raise HTTPException(status_code=400, detail=f"File identifier index out of bounds.")
                 
             # Open target file and pull exactly requested pages mapping
             reader = pypdf.PdfReader(temp_files[file_idx])
@@ -54,26 +67,40 @@ async def rearrange_pdf(
                 if 0 <= p_num < total_pages:
                     writer.add_page(reader.pages[p_num])
                 else:
-                    # Skip or throw exception based on dynamic boundary condition rules
+                    # Skip or handle out-of-bound page requests safely
                     continue
                     
+        # Check if the output has at least one page
+        if len(writer.pages) == 0:
+            raise HTTPException(status_code=400, detail="The operation resulted in a PDF with 0 pages.")
+
         # 4. Save file out
         with open(output_filename, "wb") as out_f:
             writer.write(out_f)
             
+        # Register background task to delete the output file after it is successfully served
+        background_tasks.add_task(remove_file, output_filename)
+        
         return FileResponse(
             output_filename, 
             media_type="application/pdf", 
             filename="arranged_document.pdf"
         )
         
+    except HTTPException as he:
+        if os.path.exists(output_filename):
+            os.remove(output_filename)
+        raise he
     except Exception as e:
         if os.path.exists(output_filename):
             os.remove(output_filename)
         raise HTTPException(status_code=500, detail=f"Arrangement pipeline failure: {str(e)}")
         
     finally:
-        # Cleanup routine for storage state lifecycle management
+        # Cleanup routine for uploaded storage state lifecycle management
         for t_file in temp_files:
             if os.path.exists(t_file):
-                os.remove(t_file)
+                try:
+                    os.remove(t_file)
+                except:
+                    pass
