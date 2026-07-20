@@ -95,7 +95,6 @@
         </div>
     </footer>
 
-    <!-- Interactive Execution Frontend Controller Script -->
     <script>
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
@@ -120,7 +119,7 @@
         });
 
         function handleFileSelect(file) {
-            if(!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+            if(!file.name.toLowerCase().endsWith('.pdf')) {
                 alert('Please upload a valid PDF file.');
                 return;
             }
@@ -160,7 +159,10 @@
                 const downloadUrl = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = downloadUrl;
-                a.download = file.name.rsplit('.', 1)[0] + ".pptx";
+                
+                const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+                a.download = originalName + ".pptx";
+                
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
