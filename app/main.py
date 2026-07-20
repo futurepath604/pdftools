@@ -74,6 +74,13 @@ try:
 except Exception as e:
     print(f"⚠️ Failed to load PDF to PPT Router: {e}")
 
+# ৯. PDF to Word রাউটার লোড
+try:
+    from app.tools.pdf_to_word import router as pdf_to_word_router
+    app.include_router(pdf_to_word_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF to Word Router: {e}")
+
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
