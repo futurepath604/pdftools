@@ -18,7 +18,7 @@ if os.path.exists("app/static"):
 
 # --- DYNAMICALLY INCLUDE SELF-CONTAINED ROUTERS ---
 
-# ১. PDF Compressor রাуটার লোড
+# ১. PDF Compressor রাউটার লোড
 try:
     from app.tools.compressor import router as compress_router
     app.include_router(compress_router)
@@ -52,6 +52,13 @@ try:
     app.include_router(modify_router)
 except Exception as e:
     print(f"⚠️ Failed to load PDF Modify Router: {e}")
+
+# ৬. PDF OCR Engine রাউটার লোড
+try:
+    from app.tools.ocr_engine import router as ocr_router
+    app.include_router(ocr_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF OCR Router: {e}")
 
 
 # --- HTML UI ENDPOINTS ---
