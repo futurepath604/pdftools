@@ -67,6 +67,13 @@ try:
 except Exception as e:
     print(f"⚠️ Failed to load PDF to Image Router: {e}")
 
+# ৮. PDF to PPT রাউটার লোড
+try:
+    from app.tools.pdf_to_ppt import router as pdf_to_ppt_router
+    app.include_router(pdf_to_ppt_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF to PPT Router: {e}")
+
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
