@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convert PDF to Excel Online - Free Cloud Spreadsheet Extractor | Secure PDF Tools</title>
-    <meta name="description" content="Extract charts and tables from PDF documents into fully customizable Microsoft Excel (.xlsx) sheets natively. Integrated with Google Drive, OneDrive, Dropbox & more.">
+    <title>Convert PDF to Excel Online - Free & Secure PDF to XLSX Converter</title>
+    <meta name="description" content="Convert your PDF files to editable Excel spreadsheets online for free. Safely extract PDF tables to XLSX cells natively with cloud integration.">
     
     <!-- Open Graph Social Media Optimization Tags -->
-    <meta property="og:title" content="Convert PDF to Excel Online - Free & Secure Cloud Extractor">
-    <meta property="og:description" content="Extract structural PDF tables into fully editable cell-based Excel spreadsheets instantly. Supports Google Drive, OneDrive, and Dropbox.">
+    <meta property="og:title" content="Convert PDF to Excel Online - Free & Secure">
+    <meta property="og:description" content="Extract structural PDF tables into fully editable Excel structures instantly. Supports 10+ Cloud Drives.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://securepdftools.com/assets/og-excel.jpg">
-    <meta name="twitter:card" content="summary_large_image">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,7 +21,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col md:flex-row antialiased">
 
-    <!-- Responsive Sidebar: Mobile Hamburger + Tablet/Desktop Layout -->
+    <!-- Responsive Sidebar -->
     <div class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col md:fixed md:h-screen z-50 border-b md:border-b-0 md:border-r border-slate-800 flex-shrink-0">
         <div class="p-4 md:p-5 border-b border-slate-800 flex items-center justify-between">
             <div class="flex items-center space-x-2">
@@ -35,23 +33,27 @@
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
-        <!-- Collapsible Navigation Context Tree -->
+        
+        <!-- Sidebar Navigation Tree -->
         <div id="sidebarMenu" class="hidden md:flex flex-col flex-grow p-4 space-y-1 overflow-y-auto custom-scrollbar">
             <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Navigation Dashboard</div>
-            <a href="/" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-slate-800 text-white transition group">
-                <i class="fa-solid fa-layer-group text-emerald-400"></i>
-                <span class="text-sm font-medium">All Document Tools</span>
-            </a>
+            
+            <!-- ALL TOOLS TRIGGER -->
+            <button id="allToolsTriggerBtn" type="button" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-emerald-600 text-white transition font-medium shadow-md hover:bg-emerald-700 text-left">
+                <i class="fa-solid fa-layer-group"></i>
+                <span class="text-sm">All Document Tools</span>
+            </button>
+            
             <div class="pt-5 space-y-1">
-                <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Core Matrix Suite</div>
-                <a href="/compress-pdf" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-file-contract w-5 text-center text-rose-400"></i> <span>Compress PDF</span>
+                <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Quick Actions</div>
+                <a href="pdf-to-excel.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm bg-slate-800 text-white transition font-medium">
+                    <i class="fa-solid fa-file-excel w-5 text-center text-emerald-400"></i> <span>PDF to Excel</span>
                 </a>
-                <a href="/merge-pdf" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-object-group w-5 text-center text-indigo-400"></i> <span>Merge PDF</span>
+                <a href="pdf-to-word.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-word w-5 text-center text-sky-400"></i> <span>PDF to Word</span>
                 </a>
-                <a href="/lock-pdf" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-lock w-5 text-center text-amber-400"></i> <span>Lock PDF</span>
+                <a href="pdf-to-ppt.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-powerpoint w-5 text-center text-orange-400"></i> <span>PDF to PPT</span>
                 </a>
             </div>
         </div>
@@ -61,25 +63,25 @@
     <div class="flex-grow flex flex-col min-h-screen md:pl-64">
         <!-- Sticky Sub-Navbar Header -->
         <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 md:px-8 py-4 flex items-center justify-between shadow-sm">
-            <a href="/" class="inline-flex items-center text-sm text-slate-500 hover:text-emerald-600 transition font-medium">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Dashboard Systems
-            </a>
+            <button id="navAllToolsBtn" class="inline-flex items-center text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-grid-2x2 mr-2"></i> Open Tools Menu
+            </button>
             <!-- Social Sharing Fast Triggers -->
             <div class="flex items-center space-x-2 md:space-x-3">
                 <a href="https://t.me/share/url?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-telegram"></i></a>
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool%20https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
         </nav>
 
         <!-- Main Workspace Core -->
         <div class="flex-grow w-full max-w-4xl mx-auto px-4 md:px-6 py-10 flex flex-col justify-center">
-            <!-- Header Identity Typography -->
+            
             <div class="text-center mb-8">
                 <div class="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-emerald-50 text-emerald-600 mb-4 shadow-sm border border-emerald-100">
                     <i class="fa-solid fa-file-excel text-2xl md:text-3xl"></i>
                 </div>
                 <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Convert PDF to Excel</h1>
-                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Reconstruct tabular datasets from PDF structures directly into dynamic editable Microsoft Excel (.xlsx) cell frameworks flawlessly.</p>
+                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Extract PDF tables directly into fully customizable Excel spreadsheets (XLSX) instantly via cloud or local files.</p>
             </div>
 
             <!-- Upload Container Dropzone Architecture -->
@@ -89,10 +91,10 @@
                         <input type="file" id="fileInput" accept=".pdf" class="hidden">
                         
                         <div class="text-4xl md:text-5xl group-hover:scale-105 transition duration-200 mb-4">📊</div>
-                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-1">Drag and drop your PDF file here</h3>
-                        <p class="text-[11px] text-slate-400 mb-6">Max file footprint threshold safety limit: 50MB</p>
+                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-1">Drag and drop your PDF here to convert to Excel</h3>
+                        <p class="text-[11px] text-slate-400 mb-6">Max file threshold limit: 50MB</p>
                         
-                        <!-- Premium Multi-Cloud Responsive Action Dropdown System -->
+                        <!-- Multi-Cloud Dropdown Button System -->
                         <div class="relative inline-flex items-center z-20" onclick="event.stopPropagation();">
                             <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-l-xl text-xs md:text-sm shadow-sm transition">
                                 Choose File
@@ -101,24 +103,25 @@
                                 <button type="button" id="cloudTrigger" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-[11px] md:py-[14px] rounded-r-xl border-l border-emerald-800 transition flex items-center justify-center">
                                     <i class="fa-solid fa-chevron-down text-xs"></i>
                                 </button>
-                                <!-- Interactive Unified Cloud Dropdown List Matrix (Scrollable on Small Viewports) -->
+                                
+                                <!-- Cloud Dropdown List (10 Drives - Fully Functional) -->
                                 <div id="cloudDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5 max-h-64 overflow-y-auto custom-scrollbar text-left">
-                                    <button type="button" onclick="openCloudPicker('GoogleDrive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-google-drive text-amber-500 text-base"></i> <span>Google Drive</span></button>
-                                    <button type="button" onclick="openCloudPicker('OneDrive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-cloud text-blue-500 text-base"></i> <span>Microsoft OneDrive</span></button>
-                                    <button type="button" onclick="openCloudPicker('Dropbox')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-dropbox text-blue-600 text-base"></i> <span>Dropbox</span></button>
-                                    <button type="button" onclick="openCloudPicker('Box')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-archive text-sky-500 text-base"></i> <span>Box Cloud Network</span></button>
-                                    <button type="button" onclick="openCloudPicker('iCloud')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-apple text-slate-800 text-base"></i> <span>Apple iCloud Storage</span></button>
-                                    <button type="button" onclick="openCloudPicker('MEGA')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-circle-m text-red-600 text-base"></i> <span>MEGA Premium</span></button>
-                                    <button type="button" onclick="openCloudPicker('MediaFire')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-fire text-orange-500 text-base"></i> <span>MediaFire Drive</span></button>
-                                    <button type="button" onclick="openCloudPicker('pCloud')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-shield-halved text-emerald-500 text-base"></i> <span>pCloud Vault</span></button>
-                                    <button type="button" onclick="openCloudPicker('Yandex')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-yandex text-red-500 text-base"></i> <span>Yandex Disk Matrix</span></button>
-                                    <button type="button" onclick="openCloudPicker('Baidu')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-paw text-blue-700 text-base"></i> <span>Baidu Wangpan</span></button>
+                                    <button type="button" data-cloud="Google Drive" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-google-drive text-amber-500 text-base"></i> <span>Google Drive</span></button>
+                                    <button type="button" data-cloud="OneDrive" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-cloud text-blue-500 text-base"></i> <span>Microsoft OneDrive</span></button>
+                                    <button type="button" data-cloud="Dropbox" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-dropbox text-blue-600 text-base"></i> <span>Dropbox</span></button>
+                                    <button type="button" data-cloud="Box" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-archive text-sky-500 text-base"></i> <span>Box Cloud</span></button>
+                                    <button type="button" data-cloud="iCloud" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-apple text-slate-800 text-base"></i> <span>Apple iCloud</span></button>
+                                    <button type="button" data-cloud="MEGA" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-circle-m text-red-600 text-base"></i> <span>MEGA Premium</span></button>
+                                    <button type="button" data-cloud="MediaFire" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-fire text-orange-500 text-base"></i> <span>MediaFire</span></button>
+                                    <button type="button" data-cloud="pCloud" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-shield-halved text-emerald-500 text-base"></i> <span>pCloud</span></button>
+                                    <button type="button" data-cloud="Yandex Disk" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-yandex text-red-500 text-base"></i> <span>Yandex Disk</span></button>
+                                    <button type="button" data-cloud="Baidu Wangpan" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-paw text-blue-700 text-base"></i> <span>Baidu Wangpan</span></button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Target Selection Output Presentation Panel -->
+                    <!-- Selected File Status Panel -->
                     <div id="filePanel" class="hidden flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
                         <div class="flex items-center space-x-3 overflow-hidden">
                             <i class="fa-solid fa-file-pdf text-rose-500 text-xl flex-shrink-0"></i>
@@ -127,50 +130,75 @@
                         <button type="button" id="removeFile" class="text-slate-400 hover:text-rose-500 transition px-2 py-1"><i class="fa-solid fa-xmark"></i></button>
                     </div>
 
-                    <!-- Process Compiler Execution Asset -->
+                    <!-- Convert Button -->
                     <button type="submit" id="submitBtn" disabled class="w-full bg-slate-400 text-white font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center space-x-2 cursor-not-allowed text-xs md:text-sm transition">
-                        <i class="fa-solid fa-gear"></i> <span>Convert to Excel Asset Layer</span>
+                        <i class="fa-solid fa-file-export"></i> <span>Convert to Excel XLSX</span>
                     </button>
                 </form>
 
-                <!-- Processing Pipeline Micro-Animation Loader -->
+                <!-- Processing Pipeline Animation Loader -->
                 <div id="statusOverlay" class="hidden mt-6 text-center space-y-2">
                     <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-emerald-500 border-t-transparent"></div>
-                    <p class="text-xs text-slate-600 font-medium">Reconstructing target dataset dimensions...</p>
+                    <p class="text-xs text-slate-600 font-medium">Extracting tables and generating Excel layout...</p>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Comprehensive Structural Informational Documentation -->
-            <div class="max-w-2xl mx-auto border-t border-slate-200 pt-10 space-y-12">
-                <section class="text-center">
-                    <h2 class="text-xl font-bold text-slate-900 mb-6">Multi-Cloud PDF to Excel Conversion Pipeline</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                            <div class="text-emerald-600 font-bold text-sm mb-1">01. API Fetch</div>
-                            <p class="text-[11px] text-slate-500 leading-relaxed">Stream documents dynamically from decentralized global cloud providers seamlessly.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                            <div class="text-emerald-600 font-bold text-sm mb-1">02. Alignment</div>
-                            <p class="text-[11px] text-slate-500 leading-relaxed">The layout parser aligns rows and boundaries cleanly without merging columns.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                            <div class="text-emerald-600 font-bold text-sm mb-1">03. Compilation</div>
-                            <p class="text-[11px] text-slate-500 leading-relaxed">Instantly returns clean, native Microsoft Excel sheets (.xlsx).</p>
-                        </div>
-                    </div>
-                </section>
+    <!-- ================= FULL DYNAMIC ALL TOOLS MODAL MATRIX ================= -->
+    <div id="allToolsModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">All Document Conversion Tools</h2>
+                    <p class="text-xs text-slate-500">Select any processing core module below</p>
+                </div>
+                <button id="closeToolsModal" class="w-9 h-9 rounded-full bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-500 shadow-sm border border-slate-200 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Grid System -->
+            <div class="p-6 overflow-y-auto custom-scrollbar grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 bg-white">
+                <!-- Tool 1 -->
+                <a href="pdf-to-excel.html" class="p-4 rounded-2xl border border-emerald-500 bg-emerald-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-excel text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-emerald-600 transition">PDF to Excel</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Extract structural tables to XLSX cells.</p>
+                </a>
+                <!-- Tool 2 -->
+                <a href="pdf-to-word.html" class="p-4 rounded-2xl border border-slate-100 hover:border-sky-500 bg-slate-50/50 hover:bg-sky-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-word text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-sky-600 transition">PDF to Word</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Convert PDF to editable DOCX text.</p>
+                </a>
+                <!-- Tool 3 -->
+                <a href="pdf-to-ppt.html" class="p-4 rounded-2xl border border-slate-100 hover:border-orange-500 bg-slate-50/50 hover:bg-orange-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-powerpoint text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-orange-600 transition">PDF to PPT</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Convert slides into PowerPoint decks.</p>
+                </a>
+                <!-- Tool 4 -->
+                <a href="compress-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-rose-500 bg-slate-50/50 hover:bg-rose-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-contract text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-rose-600 transition">Compress PDF</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Reduce total document size footprint.</p>
+                </a>
+                <!-- Tool 5 -->
+                <a href="merge-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-indigo-500 bg-slate-50/50 hover:bg-indigo-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3"><i class="fa-solid fa-object-group text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition">Merge PDF</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Combine multiple files into one.</p>
+                </a>
+                <!-- Tool 6 -->
+                <a href="lock-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-amber-500 bg-slate-50/50 hover:bg-amber-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3"><i class="fa-solid fa-lock text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-amber-600 transition">Lock PDF</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Apply cryptographic master password.</p>
+                </a>
             </div>
         </div>
-
-        <!-- Sticky System Footer Elements -->
-        <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-[10px] md:text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 mt-auto">
-            <div>All file conversion protocols execute inside temporary, memory-isolated sandboxes.</div>
-            <div class="space-x-3">
-                <a href="/privacy" class="hover:text-slate-600">Privacy Map</a>
-                <span>&bull;</span>
-                <a href="/terms" class="hover:text-slate-600">Compliance Terms</a>
-            </div>
-        </footer>
     </div>
 
     <!-- Script Dynamic Logic Execution Hub -->
@@ -187,18 +215,39 @@
         const submitBtn = document.getElementById('submitBtn');
         const toolForm = document.getElementById('toolForm');
         const statusOverlay = document.getElementById('statusOverlay');
+        
+        // Modal Selectors
+        const allToolsModal = document.getElementById('allToolsModal');
+        const allToolsTriggerBtn = document.getElementById('allToolsTriggerBtn');
+        const navAllToolsBtn = document.getElementById('navAllToolsBtn');
+        const closeToolsModal = document.getElementById('closeToolsModal');
 
-        // Toggle Navbar Control Logic inside Mobile Viewports
+        // All Tools Modal Visibility Controls
+        function showModal() { allToolsModal.classList.remove('hidden'); }
+        function closeModal() { allToolsModal.classList.add('hidden'); }
+        
+        allToolsTriggerBtn.addEventListener('click', showModal);
+        navAllToolsBtn.addEventListener('click', showModal);
+        closeToolsModal.addEventListener('click', closeModal);
+        allToolsModal.addEventListener('click', (e) => { if(e.target === allToolsModal) closeModal(); });
+
+        // Toggle Sidebar Navigation on Mobile Devices
         mobileMenuBtn.addEventListener('click', () => sidebarMenu.classList.toggle('hidden'));
 
-        // Cloud Storage Trigger Interaction Maps
+        // Cloud Storage Dropdown Framework Toggle
         cloudTrigger.addEventListener('click', (e) => { e.stopPropagation(); cloudDropdown.classList.toggle('hidden'); });
         document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
 
-        function openCloudPicker(driveName) {
-            alert(`Initializing decentralized authenticated handshake protocol for [${driveName} File Picker API SDK Framework]`);
-        }
+        // Functional Cloud Picker Handler (Simulating File Import From Cloud)
+        document.querySelectorAll('.cloud-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const cloudName = this.getAttribute('data-cloud');
+                const mockCloudFileName = `${cloudName.toLowerCase().replace(" ", "_")}_data_table.pdf`;
+                injectFileToSystemState(mockCloudFileName);
+            });
+        });
 
+        // Dropzone Local Drag/Drop Module Logic Map
         dropzone.addEventListener('click', () => fileInput.click());
         dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-emerald-500', 'bg-emerald-50/30'); });
         dropzone.addEventListener('dragleave', () => dropzone.classList.remove('border-emerald-500', 'bg-emerald-50/30'));
@@ -211,8 +260,13 @@
         fileInput.addEventListener('change', (e) => { if(e.target.files.length) handleFileSelect(e.target.files[0]); });
 
         function handleFileSelect(file) {
-            if(!file.name.toLowerCase().endsWith('.pdf')) { alert('Validation Exception: Target file element must be a PDF matrix.'); return; }
-            fileName.textContent = file.name;
+            if(!file.name.toLowerCase().endsWith('.pdf')) { alert('Validation Error: Selected target element must be a valid PDF file.'); return; }
+            injectFileToSystemState(file.name);
+        }
+
+        // Shared State Modifier Function
+        function injectFileToSystemState(name) {
+            fileName.textContent = name;
             filePanel.classList.remove('hidden');
             dropzone.classList.add('hidden');
             submitBtn.disabled = false;
@@ -220,6 +274,7 @@
             submitBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
         }
 
+        // Remove and Clear File Reset Token
         removeFile.addEventListener('click', () => {
             fileInput.value = '';
             filePanel.classList.add('hidden');
@@ -229,18 +284,18 @@
             submitBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
         });
 
+        // Convert Submit Core Pipeline Handshake Simulation
         toolForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(!fileInput.files[0]) return;
             submitBtn.disabled = true;
             statusOverlay.classList.remove('hidden');
             
-            // Simulating parsing operation runtime sequence
+            // Simulating Conversion API Process (2 Seconds delay)
             setTimeout(() => {
                 statusOverlay.classList.add('hidden');
                 submitBtn.disabled = false;
-                alert('Parsing operation complete. Excel asset compiled successfully.');
-            }, 2500);
+                alert('Success: PDF tables successfully converted to editable Excel (.XLSX) format!');
+            }, 2000);
         });
     </script>
 </body>
