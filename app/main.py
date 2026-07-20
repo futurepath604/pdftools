@@ -88,6 +88,13 @@ try:
 except Exception as e:
     print(f"⚠️ Failed to load PDF Rearrange Router: {e}")
 
+# ১১. PDF Security & Premium রাউটার লোড
+try:
+    from app.tools.security import router as security_router
+    app.include_router(security_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF Security Router: {e}")
+
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
