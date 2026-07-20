@@ -39,6 +39,13 @@ try:
 except Exception as e:
     print(f"⚠️ Failed to load Image to PDF Router: {e}")
 
+# ৪. PDF Merger রাউটার লোড
+try:
+    from app.tools.merger import router as merge_router
+    app.include_router(merge_router)
+except Exception as e:
+    print(f"⚠️ Failed to load PDF Merger Router: {e}")
+
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
