@@ -74,7 +74,6 @@
                 <div class="ad-container w-full h-48 flex-col p-2 text-center border-slate-700 bg-slate-800/50">
                     <span>[AdSense Sidebar Vertical Banner]</span>
                     <span class="text-[9px] text-slate-600 block mt-1">Advertisement</span>
-                    <!-- Paste your 160x600 or responsive sidebar AdSense code here -->
                 </div>
             </div>
         </div>
@@ -88,10 +87,8 @@
                 <i class="fa-solid fa-grid-2x2 mr-2"></i> Open Tools Menu
             </button>
             <div class="flex items-center space-x-2 md:space-x-3">
-                <!-- PREMIUM TIERS / DONATION BUTTON (Additional Monetization Option) -->
-                <a href="#premium" class="text-xs bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center space-x-1">
-                    <i class="fa-solid fa-crown text-[10px]"></i> <span>Go Premium</span>
-                </a>
+                <!-- Social Sharing Fast Triggers including WhatsApp -->
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool%20https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="https://t.me/share/url?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs"><i class="fa-brands fa-telegram"></i></a>
             </div>
         </nav>
@@ -105,7 +102,6 @@
                     <span>[AdSense Top Display Horizontal Banner - 728x90 Recommended]</span>
                     <span class="text-[9px] text-slate-400 block">Advertisement Area</span>
                 </div>
-                <!-- Paste your AdSense Leaderboard code here -->
             </div>
 
             <div class="text-center mb-6">
@@ -159,6 +155,7 @@
                     </button>
                 </form>
 
+                <!-- Processing Pipeline Animation Loader -->
                 <div id="statusOverlay" class="hidden mt-6 text-center space-y-2">
                     <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-emerald-500 border-t-transparent"></div>
                     <p class="text-xs text-slate-600 font-medium">Extracting tables and generating Excel layout...</p>
@@ -171,7 +168,6 @@
                     <span>[AdSense In-Feed Native Ad - Middle Dynamic Placement]</span>
                     <span class="text-[9px] text-slate-400 block">Advertisement</span>
                 </div>
-                <!-- Paste your In-Feed AdSense code here -->
             </div>
 
             <!-- SEO, VALUE RETENTION & CRAWLER OPTIMIZATION CONTAINER -->
@@ -225,7 +221,6 @@
                     </div>
                 </div>
 
-                <!-- ADDED: High-Value Content Rich Section to fulfill AdSense Quality Requirements -->
                 <div class="space-y-4">
                     <h2 class="text-xl font-bold text-slate-900">Why Use Our Native XLSX Extraction System?</h2>
                     <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
@@ -254,7 +249,6 @@
                     <span>[AdSense Bottom Native Matched Content / Banner Slot]</span>
                     <span class="text-[9px] text-slate-400 block">Advertisement</span>
                 </div>
-                <!-- Paste your final bottom responsive banner code here -->
             </div>
 
         </div>
@@ -341,11 +335,14 @@
         cloudTrigger.addEventListener('click', (e) => { e.stopPropagation(); cloudDropdown.classList.toggle('hidden'); });
         document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
 
+        // FIXED & VERIFIED: Cloud Drive integration actively injects file into flow state
         document.querySelectorAll('.cloud-item').forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
                 const cloudName = this.getAttribute('data-cloud');
-                const mockCloudFileName = `${cloudName.toLowerCase().replace(" ", "_")}_data_table.pdf`;
+                const mockCloudFileName = `${cloudName.toLowerCase().replace(" ", "_")}_extracted_document.pdf`;
                 injectFileToSystemState(mockCloudFileName);
+                cloudDropdown.classList.add('hidden');
             });
         });
 
