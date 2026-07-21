@@ -155,10 +155,10 @@
                     </button>
                 </form>
 
-                <!-- Processing Pipeline Animation Loader -->
-                <div id="statusOverlay" class="hidden mt-6 text-center space-y-2">
+                <!-- Processing Pipeline Animation & Detailed Step Text Loader -->
+                <div id="statusOverlay" class="hidden mt-6 text-center space-y-3">
                     <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-orange-500 border-t-transparent"></div>
-                    <p class="text-xs text-slate-600 font-medium">Converting PDF pages into presentation slides...</p>
+                    <div id="statusText" class="text-xs text-slate-600 font-semibold tracking-wide">Initializing file stream...</div>
                 </div>
             </div>
 
@@ -202,6 +202,7 @@
         const submitBtn = document.getElementById('submitBtn');
         const toolForm = document.getElementById('toolForm');
         const statusOverlay = document.getElementById('statusOverlay');
+        const statusText = document.getElementById('statusText');
         const cloudTrigger = document.getElementById('cloudTrigger');
         const cloudDropdown = document.getElementById('cloudDropdown');
 
@@ -261,6 +262,23 @@
             submitBtn.disabled = true;
             statusOverlay.classList.remove('hidden');
 
+            // Detailed Processing Steps simulator for UI feedback
+            const steps = [
+                "Uploading PDF document to secure server...",
+                "Analyzing document layouts and parsing slides...",
+                "Generating editable PowerPoint (.pptx) elements...",
+                "Finalizing file build and preparing download..."
+            ];
+            
+            let stepIndex = 0;
+            statusText.textContent = steps[stepIndex];
+            const stepInterval = setInterval(() => {
+                stepIndex++;
+                if(stepIndex < steps.length) {
+                    statusText.textContent = steps[stepIndex];
+                }
+            }, 1200);
+
             try {
                 const response = await fetch('/api/pdf-to-ppt', { method: 'POST', body: formData });
                 if(!response.ok) throw new Error('Data processing exception.');
@@ -279,6 +297,7 @@
             } catch(err) {
                 alert('Conversion error occurred. Please verify backend server and route settings.');
             } finally {
+                clearInterval(stepInterval);
                 statusOverlay.classList.add('hidden');
                 submitBtn.disabled = false;
             }
