@@ -12,89 +12,34 @@ if parent_dir not in sys.path: sys.path.append(parent_dir)
 
 app = FastAPI(title="Secure PDF Tools Ultimate API")
 
-if os.path.exists("app/static"):
+# Static files mount with fallback check
+static_path = os.path.join(current_dir, "static")
+if os.path.exists(static_path):
+    app.mount("/static", StaticFiles(directory=static_path), name="static")
+elif os.path.exists("app/static"):
     app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-
 # --- DYNAMICALLY INCLUDE SELF-CONTAINED ROUTERS ---
+routers_to_load = [
+    ("app.tools.compressor", "router"),
+    ("app.tools.pdf_to_excel", "router"),
+    ("app.tools.image_to_pdf", "router"),
+    ("app.tools.merger", "router"),
+    ("app.tools.modify", "router"),
+    ("app.tools.ocr_engine", "router"),
+    ("app.tools.pdf_to_image", "router"),
+    ("app.tools.pdf_to_ppt", "router"),
+    ("app.tools.pdf_to_word", "router"),
+    ("app.tools.rearrange_backend", "router"),
+    ("app.tools.security", "router"),
+]
 
-# ১. PDF Compressor রাউটার লোড
-try:
-    from app.tools.compressor import router as compress_router
-    app.include_router(compress_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF Compressor Router: {e}")
-
-# ২. PDF to Excel রাউটার লোড
-try:
-    from app.tools.pdf_to_excel import router as pdf_to_excel_router
-    app.include_router(pdf_to_excel_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF to Excel Router: {e}")
-
-# ৩. Image to PDF রাউটার লোড
-try:
-    from app.tools.image_to_pdf import router as image_to_pdf_router
-    app.include_router(image_to_pdf_router)
-except Exception as e:
-    print(f"⚠️ Failed to load Image to PDF Router: {e}")
-
-# ৪. PDF Merger রাউটার লোড
-try:
-    from app.tools.merger import router as merge_router
-    app.include_router(merge_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF Merger Router: {e}")
-
-# ৫. PDF Modify (Split, Rotate, Delete) রাউটার লোড
-try:
-    from app.tools.modify import router as modify_router
-    app.include_router(modify_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF Modify Router: {e}")
-
-# ৬. PDF OCR Engine রাউটার লোড
-try:
-    from app.tools.ocr_engine import router as ocr_router
-    app.include_router(ocr_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF OCR Router: {e}")
-
-# ৭. PDF to Image রাউটার লোড
-try:
-    from app.tools.pdf_to_image import router as pdf_to_image_router
-    app.include_router(pdf_to_image_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF to Image Router: {e}")
-
-# ৮. PDF to PPT রাউটার লোড
-try:
-    from app.tools.pdf_to_ppt import router as pdf_to_ppt_router
-    app.include_router(pdf_to_ppt_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF to PPT Router: {e}")
-
-# ৯. PDF to Word রাউটার লোড
-try:
-    from app.tools.pdf_to_word import router as pdf_to_word_router
-    app.include_router(pdf_to_word_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF to Word Router: {e}")
-
-# ১০. PDF Rearrange রাউটার লোড
-try:
-    from app.tools.rearrange_backend import router as rearrange_router
-    app.include_router(rearrange_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF Rearrange Router: {e}")
-
-# ১১. PDF Security & Premium রাউটার লোড
-try:
-    from app.tools.security import router as security_router
-    app.include_router(security_router)
-except Exception as e:
-    print(f"⚠️ Failed to load PDF Security Router: {e}")
-
+for module_path, router_name in routers_to_load:
+    try:
+        mod = __import__(module_path, fromlist=[router_name])
+        app.include_router(getattr(mod, router_name))
+    except Exception as e:
+        print(f"⚠️ Failed to load Router {module_path}: {e}")
 
 # --- HTML UI ENDPOINTS ---
 @app.get("/")
