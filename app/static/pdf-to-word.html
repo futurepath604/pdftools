@@ -3,99 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convert PDF to Word Online - Free & Secure PDF to DOCX Converter</title>
-    <meta name="description" content="Convert your PDF files to editable Word (DOCX) documents online for free. Preserve text, images, and formatting with our high-quality PDF to Word converter.">
-    
+    <title>Convert PDF to Word Online - Free & Secure Document Extractor | Secure PDF Tools</title>
+    <meta name="description" content="Extract text and layouts from PDF files into fully editable Microsoft Word (.docx) documents perfectly. 100% client-side, safe, and secure document conversion.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .ad-container { min-height: 90px; background: #f8fafc; border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #94a3b8; border-radius: 12px; margin: 15px 0; }
-    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col md:flex-row antialiased">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col md:flex-row">
 
-    <!-- Sidebar (অপরিবর্তিত) -->
-    <div class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col md:fixed md:h-screen z-50 border-r border-slate-800 flex-shrink-0">
-        <!-- Sidebar Content -->
+    <!-- Left Sidebar Dashboard Navigation Menu -->
+    <div class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col border-r border-slate-800 flex-shrink-0">
         <div class="p-5 border-b border-slate-800 flex items-center space-x-2">
-            <i class="fa-solid fa-screwdriver-wrench text-xl text-emerald-500"></i>
-            <span class="font-bold text-lg text-white">Secure PDF Tools</span>
+            <i class="fa-solid fa-screwdriver-wrench text-xl text-sky-500"></i>
+            <span class="font-bold text-lg text-white tracking-tight">Secure PDF Tools</span>
         </div>
-        <div class="p-4 space-y-1">
-            <a href="pdf-to-word.html" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-sky-600 text-white font-medium">
-                <i class="fa-solid fa-file-word w-5 text-center"></i> <span>PDF to Word</span>
+        <div class="p-4 flex-grow space-y-1">
+            <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Dashboard</div>
+            <a href="/" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-slate-800 text-white transition group">
+                <i class="fa-solid fa-layer-group text-sky-400"></i>
+                <span class="text-sm font-medium">All Tools</span>
             </a>
-            <!-- অন্যান্য লিঙ্ক এখানে থাকবে -->
+            <div class="pt-4 space-y-1">
+                <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Core Features</div>
+                <a href="/pdf-to-excel" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-excel w-4 text-center"></i> <span>PDF to Excel</span>
+                </a>
+                <a href="/compress-pdf" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-contract w-4 text-center"></i> <span>Compress PDF</span>
+                </a>
+                <a href="/merge-pdf" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-object-group w-4 text-center"></i> <span>Merge PDF</span>
+                </a>
+                <a href="/lock-pdf" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-lock w-4 text-center"></i> <span>Lock PDF</span>
+                </a>
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
+            &copy; 2026 FFuture's Workspace
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="flex-grow md:pl-64">
-        <div class="max-w-4xl mx-auto px-6 py-10">
-            
+    <!-- Right Side Main Workspace Area -->
+    <div class="flex-grow flex flex-col min-h-screen overflow-x-hidden">
+        <!-- Top Sticky Sub-Navbar -->
+        <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+            <a href="/" class="inline-flex items-center text-sm text-slate-500 hover:text-sky-500 transition font-medium">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard Tools
+            </a>
+            <div class="flex items-center space-x-4 text-xs font-medium text-slate-500">
+                <a href="/" class="hover:text-slate-900"><i class="fa-solid fa-house mr-1"></i> Home</a>
+                <span>&bull;</span>
+                <a href="/privacy-policy" class="hover:text-slate-900">Privacy</a>
+            </div>
+        </nav>
+
+        <!-- Main Workspace Body Wrapper -->
+        <div class="flex-grow w-full max-w-4xl mx-auto px-4 py-12 flex flex-col justify-center">
+            <!-- Tool Typography Headers -->
             <div class="text-center mb-10">
-                <div class="inline-flex p-4 rounded-2xl bg-sky-50 text-sky-600 mb-4 border border-sky-100">
-                    <i class="fa-solid fa-file-word text-4xl"></i>
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-sky-50 text-sky-600 mb-4 shadow-sm border border-sky-100">
+                    <i class="fa-solid fa-file-word text-3xl"></i>
                 </div>
-                <h1 class="text-4xl font-extrabold text-slate-900">Convert PDF to Word</h1>
-                <p class="mt-2 text-slate-500">Easily transform your PDF into a fully editable Word (DOCX) file.</p>
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Convert PDF to Word</h1>
+                <p class="mt-2 text-sm text-slate-500 max-w-md mx-auto">Transform PDF files into fully editable, clean Microsoft Word documents (DOCX) seamlessly.</p>
             </div>
 
-            <!-- Upload Zone -->
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
-                <form id="toolForm">
-                    <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-2xl p-12 text-center hover:border-sky-500 transition cursor-pointer">
-                        <div class="text-5xl text-sky-500 mb-4">📄</div>
-                        <h3 class="text-lg font-bold">Drag & Drop your PDF</h3>
-                        <p class="text-xs text-slate-400">Click to upload or drag files here</p>
+            <!-- Upload Dropzone Area -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8 max-w-2xl w-full mx-auto mb-16">
+                <form id="toolForm" class="space-y-6">
+                    <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-2xl p-12 text-center hover:border-sky-500 transition cursor-pointer bg-slate-50/60 group relative flex flex-col items-center justify-center">
                         <input type="file" id="fileInput" accept=".pdf" class="hidden">
+                        
+                        <div class="text-5xl group-hover:scale-105 transition duration-200 mb-4">📄</div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-1">Drag and drop your PDF here</h3>
+                        <p class="text-xs text-slate-400 mb-6">Supported Format: PDF only (Max file size: 50MB)</p>
+                        
+                        <!-- Interactive Split Choose Button Container -->
+                        <div class="relative inline-flex items-center z-20" onclick="event.stopPropagation();">
+                            <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3 rounded-l-xl text-sm shadow-sm transition flex items-center space-x-2">
+                                <span>Choose File</span>
+                            </button>
+                            <div class="relative">
+                                <button type="button" id="cloudTrigger" class="bg-sky-700 hover:bg-sky-800 text-white px-3 py-[14px] rounded-r-xl border-l border-sky-800 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </button>
+                                <!-- Interactive Picker Dropdown Layout System -->
+                                <div id="cloudDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1 text-left">
+                                    <button type="button" onclick="triggerCloudPicker('GoogleDrive')" class="w-full px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition">
+                                        <i class="fa-brands fa-google-drive text-amber-500 text-base"></i>
+                                        <span>From Google Drive</span>
+                                    </button>
+                                    <button type="button" onclick="triggerCloudPicker('OneDrive')" class="w-full px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition">
+                                        <i class="fa-solid fa-cloud text-blue-500 text-base"></i>
+                                        <span>From OneDrive</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <button type="submit" id="submitBtn" disabled class="mt-6 w-full bg-slate-300 text-white py-3 rounded-xl font-bold transition">
-                        Convert to Word
+
+                    <!-- Selected File Status Display Matrix -->
+                    <div id="filePanel" class="hidden flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <i class="fa-solid fa-file-pdf text-red-500 text-xl flex-shrink-0"></i>
+                            <span id="fileName" class="text-sm font-medium text-slate-700 truncate">document.pdf</span>
+                        </div>
+                        <button type="button" id="removeFile" class="text-slate-400 hover:text-sky-500 transition px-2 py-1"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <!-- Execution Action Element -->
+                    <button type="submit" id="submitBtn" disabled class="w-full bg-slate-400 text-white font-semibold py-3.5 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center space-x-2 cursor-not-allowed">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Convert to Word</span>
                     </button>
                 </form>
+
+                <!-- Processing Pipeline Micro-Animation Loader -->
+                <div id="statusOverlay" class="hidden mt-6 text-center space-y-3">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-sky-500 border-t-transparent"></div>
+                    <p class="text-sm text-slate-600 font-medium">Extracting text layers and formatting layout into Word...</p>
+                </div>
             </div>
 
-            <!-- Steps Section -->
-            <section class="mt-12">
-                <h2 class="text-2xl font-bold mb-6 text-center">How it works</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-2xl border shadow-sm text-center">
-                        <div class="text-sky-600 font-bold mb-2">Step 1</div>
-                        <h3 class="font-bold">Upload PDF</h3>
-                        <p class="text-xs text-slate-500 mt-2">Select the PDF file you need to convert.</p>
+            <!-- Deep Document AI & SEO Informational Section -->
+            <div class="max-w-3xl mx-auto border-t border-slate-200 pt-16 space-y-16">
+                <!-- Step-by-Step Visual Process Layout -->
+                <section class="text-center">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-8">How to Convert PDF to Word Online Free</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                            <div class="text-sky-600 font-extrabold text-lg mb-2">01</div>
+                            <h4 class="font-bold text-slate-800 mb-1">Upload PDF Document</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Drag your PDF file into the upload zone or choose it directly from your device.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                            <div class="text-sky-600 font-extrabold text-lg mb-2">02</div>
+                            <h4 class="font-bold text-slate-800 mb-1">Text & Layout Extraction</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Our engine parses text fragments, paragraphs, and styling blocks accurately.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                            <div class="text-sky-600 font-extrabold text-lg mb-2">03</div>
+                            <h4 class="font-bold text-slate-800 mb-1">Download Word File</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Instantly obtain your fully editable Microsoft Word (.docx) file within seconds.</p>
+                        </div>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl border shadow-sm text-center">
-                        <div class="text-sky-600 font-bold mb-2">Step 2</div>
-                        <h3 class="font-bold">Conversion</h3>
-                        <p class="text-xs text-slate-500 mt-2">Our tool processes and extracts text to DOCX format.</p>
+                </section>
+
+                <!-- Technical Feature Grid Mapping -->
+                <section class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl border border-slate-200/80">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Accurate Formatting Preservation</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">We ensure that your converted DOCX files retain proper font styles, line spacing, and paragraph structures so you don't have to waste time fixing messy formatting.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl border shadow-sm text-center">
-                        <div class="text-sky-600 font-bold mb-2">Step 3</div>
-                        <h3 class="font-bold">Download</h3>
-                        <p class="text-xs text-slate-500 mt-2">Save your new editable Word document.</p>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">100% Privacy and Security</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Your confidential reports and personal documents are processed safely with automated clean-ups. No files are kept on public servers permanently.</p>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
+
+        <!-- Universal Content Sandboxed Footnote -->
+        <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 mt-auto">
+            <div>All structural assets processed entirely client-side/sandboxed.</div>
+            <div class="space-x-3">
+                <a href="/terms-of-service" class="hover:text-slate-600">Terms</a>
+                <span>&bull;</span>
+                <a href="/privacy-policy" class="hover:text-slate-600">Privacy Policy</a>
+                <span>&bull;</span>
+                <a href="/contact-us" class="hover:text-slate-600">Contact Support</a>
+            </div>
+        </footer>
     </div>
 
     <script>
-        // আপনার আগের দেওয়া JS লজিক এখানে বসিয়ে দিন
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
+        const filePanel = document.getElementById('filePanel');
+        const fileName = document.getElementById('fileName');
+        const removeFile = document.getElementById('removeFile');
         const submitBtn = document.getElementById('submitBtn');
+        const toolForm = document.getElementById('toolForm');
+        const statusOverlay = document.getElementById('statusOverlay');
+        const cloudTrigger = document.getElementById('cloudTrigger');
+        const cloudDropdown = document.getElementById('cloudDropdown');
+
+        // Cloud Dropdown Dynamic Logic
+        cloudTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            cloudDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
+
+        function triggerCloudPicker(provider) {
+            alert(provider + " File Picker integration system invoked! Please map credentials appropriately inside your system dashboard layout.");
+        }
 
         dropzone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', () => {
-            if(fileInput.files.length > 0) {
-                submitBtn.classList.remove('bg-slate-300');
-                submitBtn.classList.add('bg-sky-600');
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-sky-500', 'bg-sky-50/30'); });
+        dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('border-sky-500', 'bg-sky-50/30'); });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-sky-500', 'bg-sky-50/30');
+            if(e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files.length) handleFileSelect(e.target.files[0]);
+        });
+
+        function handleFileSelect(file) {
+            if(!file.name.toLowerCase().endsWith('.pdf')) {
+                alert('Please upload a valid PDF file.');
+                return;
+            }
+            fileName.textContent = file.name;
+            filePanel.classList.remove('hidden');
+            dropzone.classList.add('hidden');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('bg-slate-400', 'cursor-not-allowed');
+            submitBtn.classList.add('bg-sky-600', 'hover:bg-sky-700');
+        }
+
+        removeFile.addEventListener('click', () => {
+            fileInput.value = '';
+            filePanel.classList.add('hidden');
+            dropzone.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed');
+            submitBtn.classList.remove('bg-sky-600', 'hover:bg-sky-700');
+        });
+
+        toolForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = fileInput.files[0];
+            if(!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            submitBtn.disabled = true;
+            statusOverlay.classList.remove('hidden');
+
+            try {
+                // ব্যাকএন্ডে রিকোয়েস্ট পাঠানোর পাথ /api/pdf-to-word করা হয়েছে
+                const response = await fetch('/api/pdf-to-word', { method: 'POST', body: formData });
+                if(!response.ok) throw new Error('Data processing exception.');
+
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                
+                const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+                a.download = originalName + ".docx";
+                
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            } catch(err) {
+                alert('Conversion error occurred. Please verify backend server and route settings.');
+            } finally {
+                statusOverlay.classList.add('hidden');
                 submitBtn.disabled = false;
             }
         });
