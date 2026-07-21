@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convert PDF to Word Online - Free & Secure Document Extractor</title>
-    <meta name="description" content="Extract text and layouts from PDF files into fully editable Microsoft Word (.docx) documents perfectly. 100% safe, and secure document conversion.">
+    <title>Convert PDF to Word Online - Free & Secure Document Converter</title>
+    <meta name="description" content="Convert PDF pages into fully editable Microsoft Word (.docx) documents easily. 100% safe, secure document conversion.">
     
     <!-- Open Graph Social Media Optimization Tags -->
     <meta property="og:title" content="Convert PDF to Word Online - Free & Secure">
-    <meta property="og:description" content="Transform PDF files into fully editable, clean Microsoft Word documents (DOCX) seamlessly.">
+    <meta property="og:description" content="Transform PDF files into clean, editable Microsoft Word documents (DOCX) seamlessly.">
     <meta property="og:type" content="website">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -88,7 +88,7 @@
             </a>
             <div class="flex items-center space-x-2 md:space-x-3">
                 <!-- Social Sharing Fast Triggers -->
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20to%20Word%20tool" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="https://t.me/share/url?url=" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs" title="Share on Telegram"><i class="fa-brands fa-telegram"></i></a>
                 <a href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition flex items-center justify-center text-xs" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                 <a href="https://www.linkedin.com/sharing/share-offsite/?url=" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 transition flex items-center justify-center text-xs" title="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -110,8 +110,8 @@
                 <div class="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-sky-50 text-sky-600 mb-4 shadow-sm border border-sky-100">
                     <i class="fa-solid fa-file-word text-2xl md:text-3xl"></i>
                 </div>
-                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Convert PDF to Word</h1>
-                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Transform PDF files into fully editable, clean Microsoft Word documents (DOCX) seamlessly.</p>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Convert PDF to Word Online</h1>
+                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Transform PDF files into fully editable Microsoft Word documents (DOCX) seamlessly.</p>
             </div>
 
             <!-- Upload Container Dropzone Architecture -->
@@ -135,7 +135,7 @@
                                 
                                 <div id="cloudDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5 max-h-64 overflow-y-auto custom-scrollbar text-left">
                                     <button type="button" onclick="triggerCloudPicker('Google Drive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-google-drive text-amber-500 text-base"></i> <span>Google Drive</span></button>
-                                    <button type="button" onclick="triggerCloudPicker('OneDrive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-cloud text-blue-500 text-base"></i> <span>Microsoft OneDrive</span></button>
+                                    <button type="button" onclick="triggerCloudPicker('OneDrive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-cloud text-blue-500 text-base"></i> <span>Microsoft OneDrive</span></button>
                                     <button type="button" onclick="triggerCloudPicker('Dropbox')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-dropbox text-blue-600 text-base"></i> <span>Dropbox</span></button>
                                 </div>
                             </div>
@@ -155,10 +155,64 @@
                     </button>
                 </form>
 
-                <!-- Processing Pipeline Animation Loader -->
-                <div id="statusOverlay" class="hidden mt-6 text-center space-y-2">
+                <!-- Processing Pipeline Animation & Detailed Step Text Loader -->
+                <div id="statusOverlay" class="hidden mt-6 text-center space-y-3">
                     <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-sky-500 border-t-transparent"></div>
-                    <p class="text-xs text-slate-600 font-medium">Extracting text layers and formatting layout into Word...</p>
+                    <div id="statusText" class="text-xs text-slate-600 font-semibold tracking-wide">Initializing file stream...</div>
+                </div>
+            </div>
+
+            <!-- How to Convert Section / Steps Details -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 md:p-8 max-w-2xl w-full mx-auto mb-6 space-y-6">
+                <h2 class="text-lg font-bold text-slate-900 border-b pb-3">How to Convert PDF to Word Online</h2>
+                
+                <div class="space-y-4 text-xs md:text-sm text-slate-600">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 1: Upload Document</h3>
+                        <p>Drag & drop your PDF file into the secure dropzone, select it locally, or pull it directly from your active cloud drive pipelines.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 2: Process Core Extraction</h3>
+                        <p>Click on 'Convert to Word (.docx)'. Our native extraction engine processes paragraphs, typography styles, and text layers automatically.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 3: Download Document</h3>
+                        <p>Once the algorithmic rendering completes, instantly download your fully customizable, completely clean, editable Microsoft Word file.</p>
+                    </div>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Smart Text & Layout Extraction Layer</h3>
+                    <p class="text-xs md:text-sm text-slate-600">Our advanced PDF to Word Converter is engineered natively to detect structural paragraphs, font hierarchy, and text alignments inside any document. Unlike standard OCR software that outputs cluttered text strings, this intelligent tool ensures complex multi-column blocks and formatting match their original placement inside Microsoft Word documents (.docx) seamlessly.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">100% Cryptographic Security</h3>
+                    <p class="text-xs md:text-sm text-slate-600">All files are processed through automated localized sandbox protocols. Zero long-term data storage retainment.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Integrated Multi-Cloud Pipelines</h3>
+                    <p class="text-xs md:text-sm text-slate-600">Connect and sync native inputs seamlessly using secure global clouds: Google Drive, Dropbox, Box, or iCloud instantly.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Why Use Our Native Document Extraction System?</h3>
+                    <p class="text-xs md:text-sm text-slate-600">Manual text re-typing wastes valuable business hours. By leveraging our automation system, legal professionals, writers, and researchers can rapidly process contracts, reports, and manuscripts. Our architecture supports heavy workflows without altering text font styles, structure layouts, or paragraph configurations.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-4">
+                    <h3 class="font-bold text-slate-900 text-sm">Frequently Asked Questions</h3>
+                    <div class="space-y-3 text-xs md:text-sm text-slate-600">
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Is my sensitive or corporate data safe during PDF text extraction?</strong>
+                            <p>Yes. The document conversion relies entirely on transient system-memory pipelines. Files are isolated natively and are wiped instantly post-conversion.</p>
+                        </div>
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Does this converter support complex layouts with custom fonts and images?</strong>
+                            <p>Absolutely. The processing module utilizes heuristic spatial analysis to align structural elements correctly, keeping paragraph spacing and embedded graphics intact.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -173,7 +227,7 @@
 
         <!-- Footer -->
         <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 mt-auto">
-            <div>All structural assets processed securely. &copy; 2026 Secure PDF Tools</div>
+            <div>All document files processed securely. &copy; 2026 Secure PDF Tools</div>
             <div class="space-x-3">
                 <a href="/terms-of-service" class="hover:text-slate-600">Terms</a>
                 <span>&bull;</span>
@@ -202,6 +256,7 @@
         const submitBtn = document.getElementById('submitBtn');
         const toolForm = document.getElementById('toolForm');
         const statusOverlay = document.getElementById('statusOverlay');
+        const statusText = document.getElementById('statusText');
         const cloudTrigger = document.getElementById('cloudTrigger');
         const cloudDropdown = document.getElementById('cloudDropdown');
 
@@ -261,6 +316,22 @@
             submitBtn.disabled = true;
             statusOverlay.classList.remove('hidden');
 
+            const steps = [
+                "Uploading PDF document to secure server...",
+                "Analyzing document layouts and parsing text blocks...",
+                "Generating editable Microsoft Word (.docx) elements...",
+                "Finalizing file build and preparing download..."
+            ];
+            
+            let stepIndex = 0;
+            statusText.textContent = steps[stepIndex];
+            const stepInterval = setInterval(() => {
+                stepIndex++;
+                if(stepIndex < steps.length) {
+                    statusText.textContent = steps[stepIndex];
+                }
+            }, 1200);
+
             try {
                 const response = await fetch('/api/pdf-to-word', { method: 'POST', body: formData });
                 if(!response.ok) throw new Error('Data processing exception.');
@@ -279,6 +350,7 @@
             } catch(err) {
                 alert('Conversion error occurred. Please verify backend server and route settings.');
             } finally {
+                clearInterval(stepInterval);
                 statusOverlay.classList.add('hidden');
                 submitBtn.disabled = false;
             }
