@@ -3,218 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compress PDF - Secure PDF Tools</title>
+    <title>Compress PDF Online - Free & Secure PDF Size Reducer</title>
+    <meta name="description" content="Reduce PDF file size online without losing quality. Fast, free, and secure PDF compressor tool.">
+    
+    <!-- Open Graph Social Media Optimization Tags -->
+    <meta property="og:title" content="Compress PDF Online - Free & Secure">
+    <meta property="og:description" content="Shrink PDF file sizes easily while maintaining maximum document clarity and quality.">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- [ADSENSE CODE INITIALIZER PLACEHOLDER] -->
+    <!-- Copy and paste your Google AdSense Auto Ads code inside the head here -->
+
     <style>
-        .gradient-bg { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
-        .group:hover .group-hover\:opacity-100 { opacity: 1; visibility: visible; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .ad-container { min-height: 90px; background: #f8fafc; border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #94a3b8; border-radius: 12px; margin: 15px 0; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans min-h-screen flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col md:flex-row antialiased">
 
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="/" class="flex items-center space-x-2 text-indigo-600 font-bold text-xl"><span>🛠️ Secure PDF Tools</span></a>
+    <!-- Responsive Sidebar -->
+    <div class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col md:fixed md:h-screen z-50 border-b md:border-b-0 md:border-r border-slate-800 flex-shrink-0">
+        <div class="p-4 md:p-5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-screwdriver-wrench text-xl text-rose-500"></i>
+                <span class="font-bold text-lg text-white tracking-tight">Secure PDF Tools</span>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden text-slate-400 hover:text-white transition focus:outline-none">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Sidebar Navigation Tree -->
+        <div id="sidebarMenu" class="hidden md:flex flex-col flex-grow p-4 space-y-1 overflow-y-auto custom-scrollbar">
+            <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Navigation Dashboard</div>
+            
+            <a href="/" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-rose-600 text-white transition font-medium shadow-md hover:bg-rose-700 text-left">
+                <i class="fa-solid fa-layer-group"></i>
+                <span class="text-sm">All Document Tools</span>
+            </a>
+            
+            <div class="pt-5 space-y-1">
+                <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Document Tools</div>
+                <a href="/pdf-to-word" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-word w-5 text-center text-sky-400"></i> <span>PDF to Word</span>
+                </a>
+                <a href="/pdf-to-excel" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-excel w-5 text-center text-emerald-400"></i> <span>PDF to Excel</span>
+                </a>
+                <a href="/pdf-to-ppt" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-powerpoint w-5 text-center text-orange-400"></i> <span>PDF to PPT</span>
+                </a>
+                <a href="/compress" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm bg-slate-800 text-white transition font-medium">
+                    <i class="fa-solid fa-file-contract w-5 text-center text-rose-400"></i> <span>Compress PDF</span>
+                </a>
+                <a href="/merge" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-object-group w-5 text-center text-indigo-400"></i> <span>Merge PDF</span>
+                </a>
+                <a href="/lock" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-lock w-5 text-center text-amber-400"></i> <span>Lock PDF</span>
+                </a>
+            </div>
+
+            <!-- MONETIZATION SLOT: Sidebar Sticky Responsive Banner -->
+            <div class="mt-auto pt-6">
+                <div class="ad-container w-full h-48 flex-col p-2 text-center border-slate-700 bg-slate-800/50">
+                    <span>[AdSense Sidebar Vertical Banner]</span>
+                    <span class="text-[9px] text-slate-600 block mt-1">Advertisement</span>
                 </div>
-                <div class="flex items-center space-x-6">
-                    <a href="/" class="text-gray-600 hover:text-indigo-600 text-sm font-medium">Dashboard</a>
-                    <div class="relative group inline-block text-left">
-                        <button class="text-gray-600 hover:text-indigo-600 text-sm font-medium flex items-center space-x-1 focus:outline-none py-5">
-                            <span>All Tools</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div class="absolute right-0 mt-0 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <div class="py-1">
-                                <a href="/compress" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📉 Compress PDF</a>
-                                <a href="/merge" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔀 Merge PDF</a>
-                                <a href="/pdf-to-image" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖼️ PDF to Image</a>
-                                <a href="/image-to-pdf" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📸 Image to PDF</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dynamic Workspace Viewport -->
+    <div class="flex-grow flex flex-col min-h-screen md:pl-64">
+        <!-- Sticky Sub-Navbar Header -->
+        <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 md:px-8 py-4 flex items-center justify-between shadow-sm">
+            <a href="/" class="inline-flex items-center text-sm font-semibold text-rose-600 hover:text-rose-700 transition">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard Tools
+            </a>
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <!-- Social Sharing Fast Triggers -->
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20Compress%20PDF%20tool" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://t.me/share/url?url=" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-500 transition flex items-center justify-center text-xs" title="Share on Telegram"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition flex items-center justify-center text-xs" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 transition flex items-center justify-center text-xs" title="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </nav>
+
+        <!-- Main Workspace Core -->
+        <div class="flex-grow w-full max-w-4xl mx-auto px-4 md:px-6 py-6 flex flex-col justify-center">
+            
+            <!-- MONETIZATION SLOT: Top Responsive Leaderboard Banner -->
+            <div class="ad-container w-full max-w-2xl mx-auto h-24 mb-4">
+                <div class="text-center">
+                    <span>[AdSense Top Display Horizontal Banner - 728x90 Recommended]</span>
+                    <span class="text-[9px] text-slate-400 block">Advertisement Area</span>
+                </div>
+            </div>
+
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-rose-50 text-rose-600 mb-4 shadow-sm border border-rose-100">
+                    <i class="fa-solid fa-file-contract text-2xl md:text-3xl"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Compress PDF Online</h1>
+                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Reduce PDF file size quickly without sacrificing document quality or readability.</p>
+            </div>
+
+            <!-- Upload Container Dropzone Architecture -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-4 md:p-8 max-w-2xl w-full mx-auto mb-6">
+                <form id="toolForm" class="space-y-6">
+                    <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-2xl p-8 md:p-12 text-center hover:border-rose-500 transition cursor-pointer bg-slate-50/60 group relative flex flex-col items-center justify-center">
+                        <input type="file" id="fileInput" accept=".pdf" class="hidden">
+                        
+                        <div class="text-4xl md:text-5xl group-hover:scale-105 transition duration-200 mb-4">🗜️</div>
+                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-1">Drag and drop your PDF here</h3>
+                        <p class="text-[11px] text-slate-400 mb-6">Supported Format: PDF only (Max file size: 100MB)</p>
+                        
+                        <div class="relative inline-flex items-center z-20" onclick="event.stopPropagation();">
+                            <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-l-xl text-xs md:text-sm shadow-sm transition">
+                                Choose File
+                            </button>
+                            <div class="relative">
+                                <button type="button" id="cloudTrigger" class="bg-rose-700 hover:bg-rose-800 text-white px-3 py-[11px] md:py-[14px] rounded-r-xl border-l border-rose-800 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </button>
+                                
+                                <div id="cloudDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5 max-h-64 overflow-y-auto custom-scrollbar text-left">
+                                    <button type="button" onclick="triggerCloudPicker('Google Drive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-google-drive text-amber-500 text-base"></i> <span>Google Drive</span></button>
+                                    <button type="button" onclick="triggerCloudPicker('OneDrive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-cloud text-blue-500 text-base"></i> <span>Microsoft OneDrive</span></button>
+                                    <button type="button" onclick="triggerCloudPicker('Dropbox')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-dropbox text-blue-600 text-base"></i> <span>Dropbox</span></button>
+                                </div>
                             </div>
-                            <div class="py-1">
-                                <a href="/split" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">✂️ Split PDF</a>
-                                <a href="/rotate" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔄 Rotate PDF</a>
-                                <a href="/delete-pages" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🗑️ Delete Pages</a>
-                            </div>
-                            <div class="py-1">
-                                <a href="/lock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Lock PDF</a>
-                                <a href="/unlock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔓 Unlock PDF</a>
-                            </div>
+                        </div>
+                    </div>
+
+                    <div id="filePanel" class="hidden flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <i class="fa-solid fa-file-pdf text-red-500 text-xl flex-shrink-0"></i>
+                            <span id="fileName" class="text-xs md:text-sm font-medium text-slate-700 truncate">document.pdf</span>
+                        </div>
+                        <button type="button" id="removeFile" class="text-slate-400 hover:text-rose-500 transition px-2 py-1"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <button type="submit" id="submitBtn" disabled class="w-full bg-slate-400 text-white font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center space-x-2 cursor-not-allowed text-xs md:text-sm transition">
+                        <i class="fa-solid fa-gear"></i> <span>Compress PDF File</span>
+                    </button>
+                </form>
+
+                <!-- Processing Pipeline Animation & Detailed Step Text Loader -->
+                <div id="statusOverlay" class="hidden mt-6 text-center space-y-3">
+                    <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-rose-500 border-t-transparent"></div>
+                    <div id="statusText" class="text-xs text-slate-600 font-semibold tracking-wide">Initializing file stream...</div>
+                </div>
+            </div>
+
+            <!-- How to Convert Section / Steps Details -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 md:p-8 max-w-2xl w-full mx-auto mb-6 space-y-6">
+                <h2 class="text-lg font-bold text-slate-900 border-b pb-3">How to Compress PDF Online</h2>
+                
+                <div class="space-y-4 text-xs md:text-sm text-slate-600">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 1: Upload Document</h3>
+                        <p>Drag & drop your heavy PDF file into the secure dropzone, select it locally, or pull it directly from your active cloud drive pipelines.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 2: Process Optimization</h3>
+                        <p>Click on 'Compress PDF File'. Our native optimization engine strips redundant streams, compresses embedded images, and reduces file footprint automatically.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 3: Download Smaller PDF</h3>
+                        <p>Once the compression algorithmic processing completes, instantly download your optimized, lightweight, and crystal-clear PDF file.</p>
+                    </div>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Smart Image & Stream Compression Layer</h3>
+                    <p class="text-xs md:text-sm text-slate-600">Our advanced PDF Compressor is engineered natively to detect high-resolution images, hidden objects, and bloated metadata inside any document. Unlike standard compressor tools that blur text, this intelligent tool ensures clarity remains pristine while significantly lowering the final file size.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">100% Cryptographic Security</h3>
+                    <p class="text-xs md:text-sm text-slate-600">All files are processed through automated localized sandbox protocols. Zero long-term data storage retainment.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Integrated Multi-Cloud Pipelines</h3>
+                    <p class="text-xs md:text-sm text-slate-600">Connect and sync native inputs seamlessly using secure global clouds: Google Drive, Dropbox, Box, or iCloud instantly.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Why Use Our Native PDF Reduction System?</h3>
+                    <p class="text-xs md:text-sm text-slate-600">Large file sizes cause email bounce-backs and slow web uploads. By leveraging our automation system, students, professionals, and enterprises can rapidly compress reports and portfolios without losing text clarity or visual quality.</p>
+                </div>
+
+                <div class="border-t pt-4 space-y-4">
+                    <h3 class="font-bold text-slate-900 text-sm">Frequently Asked Questions</h3>
+                    <div class="space-y-3 text-xs md:text-sm text-slate-600">
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Will compressing my PDF reduce text readability or image quality?</strong>
+                            <p>No. Our smart algorithms target invisible bloat, metadata, and redundant graphical elements while preserving vector text crispness and high-grade image fidelity.</p>
+                        </div>
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Is my document secure during the cloud compression process?</strong>
+                            <p>Yes. All files are processed via transient system memory protocols and are permanently deleted from our temporary sandbox servers immediately after download.</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-3xl w-full mx-auto px-4 py-12">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-gray-900">Compress PDF Size</h1>
-            <p class="mt-2 text-gray-500">Reduce file size while keeping the maximum possible quality.</p>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 space-y-6">
-            <!-- Drop Zone -->
-            <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-500 bg-gray-50">
-                <input type="file" id="file-input" class="hidden" accept=".pdf">
-                <div class="space-y-2">
-                    <div class="text-indigo-500 text-4xl">📉</div>
-                    <div class="text-gray-600"><span class="font-medium text-indigo-600">Choose PDF</span> or drag it here</div>
+            <!-- MONETIZATION SLOT: In-Feed Banner -->
+            <div class="ad-container w-full max-w-2xl mx-auto h-28 my-2">
+                <div class="text-center">
+                    <span>[AdSense In-Feed Native Ad - Middle Dynamic Placement]</span>
+                    <span class="text-[9px] text-slate-400 block">Advertisement</span>
                 </div>
             </div>
-
-            <!-- Optional Custom Target Size Toggle -->
-            <div class="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <label class="font-medium text-gray-800 text-sm block">Target Custom File Size (Optional)</label>
-                        <span class="text-xs text-gray-500 block mt-0.5">Force the compression tool to hit a specific file size limit.</span>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="custom-size-toggle" class="sr-only peer">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                    </label>
-                </div>
-
-                <!-- Custom Size Inputs (Hidden by default) -->
-                <div id="custom-size-inputs" class="mt-4 grid grid-cols-2 gap-4 hidden transition-all duration-300">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Target Size:</label>
-                        <input type="number" id="target-value" placeholder="e.g., 500" min="1" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Unit:</label>
-                        <select id="target-unit" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <option value="kb">KB (Kilobytes)</option>
-                            <option value="mb">MB (Megabytes)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Default Compression Levels (Disabled if custom size is active) -->
-            <div id="default-compression-section">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Compression Strategy:</label>
-                <select id="compression-level" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    <option value="medium">Recommended Compression (Good quality & size)</option>
-                    <option value="high">Extreme Compression (Smallest size, lower quality)</option>
-                    <option value="low">Low Compression (Highest image quality)</option>
-                </select>
-            </div>
-
-            <!-- Action Button -->
-            <button id="compress-btn" class="w-full gradient-bg text-white py-3 rounded-xl font-medium shadow-md hover:opacity-90 disabled:opacity-50" disabled>
-                Compress PDF
-            </button>
-
-            <!-- Status Box -->
-            <div id="status" class="hidden p-4 rounded-xl text-sm font-medium"></div>
         </div>
-    </main>
 
-    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
-        &copy; 2026 FFuture's Workspace. All rights reserved.
-    </footer>
+        <!-- Footer -->
+        <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 mt-auto">
+            <div>All compressed documents processed securely. &copy; 2026 Secure PDF Tools</div>
+            <div class="space-x-3">
+                <a href="/terms-of-service" class="hover:text-slate-600">Terms</a>
+                <span>&bull;</span>
+                <a href="/privacy-policy" class="hover:text-slate-600">Privacy Policy</a>
+                <span>&bull;</span>
+                <a href="/contact-us" class="hover:text-slate-600">Contact Support</a>
+            </div>
+        </footer>
+    </div>
 
     <script>
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-input');
-        const compressBtn = document.getElementById('compress-btn');
-        const status = document.getElementById('status');
-        
-        const sizeToggle = document.getElementById('custom-size-toggle');
-        const sizeInputsContainer = document.getElementById('custom-size-inputs');
-        const compressionSelect = document.getElementById('compression-level');
-        const targetValueInput = document.getElementById('target-value');
-        const targetUnitSelect = document.getElementById('target-unit');
-
-        let selectedFile = null;
-
-        // Toggle handling for custom size UI
-        sizeToggle.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                sizeInputsContainer.classList.remove('hidden');
-                compressionSelect.disabled = true;
-                compressionSelect.classList.add('opacity-50');
-            } else {
-                sizeInputsContainer.classList.add('hidden');
-                compressionSelect.disabled = false;
-                compressionSelect.classList.remove('opacity-50');
-            }
-        });
-
-        dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-indigo-500'));
-        dropZone.addEventListener('drop', (e) => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
-
-        function handleFile(file) {
-            if (file && file.type === 'application/pdf') {
-                selectedFile = file;
-                compressBtn.disabled = false;
-                showStatus(`Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`, 'success');
-            }
+        // Mobile Sidebar Toggle Logic
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        if(mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebarMenu.classList.toggle('hidden');
+            });
         }
 
-        compressBtn.addEventListener('click', async () => {
-            if (!selectedFile) return;
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const filePanel = document.getElementById('filePanel');
+        const fileName = document.getElementById('fileName');
+        const removeFile = document.getElementById('removeFile');
+        const submitBtn = document.getElementById('submitBtn');
+        const toolForm = document.getElementById('toolForm');
+        const statusOverlay = document.getElementById('statusOverlay');
+        const statusText = document.getElementById('statusText');
+        const cloudTrigger = document.getElementById('cloudTrigger');
+        const cloudDropdown = document.getElementById('cloudDropdown');
 
-            const isCustomSizeActive = sizeToggle.checked;
-            let targetSizeInKB = null;
+        cloudTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            cloudDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
 
-            if (isCustomSizeActive) {
-                const rawVal = parseFloat(targetValueInput.value);
-                if (isNaN(rawVal) || rawVal <= 0) {
-                    showStatus('Please specify a valid numeric custom target size.', 'error');
-                    return;
-                }
-                const unit = targetUnitSelect.value;
-                // কনফিগারেশন সব কিলোবাইটে (KB) জেনারেট করে নেওয়া হচ্ছে
-                targetSizeInKB = unit === 'mb' ? rawVal * 1024 : rawVal;
+        function triggerCloudPicker(provider) {
+            alert(provider + " File Picker integration system invoked!");
+        }
+
+        dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-rose-500', 'bg-rose-50/30'); });
+        dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('border-rose-500', 'bg-rose-50/30'); });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-rose-500', 'bg-rose-50/30');
+            if(e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files.length) handleFileSelect(e.target.files[0]);
+        });
+
+        function handleFileSelect(file) {
+            if(!file.name.toLowerCase().endsWith('.pdf')) {
+                alert('Please upload a valid PDF file.');
+                return;
             }
+            fileName.textContent = file.name;
+            filePanel.classList.remove('hidden');
+            dropzone.classList.add('hidden');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('bg-slate-400', 'cursor-not-allowed');
+            submitBtn.classList.add('bg-rose-600', 'hover:bg-rose-700');
+        }
 
-            compressBtn.disabled = true;
-            compressBtn.textContent = 'Compressing...';
+        removeFile.addEventListener('click', () => {
+            fileInput.value = '';
+            filePanel.classList.add('hidden');
+            dropzone.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed');
+            submitBtn.classList.remove('bg-rose-600', 'hover:bg-rose-700');
+        });
+
+        toolForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = fileInput.files[0];
+            if(!file) return;
 
             const formData = new FormData();
-            formData.append('file', selectedFile);
+            formData.append('file', file);
+
+            submitBtn.disabled = true;
+            statusOverlay.classList.remove('hidden');
+
+            const steps = [
+                "Uploading PDF document to secure server...",
+                "Analyzing document structure and parsing streams...",
+                "Optimizing images and compressing file layout...",
+                "Finalizing compression build and preparing download..."
+            ];
             
-            // প্যারামস অবজেক্ট তৈরি করা হচ্ছে
-            const params = {
-                custom_mode: isCustomSizeActive,
-                target_size_kb: targetSizeInKB,
-                strategy: compressionSelect.value
-            };
-            formData.append('params', JSON.stringify(params));
+            let stepIndex = 0;
+            statusText.textContent = steps[stepIndex];
+            const stepInterval = setInterval(() => {
+                stepIndex++;
+                if(stepIndex < steps.length) {
+                    statusText.textContent = steps[stepIndex];
+                }
+            }, 1200);
 
             try {
                 const response = await fetch('/api/compress-pdf', { method: 'POST', body: formData });
-                if (!response.ok) throw new Error('Compression pipeline failed.');
-                
+                if(!response.ok) throw new Error('Data processing exception.');
+
                 const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
+                const downloadUrl = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url;
-                a.download = `compressed_${selectedFile.name}`;
+                a.href = downloadUrl;
+                
+                const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+                a.download = originalName + "-compressed.pdf";
+                
+                document.body.appendChild(a);
                 a.click();
-                showStatus('Success! Optimized PDF document downloaded.', 'success');
-            } catch (err) {
-                showStatus(err.message, 'error');
+                a.remove();
+            } catch(err) {
+                alert('Compression error occurred. Please verify backend server and route settings.');
             } finally {
-                compressBtn.disabled = false;
-                compressBtn.textContent = 'Compress PDF';
+                clearInterval(stepInterval);
+                statusOverlay.classList.add('hidden');
+                submitBtn.disabled = false;
             }
         });
-
-        function showStatus(msg, type) {
-            status.classList.remove('hidden');
-            status.textContent = msg;
-            status.className = `mt-4 p-4 rounded-xl text-sm font-medium ${type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`;
-        }
     </script>
 </body>
 </html>
