@@ -83,7 +83,6 @@
                 <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard Tools
             </a>
             <div class="flex items-center space-x-2 md:space-x-3">
-                <!-- Corrected Social Sharing Links -->
                 <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20free%20PDF%20to%20PPT%20tool:%20https%3A%2F%2Fsecurepdftools.com%2Fpdf-to-ppt" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-600 hover:text-orange-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="https://t.me/share/url?url=https%3A%2F%2Fsecurepdftools.com%2Fpdf-to-ppt&text=Check%20out%20this%20free%20PDF%20to%20PPT%20tool" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-600 hover:text-orange-500 transition flex items-center justify-center text-xs" title="Share on Telegram"><i class="fa-brands fa-telegram"></i></a>
                 <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsecurepdftools.com%2Fpdf-to-ppt" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition flex items-center justify-center text-xs" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -217,14 +216,21 @@
         const cloudTrigger = document.getElementById('cloudTrigger');
         const cloudDropdown = document.getElementById('cloudDropdown');
 
+        // Cloud Dropdown Toggle Fix
         cloudTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             cloudDropdown.classList.toggle('hidden');
         });
-        document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
-        cloudDropdown.addEventListener('click', (e) => e.stopPropagation());
 
-        // Fully Working Top 5 Cloud Drive Handlers for PDF to PPT Tool
+        document.addEventListener('click', () => {
+            cloudDropdown.classList.add('hidden');
+        });
+
+        cloudDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Fixed Cloud Selection Function for all 5 Drives
         window.handleCloudSelection = function(provider) {
             cloudDropdown.classList.add('hidden');
             statusOverlay.classList.remove('hidden');
