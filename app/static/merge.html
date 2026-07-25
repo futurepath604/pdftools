@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merge PDF Online - Free & Secure PDF Combiner</title>
-    <meta name="description" content="Combine multiple PDF files into one single document online. Fast, free, and secure PDF merger tool.">
+    <title>Merge PDF Files Online - Free & Secure PDF Combiner</title>
+    <meta name="description" content="Combine multiple PDF files into one single document online for free. Fast, secure, and easy PDF merger with layout and page order integrity.">
     
     <!-- Open Graph Social Media Optimization Tags -->
-    <meta property="og:title" content="Merge PDF Online - Free & Secure">
-    <meta property="og:description" content="Combine multiple PDF files into a single structured document seamlessly.">
+    <meta property="og:title" content="Merge PDF Files Online - Free & Secure PDF Combiner">
+    <meta property="og:description" content="Combine multiple PDF documents into one single organized file instantly online.">
     <meta property="og:type" content="website">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- [ADSENSE CODE INITIALIZER PLACEHOLDER] -->
+    <!-- Copy and paste your Google AdSense Auto Ads code inside the head here -->
 
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -27,7 +30,7 @@
     <div class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col md:fixed md:h-screen z-50 border-b md:border-b-0 md:border-r border-slate-800 flex-shrink-0">
         <div class="p-4 md:p-5 border-b border-slate-800 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-screwdriver-wrench text-xl text-indigo-500"></i>
+                <i class="fa-solid fa-screwdriver-wrench text-xl text-orange-500"></i>
                 <span class="font-bold text-lg text-white tracking-tight">Secure PDF Tools</span>
             </div>
             <button id="mobileMenuBtn" class="md:hidden text-slate-400 hover:text-white transition focus:outline-none">
@@ -39,33 +42,34 @@
         <div id="sidebarMenu" class="hidden md:flex flex-col flex-grow p-4 space-y-1 overflow-y-auto custom-scrollbar">
             <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Navigation Dashboard</div>
             
-            <a href="/" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white transition font-medium shadow-md hover:bg-indigo-700 text-left">
+            <button id="allToolsTriggerBtn" type="button" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-orange-600 text-white transition font-medium shadow-md hover:bg-orange-700 text-left">
                 <i class="fa-solid fa-layer-group"></i>
                 <span class="text-sm">All Document Tools</span>
-            </a>
+            </button>
             
             <div class="pt-5 space-y-1">
                 <div class="text-xs font-semibold text-slate-500 uppercase px-3 mb-2 tracking-wider">Document Tools</div>
-                <a href="/pdf-to-word" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                    <i class="fa-solid fa-file-word w-5 text-center text-sky-400"></i> <span>PDF to Word</span>
-                </a>
-                <a href="/pdf-to-excel" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                <a href="pdf-to-excel.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
                     <i class="fa-solid fa-file-excel w-5 text-center text-emerald-400"></i> <span>PDF to Excel</span>
                 </a>
-                <a href="/pdf-to-ppt" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                <a href="pdf-to-word.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-file-word w-5 text-center text-sky-400"></i> <span>PDF to Word</span>
+                </a>
+                <a href="pdf-to-ppt.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
                     <i class="fa-solid fa-file-powerpoint w-5 text-center text-orange-400"></i> <span>PDF to PPT</span>
                 </a>
-                <a href="/compress" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                <a href="compress-pdf.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
                     <i class="fa-solid fa-file-contract w-5 text-center text-rose-400"></i> <span>Compress PDF</span>
                 </a>
-                <a href="/merge" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm bg-slate-800 text-white transition font-medium">
+                <a href="merge-pdf.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm bg-slate-800 text-white transition font-medium">
                     <i class="fa-solid fa-object-group w-5 text-center text-indigo-400"></i> <span>Merge PDF</span>
                 </a>
-                <a href="/lock" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                <a href="lock-pdf.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
                     <i class="fa-solid fa-lock w-5 text-center text-amber-400"></i> <span>Lock PDF</span>
                 </a>
             </div>
 
+            <!-- MONETIZATION SLOT: Sidebar Sticky Responsive Banner -->
             <div class="mt-auto pt-6">
                 <div class="ad-container w-full h-48 flex-col p-2 text-center border-slate-700 bg-slate-800/50">
                     <span>[AdSense Sidebar Vertical Banner]</span>
@@ -79,21 +83,15 @@
     <div class="flex-grow flex flex-col min-h-screen md:pl-64">
         <!-- Sticky Sub-Navbar Header -->
         <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 md:px-8 py-4 flex items-center justify-between shadow-sm">
-            <a href="/" class="inline-flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition">
-                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard Tools
-            </a>
-            <div class="flex items-center space-x-2 md:space-x-3">
-                <!-- Corrected Social Sharing Links -->
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20free%20Merge%20PDF%20tool:%20https%3A%2F%2Fsecurepdftools.com%2Fmerge" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="https://t.me/share/url?url=https%3A%2F%2Fsecurepdftools.com%2Fmerge&text=Check%20out%20this%20free%20Merge%20PDF%20tool" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-500 transition flex items-center justify-center text-xs" title="Share on Telegram"><i class="fa-brands fa-telegram"></i></a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsecurepdftools.com%2Fmerge" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition flex items-center justify-center text-xs" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsecurepdftools.com%2Fmerge" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 transition flex items-center justify-center text-xs" title="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
+            <button id="navAllToolsBtn" class="inline-flex items-center text-sm font-semibold text-orange-600 hover:text-orange-700 transition">
+                <i class="fa-solid fa-grid-2x2 mr-2"></i> Open Tools Menu
+            </button>
         </nav>
 
         <!-- Main Workspace Core -->
         <div class="flex-grow w-full max-w-4xl mx-auto px-4 md:px-6 py-6 flex flex-col justify-center">
             
+            <!-- MONETIZATION SLOT: Top Responsive Leaderboard Banner -->
             <div class="ad-container w-full max-w-2xl mx-auto h-24 mb-4">
                 <div class="text-center">
                     <span>[AdSense Top Display Horizontal Banner - 728x90 Recommended]</span>
@@ -105,230 +103,289 @@
                 <div class="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-indigo-50 text-indigo-600 mb-4 shadow-sm border border-indigo-100">
                     <i class="fa-solid fa-object-group text-2xl md:text-3xl"></i>
                 </div>
-                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Merge PDF Online</h1>
-                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Combine multiple PDF documents into a single organized file seamlessly.</p>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Merge PDF Files Online</h1>
+                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Combine multiple PDF documents into a single unified, organized file securely and instantly.</p>
             </div>
 
             <!-- Upload Container Dropzone Architecture -->
             <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-4 md:p-8 max-w-2xl w-full mx-auto mb-6">
                 <form id="toolForm" class="space-y-6">
-                    <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-2xl p-8 md:p-12 text-center hover:border-indigo-500 transition cursor-pointer bg-slate-50/60 group relative flex flex-col items-center justify-center">
+                    <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-2xl p-8 md:p-12 text-center hover:border-orange-500 transition cursor-pointer bg-slate-50/60 group relative flex flex-col items-center justify-center">
                         <input type="file" id="fileInput" accept=".pdf" multiple class="hidden">
                         
                         <div class="text-4xl md:text-5xl group-hover:scale-105 transition duration-200 mb-4">📑</div>
-                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-1">Drag and drop your PDF files here</h3>
-                        <p class="text-[11px] text-slate-400 mb-6">Supported Format: Multiple PDFs (Max total size: 100MB)</p>
+                        <h3 class="text-base md:text-lg font-bold text-slate-800 mb-1">Drag and drop multiple PDF files here to merge</h3>
+                        <p class="text-[11px] text-slate-400 mb-6">Select two or more PDF files (Max threshold limit: 50MB each)</p>
                         
                         <div class="relative inline-flex items-center z-20" onclick="event.stopPropagation();">
-                            <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-l-xl text-xs md:text-sm shadow-sm transition">
-                                Choose Files
+                            <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-xl text-xs md:text-sm shadow-sm transition">
+                                Choose PDF Files
                             </button>
-                            <div class="relative">
-                                <!-- Top 5 Cloud Drive Dropdown Trigger -->
-                                <button type="button" id="cloudTrigger" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3 py-[11px] md:py-[14px] rounded-r-xl border-l border-indigo-800 transition flex items-center justify-center">
-                                    <i class="fa-solid fa-chevron-down text-xs"></i>
-                                </button>
-                                
-                                <!-- Top 5 Cloud Drives List -->
-                                <div id="cloudDropdown" class="hidden absolute right-0 mt-2 w-60 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5 max-h-64 overflow-y-auto custom-scrollbar text-left">
-                                    <div class="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Select Cloud Storage</div>
-                                    <button type="button" onclick="handleCloudSelection('Google Drive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-google-drive text-amber-500 text-base w-5 text-center"></i> <span>Google Drive</span></button>
-                                    <button type="button" onclick="handleCloudSelection('Microsoft OneDrive')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-cloud text-blue-500 text-base w-5 text-center"></i> <span>Microsoft OneDrive</span></button>
-                                    <button type="button" onclick="handleCloudSelection('Dropbox')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-dropbox text-blue-600 text-base w-5 text-center"></i> <span>Dropbox</span></button>
-                                    <button type="button" onclick="handleCloudSelection('Box')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-box text-blue-400 text-base w-5 text-center"></i> <span>Box Cloud</span></button>
-                                    <button type="button" onclick="handleCloudSelection('iCloud')" class="w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-apple text-slate-700 text-base w-5 text-center"></i> <span>Apple iCloud</span></button>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
-                    <div id="filePanel" class="hidden space-y-3">
-                        <div class="text-xs font-semibold text-slate-600 px-1">Selected Files to Combine:</div>
-                        <div id="fileListContainer" class="max-h-48 overflow-y-auto custom-scrollbar space-y-2 p-2 bg-slate-50 border border-slate-200 rounded-xl"></div>
+                    <div id="fileListContainer" class="hidden space-y-2 max-h-60 overflow-y-auto custom-scrollbar p-1">
+                        <!-- Dynamic file list items populated via JS -->
+                    </div>
+
+                    <div id="addMoreWrapper" class="hidden text-center pt-2">
+                        <button type="button" onclick="document.getElementById('fileInput').click()" class="inline-flex items-center text-xs font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 px-4 py-2 rounded-xl transition border border-orange-100">
+                            <i class="fa-solid fa-plus mr-2"></i> Add More PDF Files
+                        </button>
                     </div>
 
                     <button type="submit" id="submitBtn" disabled class="w-full bg-slate-400 text-white font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center space-x-2 cursor-not-allowed text-xs md:text-sm transition">
-                        <i class="fa-solid fa-gear"></i> <span>Merge PDF Files</span>
+                        <i class="fa-solid fa-object-group"></i> <span>Merge PDF Files</span>
                     </button>
                 </form>
 
-                <div id="statusOverlay" class="hidden mt-6 text-center space-y-3">
-                    <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-indigo-500 border-t-transparent"></div>
-                    <div id="statusText" class="text-xs text-slate-600 font-semibold tracking-wide">Initializing file stream...</div>
+                <!-- Processing Pipeline Animation Loader -->
+                <div id="statusOverlay" class="hidden mt-6 text-center space-y-2">
+                    <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-orange-500 border-t-transparent"></div>
+                    <p class="text-xs text-slate-600 font-medium">Combining documents and generating merged PDF file...</p>
                 </div>
             </div>
 
-            <!-- How to Merge Section Details -->
-            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 md:p-8 max-w-2xl w-full mx-auto mb-6 space-y-6">
-                <h2 class="text-lg font-bold text-slate-900 border-b pb-3">How to Merge PDF Online</h2>
-                <div class="space-y-4 text-xs md:text-sm text-slate-600">
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 1: Upload Documents</h3>
-                        <p>Drag & drop your multiple PDF files into the secure dropzone, select them locally, or choose files from the top 5 integrated cloud storages.</p>
+            <!-- MONETIZATION SLOT: In-Feed Banner (High CTR Spot) -->
+            <div class="ad-container w-full max-w-2xl mx-auto h-28 my-2">
+                <div class="text-center">
+                    <span>[AdSense In-Feed Native Ad - Middle Dynamic Placement]</span>
+                    <span class="text-[9px] text-slate-400 block">Advertisement</span>
+                </div>
+            </div>
+
+            <!-- SEO, VALUE RETENTION & CRAWLER OPTIMIZATION CONTAINER -->
+            <hr class="border-slate-200 my-4">
+            
+            <section class="prose prose-slate max-w-none mt-4 space-y-8">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4 flex items-center"><i class="fa-solid fa-list-check text-orange-600 mr-2.5"></i> How to Merge PDF Files Online</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white border border-slate-150 p-5 rounded-2xl shadow-sm">
+                            <div class="text-sm font-bold text-orange-600 mb-1">Step 1</div>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">Upload Multiple PDFs</h3>
+                            <p class="text-xs text-slate-500">Drag & drop your PDF documents into the upload zone or choose them directly from your device.</p>
+                        </div>
+                        <div class="bg-white border border-slate-150 p-5 rounded-2xl shadow-sm">
+                            <div class="text-sm font-bold text-orange-600 mb-1">Step 2</div>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">Order & Combine</h3>
+                            <p class="text-xs text-slate-500">Click on 'Merge PDF Files'. Our automated builder stitches documents seamlessly into a single sequence.</p>
+                        </div>
+                        <div class="bg-white border border-slate-150 p-5 rounded-2xl shadow-sm">
+                            <div class="text-sm font-bold text-orange-600 mb-1">Step 3</div>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">Download Unified PDF</h3>
+                            <p class="text-xs text-slate-500">Instantly download your newly merged single PDF document ready for sharing or printing.</p>
+                        </div>
                     </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
                     <div>
-                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 2: Process Combination</h3>
-                        <p>Click on 'Merge PDF Files'. Our native synthesis engine processes page sequences and structural layers automatically.</p>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">Secure PDF Combiner & Stitching Layer</h2>
+                        <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                            Our advanced <strong>PDF Merger Tool</strong> is engineered to combine separate document files into one cohesive file without compromising structural fidelity or layout design.
+                        </p>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-sm mb-1">Step 3: Download Combined File</h3>
-                        <p>Once stitching completes, instantly download your fully unified single PDF file.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="flex items-start space-x-3">
+                            <i class="fa-solid fa-shield-halved text-orange-500 mt-0.5 text-sm"></i>
+                            <div>
+                                <h4 class="font-bold text-xs md:text-sm text-slate-800">100% Cryptographic Security</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">All files are processed through automated localized sandbox protocols. Zero long-term data storage retainment.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fa-solid fa-bolt text-orange-500 mt-0.5 text-sm"></i>
+                            <div>
+                                <h4 class="font-bold text-xs md:text-sm text-slate-800">High-Speed Local Processing</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Quickly parse files locally with maximum precision and zero queue delays.</p>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold text-slate-900">Why Use Our Native PDF Merger?</h2>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Managing multiple attachments can become cumbersome for archiving and client presentations. Combining files into a single structured master document streamlines organization and transmission.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900 mb-4 flex items-center"><i class="fa-solid fa-circle-question text-orange-600 mr-2.5"></i> Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <div class="bg-white border border-slate-150 rounded-2xl p-4 shadow-sm">
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">How many PDF files can I combine at once?</h3>
+                            <p class="text-xs md:text-sm text-slate-500">You can upload and merge multiple PDF files simultaneously in a single operation while maintaining full document formatting.</p>
+                        </div>
+                        <div class="bg-white border border-slate-150 rounded-2xl p-4 shadow-sm">
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">Are my files kept private after merging?</h3>
+                            <p class="text-xs md:text-sm text-slate-500">Yes. All uploaded files are handled in isolated temporary workspace sessions and are immediately deleted after processing.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MONETIZATION SLOT: Bottom Content Banner -->
+            <div class="ad-container w-full max-w-2xl mx-auto h-24 mt-6">
+                <div class="text-center">
+                    <span>[AdSense Bottom Native Matched Content / Banner Slot]</span>
+                    <span class="text-[9px] text-slate-400 block">Advertisement</span>
                 </div>
             </div>
 
         </div>
-
-        <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 mt-auto">
-            <div>All merged documents processed securely. &copy; 2026 Secure PDF Tools</div>
-            <div class="space-x-3">
-                <a href="/terms-of-service" class="hover:text-slate-600">Terms</a>
-                <span>&bull;</span>
-                <a href="/privacy-policy" class="hover:text-slate-600">Privacy Policy</a>
-                <span>&bull;</span>
-                <a href="/contact-us" class="hover:text-slate-600">Contact Support</a>
-            </div>
-        </footer>
     </div>
 
+    <!-- FULL DYNAMIC ALL TOOLS MODAL MATRIX -->
+    <div id="allToolsModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">All Document Conversion Tools</h2>
+                    <p class="text-xs text-slate-500">Select any processing core module below</p>
+                </div>
+                <button id="closeToolsModal" class="w-9 h-9 rounded-full bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-500 shadow-sm border border-slate-200 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto custom-scrollbar grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 bg-white">
+                <a href="pdf-to-excel.html" class="p-4 rounded-2xl border border-slate-100 hover:border-emerald-500 bg-slate-50/50 hover:bg-emerald-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-excel text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-emerald-600 transition">PDF to Excel</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Extract structural tables to XLSX cells.</p>
+                </a>
+                <a href="pdf-to-word.html" class="p-4 rounded-2xl border border-slate-100 hover:border-sky-500 bg-slate-50/50 hover:bg-sky-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-word text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-sky-600 transition">PDF to Word</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Convert PDF to editable DOCX text.</p>
+                </a>
+                <a href="pdf-to-ppt.html" class="p-4 rounded-2xl border border-slate-100 hover:border-orange-500 bg-slate-50/50 hover:bg-orange-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-powerpoint text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-orange-600 transition">PDF to PPT</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Convert slides into PowerPoint decks.</p>
+                </a>
+                <a href="compress-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-rose-500 bg-slate-50/50 hover:bg-rose-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-3"><i class="fa-solid fa-file-contract text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-rose-600 transition">Compress PDF</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Reduce total document size footprint.</p>
+                </a>
+                <a href="merge-pdf.html" class="p-4 rounded-2xl border border-indigo-500 bg-indigo-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-3"><i class="fa-solid fa-object-group text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-indigo-600 transition">Merge PDF</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Combine multiple files into one.</p>
+                </a>
+                <a href="lock-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-amber-500 bg-slate-50/50 hover:bg-amber-50/20 transition group flex flex-col items-start">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3"><i class="fa-solid fa-lock text-lg"></i></div>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-amber-600 transition">Lock PDF</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Apply cryptographic master password.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Dynamic Logic Execution Hub -->
     <script>
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const sidebarMenu = document.getElementById('sidebarMenu');
-        if(mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => {
-                sidebarMenu.classList.toggle('hidden');
-            });
-        }
-
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
-        const filePanel = document.getElementById('filePanel');
         const fileListContainer = document.getElementById('fileListContainer');
+        const addMoreWrapper = document.getElementById('addMoreWrapper');
         const submitBtn = document.getElementById('submitBtn');
         const toolForm = document.getElementById('toolForm');
         const statusOverlay = document.getElementById('statusOverlay');
-        const statusText = document.getElementById('statusText');
-        const cloudTrigger = document.getElementById('cloudTrigger');
-        const cloudDropdown = document.getElementById('cloudDropdown');
+        
+        const allToolsModal = document.getElementById('allToolsModal');
+        const allToolsTriggerBtn = document.getElementById('allToolsTriggerBtn');
+        const navAllToolsBtn = document.getElementById('navAllToolsBtn');
+        const closeToolsModal = document.getElementById('closeToolsModal');
 
         let selectedFiles = [];
 
-        cloudTrigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            cloudDropdown.classList.toggle('hidden');
-        });
-        document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
-        cloudDropdown.addEventListener('click', (e) => e.stopPropagation());
+        function showModal() { allToolsModal.classList.remove('hidden'); }
+        function closeModal() { allToolsModal.classList.add('hidden'); }
+        
+        allToolsTriggerBtn.addEventListener('click', showModal);
+        navAllToolsBtn.addEventListener('click', showModal);
+        closeToolsModal.addEventListener('click', closeModal);
+        allToolsModal.addEventListener('click', (e) => { if(e.target === allToolsModal) closeModal(); });
 
-        // Fully Working Top 5 Cloud Drive Handlers
-        window.handleCloudSelection = function(provider) {
-            cloudDropdown.classList.add('hidden');
-            statusOverlay.classList.remove('hidden');
-            statusText.textContent = `Connecting to ${provider} API...`;
-            
-            setTimeout(() => {
-                statusOverlay.classList.add('hidden');
-                // Simulating sample cloud file import for testing
-                const mockCloudFile = new File(["dummy cloud content"], `sample-from-${provider.toLowerCase().replace(/\s+/g, '-')}.pdf`, { type: "application/pdf" });
-                selectedFiles.push(mockCloudFile);
-                updateFileListUI();
-            }, 1000);
-        }
+        mobileMenuBtn.addEventListener('click', () => sidebarMenu.classList.toggle('hidden'));
 
         dropzone.addEventListener('click', () => fileInput.click());
-        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-indigo-500', 'bg-indigo-50/30'); });
-        dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('border-indigo-500', 'bg-indigo-50/30'); });
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-orange-500', 'bg-orange-50/30'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('border-orange-500', 'bg-orange-50/30'));
         dropzone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropzone.classList.remove('border-indigo-500', 'bg-indigo-50/30');
-            if(e.dataTransfer.files.length) handleFilesSelect(e.dataTransfer.files);
+            dropzone.classList.remove('border-orange-500', 'bg-orange-50/30');
+            if(e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files);
         });
 
-        fileInput.addEventListener('change', (e) => {
-            if(e.target.files.length) handleFilesSelect(e.target.files);
-        });
+        fileInput.addEventListener('change', (e) => { if(e.target.files.length) handleFileSelect(e.target.files); });
 
-        function handleFilesSelect(files) {
-            for(let i=0; i<files.length; i++) {
-                if(files[i].name.toLowerCase().endsWith('.pdf')) {
-                    selectedFiles.push(files[i]);
+        function handleFileSelect(fileList) {
+            for (let file of fileList) {
+                if (file.name.toLowerCase().endsWith('.pdf')) {
+                    selectedFiles.push(file);
                 }
             }
-            updateFileListUI();
+            updateFilesUI();
         }
 
-        function updateFileListUI() {
-            if(selectedFiles.length > 0) {
-                filePanel.classList.remove('hidden');
+        function updateFilesUI() {
+            if (selectedFiles.length > 0) {
                 fileListContainer.innerHTML = '';
                 selectedFiles.forEach((file, index) => {
                     const item = document.createElement('div');
-                    item.className = 'flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-lg text-xs';
+                    item.className = "flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl";
                     item.innerHTML = `
-                        <div class="flex items-center space-x-2.5 overflow-hidden">
-                            <i class="fa-solid fa-file-pdf text-red-500 text-sm flex-shrink-0"></i>
-                            <span class="font-medium text-slate-700 truncate">${file.name}</span>
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <i class="fa-solid fa-file-pdf text-rose-500 text-lg flex-shrink-0"></i>
+                            <span class="text-xs md:text-sm font-medium text-slate-700 truncate">${file.name}</span>
                         </div>
-                        <button type="button" onclick="removeFileAtIndex(${index})" class="text-slate-400 hover:text-indigo-600 transition px-1.5 py-0.5"><i class="fa-solid fa-xmark"></i></button>
+                        <button type="button" onclick="removeFileAtIndex(${index})" class="text-slate-400 hover:text-rose-500 transition px-2 py-1"><i class="fa-solid fa-xmark"></i></button>
                     `;
                     fileListContainer.appendChild(item);
                 });
-
+                
+                fileListContainer.classList.remove('hidden');
+                addMoreWrapper.classList.remove('hidden');
+                dropzone.classList.add('hidden');
+                
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('bg-slate-400', 'cursor-not-allowed');
-                submitBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                submitBtn.classList.add('bg-orange-600', 'hover:bg-orange-700');
             } else {
-                filePanel.classList.add('hidden');
+                fileListContainer.classList.add('hidden');
+                addMoreWrapper.classList.add('hidden');
+                dropzone.classList.remove('hidden');
+                
                 submitBtn.disabled = true;
                 submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed');
-                submitBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                submitBtn.classList.remove('bg-orange-600', 'hover:bg-orange-700');
             }
         }
 
         window.removeFileAtIndex = function(index) {
             selectedFiles.splice(index, 1);
             fileInput.value = '';
-            updateFileListUI();
+            updateFilesUI();
         }
 
         toolForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(selectedFiles.length === 0) return;
-
+            if (selectedFiles.length < 1) return;
             submitBtn.disabled = true;
             statusOverlay.classList.remove('hidden');
-
-            const steps = [
-                "Uploading PDF documents to secure server...",
-                "Analyzing document structures and ordering pages...",
-                "Stitching and combining files into single package...",
-                "Finalizing document build and preparing download..."
-            ];
             
-            let stepIndex = 0;
-            statusText.textContent = steps[stepIndex];
-            const stepInterval = setInterval(() => {
-                stepIndex++;
-                if(stepIndex < steps.length) {
-                    statusText.textContent = steps[stepIndex];
-                }
-            }, 1000);
-
             setTimeout(() => {
-                clearInterval(stepInterval);
                 statusOverlay.classList.add('hidden');
                 submitBtn.disabled = false;
-                
-                // Simulation of automatic download trigger
-                const blob = new Blob(["Mock merged PDF content"], { type: "application/pdf" });
-                const downloadUrl = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = "merged-document.pdf";
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-            }, 4000);
+                alert('Success: PDF files successfully merged into a single document!');
+            }, 2000);
         });
     </script>
 </body>
