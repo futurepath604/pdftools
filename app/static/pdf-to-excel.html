@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convert PDF to Excel Online - Free & Secure PDF to XLSX Converter</title>
-    <meta name="description" content="Convert your PDF files to editable Excel spreadsheets online for free. Safely extract PDF tables to XLSX cells natively with cloud integration.">
+    <meta name="description" content="Convert your PDF files to editable Excel spreadsheets online for free. Safely extract PDF tables to XLSX cells natively.">
     
     <!-- Open Graph Social Media Optimization Tags -->
     <meta property="og:title" content="Convert PDF to Excel Online - Free & Secure">
-    <meta property="og:description" content="Extract structural PDF tables into fully editable Excel structures instantly. Supports top Cloud Drives.">
+    <meta property="og:description" content="Extract structural PDF tables into fully editable Excel structures instantly.">
     <meta property="og:type" content="website">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -88,10 +88,10 @@
             </button>
             <div class="flex items-center space-x-2 md:space-x-3">
                 <!-- Social Sharing Fast Triggers (WhatsApp, Telegram, Facebook, LinkedIn) -->
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool%20https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="https://t.me/share/url?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs" title="Share on Telegram"><i class="fa-brands fa-telegram"></i></a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition flex items-center justify-center text-xs" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://securepdftools.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 transition flex items-center justify-center text-xs" title="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20PDF%20tool%20https://securepdftools.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-500 transition flex items-center justify-center text-xs" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://t.me/share/url?url=https://securepdftools.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-500 transition flex items-center justify-center text-xs" title="Share on Telegram"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://securepdftools.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition flex items-center justify-center text-xs" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://securepdftools.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 transition flex items-center justify-center text-xs" title="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
             </div>
         </nav>
 
@@ -111,7 +111,7 @@
                     <i class="fa-solid fa-file-excel text-2xl md:text-3xl"></i>
                 </div>
                 <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">Convert PDF to Excel</h1>
-                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Extract PDF tables directly into fully customizable Excel spreadsheets (XLSX) instantly via cloud or local files.</p>
+                <p class="mt-2 text-xs md:text-sm text-slate-500 max-w-md mx-auto">Extract PDF tables directly into fully customizable Excel spreadsheets (XLSX) instantly via local files.</p>
             </div>
 
             <!-- Upload Container Dropzone Architecture -->
@@ -125,22 +125,9 @@
                         <p class="text-[11px] text-slate-400 mb-6">Max file threshold limit: 50MB</p>
                         
                         <div class="relative inline-flex items-center z-20" onclick="event.stopPropagation();">
-                            <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 md:px-6 py-2.5 md:py-3 rounded-l-xl text-xs md:text-sm shadow-sm transition">
+                            <button type="button" onclick="document.getElementById('fileInput').click()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl text-xs md:text-sm shadow-sm transition">
                                 Choose File
                             </button>
-                            <div class="relative">
-                                <button type="button" id="cloudTrigger" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-[11px] md:py-[14px] rounded-r-xl border-l border-emerald-800 transition flex items-center justify-center">
-                                    <i class="fa-solid fa-chevron-down text-xs"></i>
-                                </button>
-                                
-                                <div id="cloudDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5 max-h-64 overflow-y-auto custom-scrollbar text-left">
-                                    <button type="button" data-cloud="Google Drive" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-google-drive text-amber-500 text-base"></i> <span>Google Drive</span></button>
-                                    <button type="button" data-cloud="OneDrive" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-cloud text-blue-500 text-base"></i> <span>Microsoft OneDrive</span></button>
-                                    <button type="button" data-cloud="Dropbox" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-dropbox text-blue-600 text-base"></i> <span>Dropbox</span></button>
-                                    <button type="button" data-cloud="Box" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-solid fa-archive text-sky-500 text-base"></i> <span>Box Cloud</span></button>
-                                    <button type="button" data-cloud="iCloud" class="cloud-item w-full px-4 py-2 text-xs md:text-sm text-slate-700 hover:bg-slate-50 flex items-center space-x-3 transition"><i class="fa-brands fa-apple text-slate-800 text-base"></i> <span>Apple iCloud</span></button>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -182,7 +169,7 @@
                         <div class="bg-white border border-slate-150 p-5 rounded-2xl shadow-sm">
                             <div class="text-sm font-bold text-emerald-600 mb-1">Step 1</div>
                             <h3 class="font-bold text-sm text-slate-800 mb-1">Upload Document</h3>
-                            <p class="text-xs text-slate-500">Drag & drop your PDF file into the secure dropzone, select it locally, or pull it directly from your active cloud drive pipelines.</p>
+                            <p class="text-xs text-slate-500">Drag & drop your PDF file into the secure dropzone, or select it locally from your device.</p>
                         </div>
                         <div class="bg-white border border-slate-150 p-5 rounded-2xl shadow-sm">
                             <div class="text-sm font-bold text-emerald-600 mb-1">Step 2</div>
@@ -216,8 +203,8 @@
                         <div class="flex items-start space-x-3">
                             <i class="fa-solid fa-bolt text-emerald-500 mt-0.5 text-sm"></i>
                             <div>
-                                <h4 class="font-bold text-xs md:text-sm text-slate-800">Integrated Multi-Cloud Pipelines</h4>
-                                <p class="text-xs text-slate-500 mt-0.5">Connect and sync native inputs seamlessly using secure global clouds: Google Drive, Dropbox, Box, or iCloud instantly.</p>
+                                <h4 class="font-bold text-xs md:text-sm text-slate-800">High-Speed Local Processing</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Quickly parse files locally with maximum precision and zero queue delays.</p>
                             </div>
                         </div>
                     </div>
@@ -297,7 +284,7 @@
                 </a>
                 <a href="lock-pdf.html" class="p-4 rounded-2xl border border-slate-100 hover:border-amber-500 bg-slate-50/50 hover:bg-amber-50/20 transition group flex flex-col items-start">
                     <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3"><i class="fa-solid fa-lock text-lg"></i></div>
-                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-amber-600 transition">Lock PDF</h4>
+                    <h4 class="font-bold text-sm text-slate-800 group-hover:text-amber-650 transition">Lock PDF</h4>
                     <p class="text-[11px] text-slate-400 mt-1">Apply cryptographic master password.</p>
                 </a>
             </div>
@@ -308,8 +295,6 @@
     <script>
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const sidebarMenu = document.getElementById('sidebarMenu');
-        const cloudTrigger = document.getElementById('cloudTrigger');
-        const cloudDropdown = document.getElementById('cloudDropdown');
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const filePanel = document.getElementById('filePanel');
@@ -333,19 +318,6 @@
         allToolsModal.addEventListener('click', (e) => { if(e.target === allToolsModal) closeModal(); });
 
         mobileMenuBtn.addEventListener('click', () => sidebarMenu.classList.toggle('hidden'));
-
-        cloudTrigger.addEventListener('click', (e) => { e.stopPropagation(); cloudDropdown.classList.toggle('hidden'); });
-        document.addEventListener('click', () => cloudDropdown.classList.add('hidden'));
-
-        document.querySelectorAll('.cloud-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                const cloudName = this.getAttribute('data-cloud');
-                const mockCloudFileName = `${cloudName.toLowerCase().replace(" ", "_")}_extracted_document.pdf`;
-                injectFileToSystemState(mockCloudFileName);
-                cloudDropdown.classList.add('hidden');
-            });
-        });
 
         dropzone.addEventListener('click', () => fileInput.click());
         dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-emerald-500', 'bg-emerald-50/30'); });
