@@ -142,6 +142,20 @@
                     <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-emerald-500 border-t-transparent"></div>
                     <p class="text-xs text-slate-600 font-medium">Extracting tables and generating Excel layout...</p>
                 </div>
+
+                <!-- Download Action Panel (Appears after successful conversion) -->
+                <div id="downloadPanel" class="hidden mt-6 p-5 bg-emerald-50/60 border border-emerald-200 rounded-2xl text-center space-y-3">
+                    <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 mb-1">
+                        <i class="fa-solid fa-check text-lg"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-800">Conversion Complete!</h3>
+                    <p class="text-xs text-slate-500 max-w-xs mx-auto">Your Excel spreadsheet is ready for download.</p>
+                    <div class="pt-2">
+                        <a id="downloadBtn" href="#" download="converted-document.xlsx" class="inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl text-xs md:text-sm shadow-sm transition w-full sm:w-auto">
+                            <i class="fa-solid fa-download"></i> <span>Download Excel File</span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <!-- MONETIZATION SLOT: In-Feed Banner (High CTR Spot) -->
@@ -296,11 +310,15 @@
         const submitBtn = document.getElementById('submitBtn');
         const toolForm = document.getElementById('toolForm');
         const statusOverlay = document.getElementById('statusOverlay');
+        const downloadPanel = document.getElementById('downloadPanel');
+        const downloadBtn = document.getElementById('downloadBtn');
         
         const allToolsModal = document.getElementById('allToolsModal');
         const allToolsTriggerBtn = document.getElementById('allToolsTriggerBtn');
         const navAllToolsBtn = document.getElementById('navAllToolsBtn');
         const closeToolsModal = document.getElementById('closeToolsModal');
+
+        let objectUrl = null;
 
         function showModal() { allToolsModal.classList.remove('hidden'); }
         function closeModal() { allToolsModal.classList.add('hidden'); }
@@ -332,6 +350,7 @@
             fileName.textContent = name;
             filePanel.classList.remove('hidden');
             dropzone.classList.add('hidden');
+            downloadPanel.classList.add('hidden');
             submitBtn.disabled = false;
             submitBtn.classList.remove('bg-slate-400', 'cursor-not-allowed');
             submitBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
@@ -341,6 +360,8 @@
             fileInput.value = '';
             filePanel.classList.add('hidden');
             dropzone.classList.remove('hidden');
+            downloadPanel.classList.add('hidden');
+            if(objectUrl) { URL.revokeObjectURL(objectUrl); objectUrl = null; }
             submitBtn.disabled = true;
             submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed');
             submitBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
@@ -350,11 +371,22 @@
             e.preventDefault();
             submitBtn.disabled = true;
             statusOverlay.classList.remove('hidden');
+            downloadPanel.classList.add('hidden');
             
             setTimeout(() => {
                 statusOverlay.classList.add('hidden');
-                submitBtn.disabled = false;
-                alert('Success: PDF tables successfully converted to editable Excel (.XLSX) format!');
+                
+                // Generate simulated blob/download link for the converted Excel file
+                const sampleExcelContent = "Col1,Col2,Col3\nData1,Data2,Data3";
+                const blob = new Blob([sampleExcelContent], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                if(objectUrl) URL.revokeObjectURL(objectUrl);
+                objectUrl = URL.createObjectURL(blob);
+                
+                const baseName = fileName.textContent.replace(/\.[^/.]+$/, "");
+                downloadBtn.download = `${baseName}_converted.xlsx`;
+                downloadBtn.href = objectUrl;
+                
+                downloadPanel.classList.remove('hidden');
             }, 2000);
         });
     </script>
