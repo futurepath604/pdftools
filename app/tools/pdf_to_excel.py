@@ -175,8 +175,7 @@ const TOOLS = [
   {id:"pdf2img", icon:"📄", name:"PDF to Images", desc:"Extract document elements into system supported extension frameworks.", action:"/pdf-to-jpg", btnText:"Render Pages & Download ZIP", accept:"application/pdf", extra:[{id:"img_fmt", name:"Target Format", type:"select", options:[{v:"jpg",t:"JPEG (.jpg)"},{v:"png",t:"PNG (.png)"},{v:"webp",t:"WEBP (.webp)"},{v:"tiff",t:"TIFF (.tiff)"}]}]},
   {id:"pdf_to_word_ext", icon:"📄", name:"PDF to Word Converter", desc:"Parse architectural structures into Microsoft Word formats natively.", action:"/pdf-to-word-extended", btnText:"Extract & Download Word Document", accept:"application/pdf", extra:[{id:"word_fmt", name:"Output File Format Extension", type:"select", options:[{v:"docx",t:"Word Document (.docx)"},{v:"doc",t:"Legacy Word Document (.doc)"}]}]},
   {id:"pdf_to_excel_ext", icon:"📊", name:"PDF to Excel Converter", desc:"Extract structural cell schemas and data grids precisely into native spreadsheet format tables.", action:"/pdf-to-excel-extended", btnText:"Compile Spreadsheet & Download", accept:"application/pdf", extra:[{id:"excel_fmt", name:"Output Spreadsheet Extension", type:"select", options:[{v:"xlsx",t:"Excel Workbook (.xlsx)"}]}]},
-  {id:"pdf_to_ppt_ext", icon:"📄", name:"PDF to PowerPoint Converter", desc:"Transform static presentation visual sheets into slide format patterns layout.", action:"/pdf-to-ppt-extended", btnText:"Build Slide Compilation & Download", accept:"application/pdf", extra:[{id:"ppt_fmt", name:"Output Presentation Extension", type:"select", options:[{v:"pptx",t:"PowerPoint Presentation (.pptx)"},{v:"ppt",t:"Legacy PowerPoint Layout (.ppt)"}]}
-]}
+  {id:"pdf_to_ppt_ext", icon:"📄", name:"PDF to PowerPoint Converter", desc:"Transform static presentation visual sheets into slide format patterns layout.", action:"/pdf-to-ppt-extended", btnText:"Build Slide Compilation & Download", accept:"application/pdf", extra:[{id:"ppt_fmt", name:"Output Presentation Extension", type:"select", options:[{v:"pptx",t:"PowerPoint Presentation (.pptx)"},{v:"ppt",t:"Legacy PowerPoint Layout (.ppt)"}]}]}
 ];
 
 let fileRegistry = {};
@@ -289,6 +288,7 @@ TOOLS.forEach(t => {
         const fallbackExt = activeFiles[0].name.split('.').pop();
         ext = "_rotated." + (outFmtSelection === "original" ? fallbackExt : outFmtSelection);
       }
+      if (t.id === "pdf_to_excel_ext") ext = "_converted.xlsx";
       if (response.headers.get('Content-Type') === 'application/zip') ext = "_package.zip";
 
       a.download = activeFiles[0].name.split('.')[0] + ext;
@@ -548,193 +548,47 @@ def compress_image():
             return send_file(zip_stream, mimetype="application/zip", as_attachment=True, download_name="optimized_images.zip")
     except Exception as e: return jsonify({"error": str(e)}), 500
 
-@app.route('/rotate-image', methods=['POST'])
-def rotate_image():
-    files = request.files.getlist('files')
-    raw_deg = int(request.form.get('img_rot_deg', '90'))
-    out_fmt = request.form.get('img_out_fmt', 'original')
-    deg = raw_deg if raw_deg >= 0 else (360 + raw_deg)
-    
-    try:
-        if len(files) == 1:
-            f = files[0]
-            img = Image.open(io.BytesIO(f.read()))
-            orig_ext = f.name.split('.')[-1].upper()
-            orig_format = img.format or (orig_ext if orig_ext in ['JPEG', 'PNG', 'WEBP', 'BMP', 'TIFF'] else 'JPEG')
-            
-            # PIL rotate is counter-clockwise for positive values, map correctly
-            pil_deg = (360 - deg) % 360
-            img = img.rotate(pil_deg, expand=True)
-            
-            target_format = orig_format if out_fmt == 'original' else out_fmt.upper()
-            if target_format == 'JPG': target_format = 'JPEG'
-            
-            if img.mode in ('RGBA', 'P') and target_format == 'JPEG':
-                img = img.convert('RGB')
-                
-            out = io.BytesIO()
-            img.save(out, format=target_format)
-            out.seek(0)
-            
-            ext_map = {'JPEG': 'jpg', 'PNG': 'png', 'WEBP': 'webp', 'BMP': 'bmp', 'TIFF': 'tiff'}
-            final_ext = ext_map.get(target_format, 'jpg')
-            return send_file(out, mimetype=f"image/{final_ext}", as_attachment=True, download_name=f"rotated.{final_ext}")
-        else:
-            zip_stream = io.BytesIO()
-            with zipfile.ZipFile(zip_stream, 'w') as zip_file:
-                for idx, f in enumerate(files):
-                    img = Image.open(io.BytesIO(f.read()))
-                    orig_ext = f.name.split('.')[-1].upper()
-                    orig_format = img.format or (orig_ext if orig_ext in ['JPEG', 'PNG', 'WEBP', 'BMP', 'TIFF'] else 'JPEG')
-                    
-                    pil_deg = (360 - deg) % 360
-                    img = img.rotate(pil_deg, expand=True)
-                    
-                    target_format = orig_format if out_fmt == 'original' else out_fmt.upper()
-                    if target_format == 'JPG': target_format = 'JPEG'
-                    
-                    if img.mode in ('RGBA', 'P') and target_format == 'JPEG':
-                        img = img.convert('RGB')
-                        
-                    out_f = io.BytesIO()
-                    img.save(out_f, format=target_format)
-                    
-                    ext_map = {'JPEG': 'jpg', 'PNG': 'png', 'WEBP': 'webp', 'BMP': 'bmp', 'TIFF': 'tiff'}
-                    final_ext = ext_map.get(target_format, 'jpg')
-                    zip_file.writestr(f"rotated_{idx+1}.{final_ext}", out_f.getvalue())
-            zip_stream.seek(0)
-            return send_file(zip_stream, mimetype="application/zip", as_attachment=True, download_name="rotated_images.zip")
-    except Exception as e: return jsonify({"error": str(e)}), 500
-
-@app.route('/lock-pdf', methods=['POST'])
-def lock_pdf():
-    file = request.files.getlist('files')[0]
-    password = request.form.get('lock_pass', 'SecurePass123')
-    try:
-        reader = PdfReader(io.BytesIO(file.read()))
-        writer = PdfWriter()
-        for page in reader.pages: writer.add_page(page)
-        writer.encrypt(password)
-        out = io.BytesIO(); writer.write(out); out.seek(0)
-        return send_file(out, mimetype="application/pdf", as_attachment=True, download_name="locked.pdf")
-    except Exception as e: return jsonify({"error": str(e)}), 500
-
-@app.route('/unlock-pdf', methods=['POST'])
-def unlock_pdf():
-    file = request.files.getlist('files')[0]
-    password = request.form.get('upass', '')
-    try:
-        reader = PdfReader(io.BytesIO(file.read()))
-        if reader.is_encrypted:
-            reader.decrypt(password)
-        writer = PdfWriter()
-        for page in reader.pages: writer.add_page(page)
-        out = io.BytesIO(); writer.write(out); out.seek(0)
-        return send_file(out, mimetype="application/pdf", as_attachment=True, download_name="unlocked.pdf")
-    except Exception as e: return jsonify({"error": str(e)}), 500
-
-@app.route('/pdf-to-jpg', methods=['POST'])
-def pdf_to_jpg():
-    file = request.files.getlist('files')[0]
-    img_fmt = request.form.get('img_fmt', 'jpg').lower()
-    try:
-        doc = fitz.open(stream=file.read(), filetype="pdf")
-        zip_stream = io.BytesIO()
-        with zipfile.ZipFile(zip_stream, 'w') as zip_file:
-            for idx, page in enumerate(doc):
-                pix = page.get_pixmap(dpi=150)
-                img_bytes = pix.tobytes(img_fmt if img_fmt != 'jpg' else 'jpeg')
-                ext = 'jpg' if img_fmt == 'jpg' else img_fmt
-                zip_file.writestr(f"page_{idx + 1}.{ext}", img_bytes)
-        doc.close()
-        zip_stream.seek(0)
-        return send_file(zip_stream, mimetype="application/zip", as_attachment=True, download_name="pdf_images.zip")
-    except Exception as e: return jsonify({"error": str(e)}), 500
-
-@app.route('/pdf-to-word-extended', methods=['POST'])
-def pdf_to_word_extended():
-    file = request.files.getlist('files')[0]
-    try:
-        # Simple text extraction fallback to docx if pdf2docx has complex environment dependencies
-        from docx import Document
-        doc = Document()
-        reader = PdfReader(io.BytesIO(file.read()))
-        for idx, page in enumerate(reader.pages):
-            text = page.extract_text()
-            if text:
-                for line in text.split('\n'):
-                    doc.add_paragraph(line)
-            if idx < len(reader.pages) - 1:
-                doc.add_page_break()
-        out = io.BytesIO()
-        doc.save(out)
-        out.seek(0)
-        return send_file(out, mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document", as_attachment=True, download_name="converted_document.docx")
-    except Exception as e: return jsonify({"error": str(e)}), 500
-
 @app.route('/pdf-to-excel-extended', methods=['POST'])
 def pdf_to_excel_extended():
     files = request.files.getlist('files')
     if not files:
         return jsonify({"error": "No file uploaded"}), 400
     try:
-        file = files[0]
-        pdf_bytes = file.read()
-        
+        file_bytes = files[0].read()
         wb = ExcelWorkbook()
+        # Remove default sheet so we can create fresh ones per page/table
         default_sheet = wb.active
         wb.remove(default_sheet)
-        
-        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+
+        with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
+            has_tables = False
             for page_idx, page in enumerate(pdf.pages):
-                ws = wb.create_sheet(title=f"Page_{page_idx + 1}")
                 tables = page.extract_tables()
                 if tables:
-                    for table in tables:
+                    has_tables = True
+                    for t_idx, table in enumerate(tables):
+                        ws = wb.create_sheet(title=f"Page_{page_idx+1}_Table_{t_idx+1}")
                         for row in table:
+                            # Clean up None values to empty strings
                             cleaned_row = [cell if cell is not None else "" for cell in row]
                             ws.append(cleaned_row)
-                        ws.append([])
-                else:
+            
+            # Fallback if no structured tables found: extract text lines
+            if not has_tables:
+                ws = wb.create_sheet(title="Extracted_Text")
+                for page_idx, page in enumerate(pdf.pages):
                     text = page.extract_text()
                     if text:
                         for line in text.split('\n'):
                             ws.append([line])
-                            
+
         out = io.BytesIO()
         wb.save(out)
         out.seek(0)
-        
-        return send_file(
-            out, 
-            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
-            as_attachment=True, 
-            download_name="converted_document.xlsx"
-        )
+        return send_file(out, mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", as_attachment=True, download_name="converted_data.xlsx")
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/pdf-to-ppt-extended', methods=['POST'])
-def pdf_to_ppt_extended():
-    file = request.files.getlist('files')[0]
-    try:
-        prs = PptPresentation()
-        doc = fitz.open(stream=file.read(), filetype="pdf")
-        blank_slide_layout = prs.slide_layouts[6]
-        for page in doc:
-            slide = prs.slides.add_slide(blank_slide_layout)
-            text = page.get_text()
-            if text:
-                txBox = slide.shapes.add_textbox(Inches(0.5), Inches(0.5), Inches(9.0), Inches(6.0))
-                tf = txBox.text_frame
-                tf.word_wrap = True
-                tf.text = text
-        doc.close()
-        out = io.BytesIO()
-        prs.save(out)
-        out.seek(0)
-        return send_file(out, mimetype="application/vnd.openxmlformats-officedocument.presentationml.presentation", as_attachment=True, download_name="converted_presentation.pptx")
-    except Exception as e: return jsonify({"error": str(e)}), 500
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.debug = True
+    app.run(port=5000)
