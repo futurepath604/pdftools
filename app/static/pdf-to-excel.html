@@ -369,25 +369,40 @@
 
         toolForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const file = fileInput.files[0];
+            if (!file) return;
+
             submitBtn.disabled = true;
             statusOverlay.classList.remove('hidden');
             downloadPanel.classList.add('hidden');
             
-            setTimeout(() => {
-                statusOverlay.classList.add('hidden');
-                
-                // Generate simulated blob/download link for the converted Excel file
-                const sampleExcelContent = "Col1,Col2,Col3\nData1,Data2,Data3";
-                const blob = new Blob([sampleExcelContent], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch('/api/pdf-to-excel', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("Server conversion failed.");
+                }
+
+                const blob = await response.blob();
                 if(objectUrl) URL.revokeObjectURL(objectUrl);
                 objectUrl = URL.createObjectURL(blob);
                 
-                const baseName = fileName.textContent.replace(/\.[^/.]+$/, "");
-                downloadBtn.download = `${baseName}_converted.xlsx`;
                 downloadBtn.href = objectUrl;
-                
+                downloadBtn.download = file.name.replace(/\.[^/.]+$/, "") + ".xlsx";
+
+                statusOverlay.classList.add('hidden');
                 downloadPanel.classList.remove('hidden');
-            }, 2000);
+            } catch (error) {
+                statusOverlay.classList.add('hidden');
+                alert("Error: " + error.message);
+                submitBtn.disabled = false;
+            }
         });
     </script>
 </body>
