@@ -4,13 +4,9 @@ import shutil
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 
-# Create a dedicated router for this tool
 router = APIRouter(prefix="/api", tags=["Excel Converter"])
 
 def convert_pdf_to_excel(input_path: str, output_path: str):
-    """
-    Advanced Table-Grid Layout PDF to Structured Multi-Column Excel Converter.
-    """
     try:
         import pdfplumber
     except ImportError:
@@ -85,12 +81,12 @@ def convert_pdf_to_excel(input_path: str, output_path: str):
     wb.save(output_path)
 
 
-# The API endpoint is now self-contained inside the tool file!
 @router.post("/pdf-to-excel")
 async def api_pdf_to_excel(file: UploadFile = File(...)):
-    input_path = f"temp_{file.filename}"
+    os.makedirs("temp_files", exist_ok=True)
+    input_path = os.path.join("temp_files", f"input_{file.filename}")
     output_filename = f"{os.path.splitext(file.filename)[0]}.xlsx"
-    output_path = output_filename
+    output_path = os.path.join("temp_files", f"output_{output_filename}")
     
     with open(input_path, "wb") as buffer: 
         shutil.copyfileobj(file.file, buffer)
@@ -100,12 +96,7 @@ async def api_pdf_to_excel(file: UploadFile = File(...)):
         return FileResponse(
             output_path, 
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
-            filename=output_filename,
-            headers={"Content-Disposition": f"attachment; filename={output_filename}"}
+            filename=output_filename
         )
     except Exception as e: 
         raise HTTPException(status_code=500, detail=f"Excel Engine Error: {str(e)}")
-    finally:
-        if os.path.exists(input_path): 
-            try: os.remove(input_path)
-            except: pass
