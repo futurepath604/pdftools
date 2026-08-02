@@ -6,7 +6,7 @@
     <title>FILEORA - Smart Tools for Every File</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Dynamic Branding & Ads Scripts -->
+    <!-- Dynamic Branding & Independent Ads Scripts -->
     <script src="/static/js/branding.js" defer></script>
     <script src="/static/js/ads-manager.js" defer></script>
 </head>
@@ -23,16 +23,156 @@
     <!-- Hero Ad Slot -->
     <div id="hero-ad" class="container mt-3"></div>
 
-    <div class="container my-5">
+    <div class="container my-5" id="tools">
         <div class="text-center mb-5">
             <h1 class="display-5 fw-bold brand-title">📄 FILEORA</h1>
-            <p class="lead text-muted">Smart, fast, and secure tools for all your document conversions.</p>
+            <p class="lead text-muted">Smart, fast, and secure tools for all your document conversions and management.</p>
         </div>
 
         <div class="row g-4">
-            <div class="col-md-4"><div class="card h-100 shadow-sm p-3"><div class="card-body"><h3>Compress PDF</h3><p>Reduce PDF file size without losing quality.</p><a href="/compress" class="btn btn-primary">Use Tool</a></div></div></div>
-            <div class="col-md-4"><div class="card h-100 shadow-sm p-3"><div class="card-body"><h3>Merge PDF</h3><p>Combine multiple PDFs into a single document.</p><a href="/merge" class="btn btn-primary">Use Tool</a></div></div></div>
-            <div class="col-md-4"><div class="card h-100 shadow-sm p-3"><div class="card-body"><h3>PDF to Word</h3><p>Convert your PDFs into editable Word docs.</p><a href="/pdf-to-word" class="btn btn-primary">Use Tool</a></div></div></div>
+            <!-- Compress PDF -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-primary mb-3 fs-3"><i class="fas fa-compress-arrows-alt"></i></div>
+                        <h3 class="h5 fw-bold">Compress PDF</h3>
+                        <p class="text-muted small">Reduce PDF file size without losing visual quality.</p>
+                        <a href="/compress" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Merge PDF -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-success mb-3 fs-3"><i class="fas fa-object-group"></i></div>
+                        <h3 class="h5 fw-bold">Merge PDF</h3>
+                        <p class="text-muted small">Combine multiple PDFs into a single secure document.</p>
+                        <a href="/merge" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF to Word -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-info mb-3 fs-3"><i class="fas fa-file-word"></i></div>
+                        <h3 class="h5 fw-bold">PDF to Word</h3>
+                        <p class="text-muted small">Convert your PDF files into editable Word documents.</p>
+                        <a href="/pdf-to-word" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF to Excel -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-success mb-3 fs-3"><i class="fas fa-file-excel"></i></div>
+                        <h3 class="h5 fw-bold">PDF to Excel</h3>
+                        <p class="text-muted small">Extract tables and data from PDF straight to Excel sheets.</p>
+                        <a href="/pdf-to-excel" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF to PPT -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-warning mb-3 fs-3"><i class="fas fa-file-powerpoint"></i></div>
+                        <h3 class="h5 fw-bold">PDF to PPT</h3>
+                        <p class="text-muted small">Turn your PDF slides into editable PowerPoint presentations.</p>
+                        <a href="/pdf-to-ppt" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF to Image -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-danger mb-3 fs-3"><i class="fas fa-file-image"></i></div>
+                        <h3 class="h5 fw-bold">PDF to Image</h3>
+                        <p class="text-muted small">Extract pages from PDF as high-res PNG/JPG images.</p>
+                        <a href="/pdf-to-image" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image to PDF -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-primary mb-3 fs-3"><i class="fas fa-images"></i></div>
+                        <h3 class="h5 fw-bold">Image to PDF</h3>
+                        <p class="text-muted small">Convert JPG or PNG images into a clean single PDF file.</p>
+                        <a href="/image-to-pdf" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OCR Text Extraction -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-secondary mb-3 fs-3"><i class="fas fa-font"></i></div>
+                        <h3 class="h5 fw-bold">OCR PDF</h3>
+                        <p class="text-muted small">Extract readable text content from scanned PDFs effortlessly.</p>
+                        <a href="/ocr" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lock PDF -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-dark mb-3 fs-3"><i class="fas fa-lock"></i></div>
+                        <h3 class="h5 fw-bold">Lock PDF</h3>
+                        <p class="text-muted small">Encrypt and secure your sensitive PDF files with a password.</p>
+                        <a href="/lock" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rotate PDF -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-warning mb-3 fs-3"><i class="fas fa-redo"></i></div>
+                        <h3 class="h5 fw-bold">Rotate PDF</h3>
+                        <p class="text-muted small">Rotate your PDF pages to portrait or landscape instantly.</p>
+                        <a href="/rotate" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Pages -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-danger mb-3 fs-3"><i class="fas fa-trash-alt"></i></div>
+                        <h3 class="h5 fw-bold">Delete Pages</h3>
+                        <p class="text-muted small">Remove unnecessary or blank pages from your PDF file.</p>
+                        <a href="/delete-pages" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rearrange Pages -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm p-3 border-0">
+                    <div class="card-body">
+                        <div class="text-success mb-3 fs-3"><i class="fas fa-stream"></i></div>
+                        <h3 class="h5 fw-bold">Rearrange Pages</h3>
+                        <p class="text-muted small">Change and reorder page sequences in your documents.</p>
+                        <a href="/rearrange" class="btn btn-outline-primary btn-sm w-100">Use Tool</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
