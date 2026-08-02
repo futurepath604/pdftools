@@ -1,43 +1,38 @@
 import os
 from fastapi import APIRouter, File, UploadFile, HTTPException
-from fastapi.responses import StreamingResponse
-from typing import List
+from fastapi.responses import FileResponse
 from PIL import Image
-from io import BytesIO
 
-# Dedicated clean router for Image to PDF
-router = APIRouter(prefix="/api", tags=["Image to PDF"])
+router = APIRouter(prefix="/api/tools", tags=["Image to PDF"])
+TEMP_DIR = "/tmp"
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 @router.post("/image-to-pdf")
-async def image_to_pdf(files: List[UploadFile] = File(...)):
-    images = []
+async def convert_images_to_pdf(files: list[UploadFile] = File(...)):
+    if not files:
+        raise HTTPException(status_code=400, detail="No images uploaded")
+    
+    image_paths = []
+    output_filename = "converted_images.pdf"
+    output_path = os.path.join(TEMP_DIR, output_filename)
+    
     try:
         for file in files:
-            img_bytes = await file.read()
-            if not img_bytes:
-                continue
-            img = Image.open(BytesIO(img_bytes)).convert("RGB")
+            temp_path = os.path.join(TEMP_DIR, file.filename)
+            with open(temp_path, "wb") as buffer:
+                buffer.write(await file.read())
+            image_paths.append(temp_path)
+            
+        images = []
+        for path in image_paths:
+            img = Image.open(path)
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
             images.append(img)
             
-        if not images:
-            raise HTTPException(status_code=400, detail="No valid images uploaded.")
+        if images:
+            images[0].save(output_path, save_all=True, append_images=images[1:])
             
-        out_buf = BytesIO()
-        # Save the primary image and append the rest as multi-page PDF layers
-        images[0].save(out_buf, format="PDF", save_all=True, append_images=images[1:])
-        out_buf.seek(0)
-        
-        return StreamingResponse(
-            out_buf, 
-            media_type="application/pdf", 
-            headers={"Content-Disposition": "attachment; filename=images_converted.pdf"}
-        )
+        return FileResponse(output_path, media_type="application/pdf", filename=output_filename)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Image conversion failed: {str(e)}")
-    finally:
-        # Memory Optimization: Explicitly close opened PIL frames to clear runtime heap
-        for img in images:
-            try:
-                img.close()
-            except:
-                pass
+        raise HTTPException(status_code=500, detail=f"Image to PDF conversion failed: {str(e)}")
