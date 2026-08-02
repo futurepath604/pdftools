@@ -1,82 +1,56 @@
-import pypdf
-from io import BytesIO
+import os
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse
+from pypdf import PdfReader, PdfWriter
 
-# Dedicated router for Security & Premium tools
-router = APIRouter(prefix="/api", tags=["Security & Premium"])
+router = APIRouter(prefix="/api/tools", tags=["Security"])
+TEMP_DIR = "/tmp"
+os.makedirs(TEMP_DIR, exist_ok=True)
 
-@router.post("/security-pdf")
-async def security_pdf(
-    file: UploadFile = File(...), 
-    mode: str = Form(...), 
-    password: str = Form(...)
-):
-    if not file.filename.lower().endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="Uploaded file must be a PDF.")
-        
+@router.post("/lock")
+async def lock_pdf(file: UploadFile = File(...), password: str = Form(...)):
+    if not file.filename.endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Invalid file format.")
+    
+    input_path = os.path.join(TEMP_DIR, file.filename)
+    output_path = os.path.join(TEMP_DIR, f"locked_{file.filename}")
+    
     try:
-        pdf_bytes = await file.read()
-        if not pdf_bytes:
-            raise HTTPException(status_code=400, detail="Uploaded PDF file is empty.")
+        with open(input_path, "wb") as buffer:
+            buffer.write(await file.read())
             
-        if mode == "lock":
-            reader = pypdf.PdfReader(BytesIO(pdf_bytes))
-            writer = pypdf.PdfWriter()
+        reader = PdfReader(input_path)
+        writer = PdfWriter()
+        writer.append_pages_from_reader(reader)
+        writer.encrypt(password)
+        
+        with open(output_path, "wb") as f:
+            writer.write(f)
             
-            for page in reader.pages:
-                writer.add_page(page)
-                
-            writer.encrypt(password)
-            
-            out_buf = BytesIO()
-            writer.write(out_buf)
-            out_buf.seek(0)
-            
-            safe_filename = f"locked_{file.filename.replace(' ', '_')}"
-            return StreamingResponse(
-                out_buf, 
-                media_type="application/pdf", 
-                headers={"Content-Disposition": f"attachment; filename={safe_filename}"}
-            )
-            
-        elif mode == "unlock":
-            reader = pypdf.PdfReader(BytesIO(pdf_bytes))
-            
-            if reader.is_encrypted:
-                # Attempt to decrypt with provided credentials
-                decrypt_result = reader.decrypt(password)
-                if decrypt_result == 0: # 0 indicates failure in pypdf decryption states
-                    raise HTTPException(status_code=400, detail="Invalid password. Could not decrypt the PDF.")
-            
-            writer = pypdf.PdfWriter()
-            try:
-                for page in reader.pages:
-                    writer.add_page(page)
-            except Exception:
-                raise HTTPException(status_code=400, detail="Decryption failed. Please verify the password.")
-                
-            out_buf = BytesIO()
-            writer.write(out_buf)
-            out_buf.seek(0)
-            
-            safe_filename = f"unlocked_{file.filename.replace(' ', '_')}"
-            return StreamingResponse(
-                out_buf, 
-                media_type="application/pdf", 
-                headers={"Content-Disposition": f"attachment; filename={safe_filename}"}
-            )
-        else:
-            raise HTTPException(status_code=400, detail="Invalid security mode specified. Use 'lock' or 'unlock'.")
-            
-    except HTTPException as he:
-        raise he
+        return FileResponse(output_path, media_type="application/pdf", filename=f"locked_{file.filename}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Security operation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Locking failed: {str(e)}")
 
-@router.post("/office-to-pdf")
-async def office_to_pdf(file: UploadFile = File(...)):
-    raise HTTPException(
-        status_code=403, 
-        detail="Office-to-PDF direct binary conversion requires LibreOffice subsystem on premium tier."
-    )
+@router.post("/unlock")
+async def unlock_pdf(file: UploadFile = File(...), password: str = Form(...)):
+    input_path = os.path.join(TEMP_DIR, file.filename)
+    output_path = os.path.join(TEMP_DIR, f"unlocked_{file.filename}")
+    
+    try:
+        with open(input_path, "wb") as buffer:
+            buffer.write(await file.read())
+            
+        reader = PdfReader(input_path)
+        if reader.is_encrypted:
+            reader.decrypt(password)
+            
+        writer = PdfWriter()
+        for page in reader.pages:
+            writer.add_page(page)
+            
+        with open(output_path, "wb") as f:
+            writer.write(f)
+            
+        return FileResponse(output_path, media_type="application/pdf", filename=f"unlocked_{file.filename}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unlock failed. Incorrect password or corrupted file.")
