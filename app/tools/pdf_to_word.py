@@ -1,29 +1,29 @@
-import os
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from pdf2docx import Converter
+import os, tempfile
 
-router = APIRouter(prefix="/api/tools", tags=["PDF to Word"])
-TEMP_DIR = "/tmp"
-os.makedirs(TEMP_DIR, exist_ok=True)
+router = APIRouter()
 
-@router.post("/pdf-to-word")
-async def convert_pdf_to_word(file: UploadFile = File(...)):
-    if not file.filename.endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="Only PDF files are allowed")
-    
-    input_path = os.path.join(TEMP_DIR, file.filename)
-    output_filename = f"{os.path.splitext(file.filename)[0]}.docx"
-    output_path = os.path.join(TEMP_DIR, output_filename)
-    
+@router.post("/api/tools/pdf-to-word")
+async def pdf_to_word(file: UploadFile = File(...)):
     try:
-        with open(input_path, "wb") as buffer:
-            buffer.write(await file.read())
+        contents = await file.read()
+        
+        # ইনপুট এবং আউটপুট টেম্পোরারি ফাইল তৈরি
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as pdf_tmp:
+            pdf_tmp.write(contents)
+            pdf_path = pdf_tmp.name
             
-        cv = Converter(input_path)
-        cv.convert(output_path, start=0, end=None)
+        docx_path = pdf_path.replace(".pdf", ".docx")
+        
+        cv = Converter(pdf_path)
+        cv.convert(docx_path, start=0, end=None)
         cv.close()
         
-        return FileResponse(output_path, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document", filename=output_filename)
+        # ক্লিনআপ পিডিএফ টেম্পোরারি ফাইল
+        os.unlink(pdf_path)
+        
+        return FileResponse(docx_path, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document", filename=file.filename.replace(".pdf", ".docx"))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"PDF to Word conversion failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
