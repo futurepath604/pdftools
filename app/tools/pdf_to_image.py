@@ -1,62 +1,41 @@
-import io
+import os
+import fitz  # PyMuPDF
 import zipfile
 from fastapi import APIRouter, File, UploadFile, HTTPException
-from fastapi.responses import StreamingResponse
-from pdf2image import convert_from_bytes
+from fastapi.responses import FileResponse
 
-# Dedicated router for PDF to Image tool
-router = APIRouter(prefix="/api", tags=["PDF to Image"])
-
-def pdf_to_images_zip_logic(pdf_bytes: bytes) -> io.BytesIO:
-    """
-    পিডিএফের প্রতিটি পেজকে জেপিজি ছবিতে কনভার্ট করে একটি ZIP ফাইল বানিয়ে মেমরিতেই রিটার্ন করার লজিক।
-    """
-    try:
-        # Converting with 150 DPI for optimal speed and size balance
-        images = convert_from_bytes(pdf_bytes, dpi=150)
-        
-        if not images:
-            raise ValueError("The PDF could not be converted. It might be corrupted or empty.")
-            
-        zip_buffer = io.BytesIO()
-        
-        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-            for idx, img in enumerate(images):
-                img_buffer = io.BytesIO()
-                img.save(img_buffer, format="JPEG")
-                img_buffer.seek(0)
-                zip_file.writestr(f"page_{idx + 1}.jpg", img_buffer.getvalue())
-                
-                # Memory cleanup for individual image buffers
-                img_buffer.close()
-                img.close()  # Close PIL handle directly
-                
-        zip_buffer.seek(0)
-        return zip_buffer
-    except Exception as e:
-        raise RuntimeError(f"Processing conversion failed: {str(e)}")
+router = APIRouter(prefix="/api/tools", tags=["PDF to Image"])
+TEMP_DIR = "/tmp"
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 @router.post("/pdf-to-image")
-async def pdf_to_image(file: UploadFile = File(...)):
-    if not file.filename.lower().endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="Uploaded file must be a PDF.")
-        
+async def convert_pdf_to_image(file: UploadFile = File(...)):
+    if not file.filename.endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed")
+    
+    input_path = os.path.join(TEMP_DIR, file.filename)
+    zip_filename = f"{os.path.splitext(file.filename)[0]}_images.zip"
+    zip_path = os.path.join(TEMP_DIR, zip_filename)
+    
     try:
-        pdf_bytes = await file.read()
-        if not pdf_bytes:
-            raise HTTPException(status_code=400, detail="Uploaded PDF file is empty.")
+        with open(input_path, "wb") as buffer:
+            buffer.write(await file.read())
             
-        zip_stream = pdf_to_images_zip_logic(pdf_bytes)
+        doc = fitz.open(input_path)
+        image_files = []
         
-        # Craft safe output filename
-        safe_filename = file.filename.rsplit('.', 1)[0] + "_images.zip"
+        for i, page in enumerate(doc):
+            pix = page.get_pixmap(dpi=150)
+            img_filename = f"page_{i+1}.png"
+            img_path = os.path.join(TEMP_DIR, img_filename)
+            pix.save(img_path)
+            image_files.append(img_path)
+        doc.close()
         
-        return StreamingResponse(
-            zip_stream,
-            media_type="application/zip",
-            headers={"Content-Disposition": f"attachment; filename={safe_filename}"}
-        )
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve))
+        with zipfile.ZipFile(zip_path, 'w') as zipf:
+            for img in image_files:
+                zipf.write(img, os.path.basename(img))
+                
+        return FileResponse(zip_path, media_type="application/zip", filename=zip_filename)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"PDF to Image conversion failed: {str(e)}")
