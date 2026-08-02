@@ -1,59 +1,33 @@
-import io
-from typing import List
+import os
 from fastapi import APIRouter, File, UploadFile, HTTPException
-from fastapi.responses import StreamingResponse
-import pypdf
+from fastapi.responses import FileResponse
+from pypdf import PdfWriter
 
-# Create a clean dedicated router for PDF Merging tool
-router = APIRouter(prefix="/api", tags=["Merge"])
-
-def merge_pdfs_logic(pdf_files_bytes: List[bytes]) -> io.BytesIO:
-    """
-    মেমরিতে একাধিক পিডিএফ ফাইল নির্দিষ্ট সিকোয়েন্সে জোড়া দেওয়ার পাইথন লজিক (pypdf compatibility ফিক্সড)।
-    """
-    try:
-        # pypdf-এর নতুন ভার্সনে PdfWriter দিয়েই মার্জ করা সবচেয়ে নিরাপদ ও রিকমেন্ডেড
-        merger = pypdf.PdfWriter()
-        
-        for file_bytes in pdf_files_bytes:
-            if len(file_bytes) == 0:
-                continue
-            merger.append(io.BytesIO(file_bytes))
-            
-        output_stream = io.BytesIO()
-        merger.write(output_stream)
-        merger.close()
-        output_stream.seek(0)
-        return output_stream
-        
-    except Exception as e:
-        raise RuntimeError(f"PDF Merge করতে সমস্যা হয়েছে: {str(e)}")
+router = APIRouter(prefix="/api/tools", tags=["Merger"])
+TEMP_DIR = "/tmp"
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 @router.post("/merge")
-async def merge_pdfs(files: List[UploadFile] = File(...)):
+async def merge_pdfs(files: list[UploadFile] = File(...)):
     if len(files) < 2:
         raise HTTPException(status_code=400, detail="Please upload at least 2 PDF files to merge.")
     
+    merger = PdfWriter()
+    output_filename = "merged_document.pdf"
+    output_path = os.path.join(TEMP_DIR, output_filename)
+    
     try:
-        pdf_files_bytes = []
         for file in files:
-            if not file.filename.lower().endswith('.pdf'):
-                raise HTTPException(status_code=400, detail=f"File '{file.filename}' is not a valid PDF.")
+            if not file.filename.endswith('.pdf'):
+                continue
+            temp_path = os.path.join(TEMP_DIR, file.filename)
+            with open(temp_path, "wb") as buffer:
+                buffer.write(await file.read())
+            merger.append(temp_path)
             
-            bytes_data = await file.read()
-            pdf_files_bytes.append(bytes_data)
+        merger.write(output_path)
+        merger.close()
         
-        merged_stream = merge_pdfs_logic(pdf_files_bytes)
-        
-        if merged_stream.getbuffer().nbytes == 0:
-            raise HTTPException(status_code=400, detail="Merging resulted in an empty file. Ensure source PDFs are valid.")
-            
-        return StreamingResponse(
-            merged_stream,
-            media_type="application/pdf",
-            headers={"Content-Disposition": "attachment; filename=merged_document.pdf"}
-        )
-    except HTTPException as he:
-        raise he
+        return FileResponse(output_path, media_type="application/pdf", filename=output_filename)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Merging failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Merge failed: {str(e)}")
