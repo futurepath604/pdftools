@@ -1,196 +1,43 @@
 import os
-import uuid
-import shutil
-import zipfile
+import fitz  # PyMuPDF
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
-from pdf2docx import Converter
 from pptx import Presentation
-from pptx.util import Inches, Pt
-from pptx.dml.color import RGBColor
+from pptx.util import Inches
 
-# Create a clean dedicated router for PDF to PPT tool
-router = APIRouter(prefix="/api", tags=["PDF to PPT"])
-
-def convert_pdf_to_ppt(input_path: str, output_path: str):
-    """
-    Professional High-Fidelity PDF to PPTX Converter.
-    Uses an AI layout reconstruction pipeline (via pdf2docx semantic parsing) 
-    to compile document flows into fully native, multi-column, beautifully 
-    aligned PowerPoint slides without breaking tables or overlapping text.
-    """
-    # Use unique folder name per request to avoid multi-user collision
-    session_id = uuid.uuid4().hex
-    temp_dir = f"temp_ppt_pipeline_{session_id}"
-    os.makedirs(temp_dir, exist_ok=True)
-    
-    temp_docx = os.path.join(temp_dir, "intermediary_flow.docx")
-    
-    try:
-        # Step 1: AI Semantic Layout Parsing (Extract Text Flow, Tables & Images aligned perfectly)
-        cv = Converter(input_path)
-        cv.convert(temp_docx, start=0, end=None)
-        cv.close()
-        
-        # Step 2: Initialize Presentation Canvas (Standard Widescreen Layout)
-        prs = Presentation()
-        prs.slide_width = Inches(13.333)
-        prs.slide_height = Inches(7.5)
-        blank_layout = prs.slide_layouts[6] # Full blank master layout
-        
-        # Extract native images parsed by the AI engine from docx container safely
-        docx_img_dir = os.path.join(temp_dir, "word", "media")
-        if os.path.exists(temp_docx):
-            with zipfile.ZipFile(temp_docx, 'r') as zip_ref:
-                zip_ref.extractall(temp_dir)
-        
-        # Open intermediary structural layout file via python-docx engine
-        from docx import Document
-        doc = Document(temp_docx)
-        
-        # Track active slide state
-        current_slide = prs.slides.add_slide(blank_layout)
-        
-        # Global grid placements for top to bottom flow
-        current_top = Inches(0.8)
-        max_slide_height = Inches(6.5)
-        
-        images_found = []
-        if os.path.exists(docx_img_dir):
-            images_found = [os.path.join(docx_img_dir, f) for f in os.listdir(docx_img_dir)]
-        img_idx = 0
-
-        # Helper to handle content height overflow and create a new slide cleanly
-        def check_slide_overflow(height_to_add):
-            nonlocal current_slide, current_top
-            if current_top + height_to_add > max_slide_height:
-                current_slide = prs.slides.add_slide(blank_layout)
-                current_top = Inches(0.8)
-
-        # --- PHASE 1: PARSE INTERMEDIARY BLOCKS (TEXT & TABLES) ---
-        for element in doc.element.body:
-            # 1. HANDLE STRUCTURED TABLES (Pixel-Perfect Grid Conversion)
-            if element.tag.endswith('tbl'):
-                from docx.table import Table
-                docx_table = Table(element, doc)
-                
-                rows_count = len(docx_table.rows)
-                cols_count = len(docx_table.columns)
-                
-                table_height = Inches(max(0.4 * rows_count, 1.5))
-                check_slide_overflow(table_height)
-                
-                # Add a native PowerPoint table grid
-                table_shape = current_slide.shapes.add_table(
-                    rows_count, cols_count, 
-                    Inches(0.8), current_top, 
-                    Inches(11.733), table_height
-                )
-                ppt_table = table_shape.table
-                
-                # Copy values safely preserving cellular structures
-                for r_idx, row in enumerate(docx_table.rows):
-                    for c_idx, cell in enumerate(row.cells):
-                        ppt_cell = ppt_table.cell(r_idx, c_idx)
-                        ppt_cell.text = cell.text.strip()
-                        
-                        # Style table cells elegantly
-                        for paragraph in ppt_cell.text_frame.paragraphs:
-                            paragraph.font.size = Pt(11)
-                            paragraph.font.name = "Arial"
-                            paragraph.font.color.rgb = RGBColor(30, 41, 59)
-                            
-                current_top += table_height + Inches(0.4)
-                
-            # 2. HANDLE PARAGRAPHS AND IMAGES CONTIGUOUSLY
-            elif element.tag.endswith('p'):
-                from docx.text.paragraph import Paragraph
-                p_obj = Paragraph(element, doc)
-                text_content = p_obj.text.strip()
-                
-                # Inline Image Insertion check from structural layout
-                if 'w:drawing' in element.xml and img_idx < len(images_found):
-                    img_height = Inches(2.5)
-                    check_slide_overflow(img_height)
-                    
-                    try:
-                        current_slide.shapes.add_picture(
-                            images_found[img_idx], 
-                            Inches(0.8), current_top, 
-                            width=Inches(4.5)
-                        )
-                        current_top += img_height + Inches(0.3)
-                        img_idx += 1
-                    except Exception:
-                        pass
-                
-                if not text_content:
-                    continue
-                    
-                text_height = Inches(0.8)
-                check_slide_overflow(text_height)
-                
-                # Insert fully editable text containers
-                txBox = current_slide.shapes.add_textbox(Inches(0.8), current_top, Inches(11.733), text_height)
-                tf = txBox.text_frame
-                tf.word_wrap = True
-                
-                p = tf.paragraphs[0]
-                p.text = text_content
-                
-                # Distinguish Headers from Body Flow via String Length Metrics
-                if len(text_content) < 60 and not text_content.endswith(('.', ',', ';')):
-                    p.font.size = Pt(24)
-                    p.font.bold = True
-                    p.font.color.rgb = RGBColor(30, 27, 75)
-                    current_top += Inches(0.6)
-                else:
-                    p.font.size = Pt(13)
-                    p.font.color.rgb = RGBColor(71, 85, 105)
-                    current_top += Inches(0.4)
-                    
-                p.font.name = "Arial"
-                
-        # Save output
-        prs.save(output_path)
-    finally:
-        # Step 3: Absolute Sandbox Cleanup
-        if os.path.exists(temp_dir):
-            shutil.rmtree(temp_dir)
-
+router = APIRouter(prefix="/api/tools", tags=["PDF to PPT"])
+TEMP_DIR = "/tmp"
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 @router.post("/pdf-to-ppt")
-async def api_pdf_to_ppt(file: UploadFile = File(...)):
-    if not file.filename.lower().endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported for PowerPoint conversion.")
-
-    session_prefix = uuid.uuid4().hex[:8]
-    input_path = f"temp_in_{session_prefix}_{file.filename}"
-    output_filename = file.filename.rsplit('.', 1)[0] + ".pptx"
-    output_path = f"temp_out_{session_prefix}_{output_filename}"
-
-    # Write uploaded file stream safely to a sandboxed local path
-    with open(input_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
+async def convert_pdf_to_ppt(file: UploadFile = File(...)):
+    if not file.filename.endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed")
+    
+    input_path = os.path.join(TEMP_DIR, file.filename)
+    output_filename = f"{os.path.splitext(file.filename)[0]}.pptx"
+    output_path = os.path.join(TEMP_DIR, output_filename)
+    
     try:
-        convert_pdf_to_ppt(input_path, output_path)
+        with open(input_path, "wb") as buffer:
+            buffer.write(await file.read())
+            
+        prs = Presentation()
+        doc = fitz.open(input_path)
         
-        if not os.path.exists(output_path):
-            raise HTTPException(status_code=500, detail="PowerPoint file was not generated by engine.")
-
-        return FileResponse(
-            output_path,
-            media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            filename=output_filename,
-            headers={"Content-Disposition": f"attachment; filename={output_filename}"}
-        )
+        blank_slide_layout = prs.slide_layouts[6]
+        
+        for page in doc:
+            pix = page.get_pixmap(dpi=150)
+            img_path = os.path.join(TEMP_DIR, f"slide_{page.number}.png")
+            pix.save(img_path)
+            
+            slide = prs.slides.add_slide(blank_slide_layout)
+            slide.shapes.add_picture(img_path, Inches(0), Inches(0), width=prs.slide_width, height=prs.slide_height)
+            
+        doc.close()
+        prs.save(output_path)
+        
+        return FileResponse(output_path, media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation", filename=output_filename)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"PDF to PPT Conversion pipeline error: {str(e)}")
-    finally:
-        # Disk artifacts cleanup guard
-        if os.path.exists(input_path):
-            try: os.remove(input_path)
-            except: pass
-
-        # Note: output_path will be safely removed by system if required or managed after streaming
+        raise HTTPException(status_code=500, detail=f"PDF to PPT conversion failed: {str(e)}")
