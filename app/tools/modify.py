@@ -1,77 +1,59 @@
-import json
-from io import BytesIO
+import os
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
-from fastapi.responses import StreamingResponse
-import pypdf
+from fastapi.responses import FileResponse
+from pypdf import PdfReader, PdfWriter
 
-# Create a clean dedicated router for PDF Modification tools (Split, Rotate, Delete Pages)
-router = APIRouter(prefix="/api", tags=["Modify PDF"])
+router = APIRouter(prefix="/api/tools", tags=["Modify PDF"])
+TEMP_DIR = "/tmp"
+os.makedirs(TEMP_DIR, exist_ok=True)
 
-@router.post("/modify-pdf")
-async def modify_pdf(
-    file: UploadFile = File(...), 
-    mode: str = Form(...), 
-    params: str = Form(...)
-):
+@router.post("/rotate")
+async def rotate_pdf(file: UploadFile = File(...), angle: int = Form(90)):
+    input_path = os.path.join(TEMP_DIR, file.filename)
+    output_filename = f"rotated_{file.filename}"
+    output_path = os.path.join(TEMP_DIR, output_filename)
+    
     try:
-        pdf_bytes = await file.read()
-        if not pdf_bytes:
-            raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+        with open(input_path, "wb") as buffer:
+            buffer.write(await file.read())
+            
+        reader = PdfReader(input_path)
+        writer = PdfWriter()
+        
+        for page in reader.pages:
+            page.rotate(angle)
+            writer.add_page(page)
+            
+        with open(output_path, "wb") as f:
+            writer.write(f)
+            
+        return FileResponse(output_path, media_type="application/pdf", filename=output_filename)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Rotation failed: {str(e)}")
 
-        reader = pypdf.PdfReader(BytesIO(pdf_bytes))
-        writer = pypdf.PdfWriter()
+@router.post("/delete-pages")
+async def delete_pages(file: UploadFile = File(...), pages: str = Form(...)):
+    # Comma-separated 0-indexed pages to delete e.g. "0,2"
+    input_path = os.path.join(TEMP_DIR, file.filename)
+    output_filename = f"modified_{file.filename}"
+    output_path = os.path.join(TEMP_DIR, output_filename)
+    
+    try:
+        with open(input_path, "wb") as buffer:
+            buffer.write(await file.read())
+            
+        reader = PdfReader(input_path)
+        writer = PdfWriter()
         
-        # Safely parse JSON parameters with fallback
-        try:
-            config = json.loads(params)
-        except Exception:
-            raise HTTPException(status_code=400, detail="Invalid JSON format in params.")
+        del_indices = [int(p.strip()) for p in pages.split(",")]
         
-        total_pages = len(reader.pages)
-        
-        # --- MODE 1: SPLIT PAGES ---
-        if mode == "split":
-            target_pages = config.get("pages", [])
-            if not target_pages:
-                raise HTTPException(status_code=400, detail="No pages specified for splitting.")
-            for idx in target_pages:
-                if 0 <= idx < total_pages:
-                    writer.add_page(reader.pages[idx])
-                    
-        # --- MODE 2: ROTATE PAGES ---
-        elif mode == "rotate":
-            angle = config.get("angle", 90)
-            if angle % 90 != 0:
-                raise HTTPException(status_code=400, detail="Rotation angle must be a multiple of 90.")
-            for page in reader.pages:
-                # Direct rotation can alter original reference safely via pypdf
-                page.rotate(angle)
+        for idx, page in enumerate(reader.pages):
+            if idx not in del_indices:
                 writer.add_page(page)
                 
-        # --- MODE 3: DELETE PAGES ---
-        elif mode == "delete_pages":
-            skip_pages = config.get("pages", [])
-            for idx in range(total_pages):
-                if idx not in skip_pages:
-                    writer.add_page(reader.pages[idx])
-        else:
-            raise HTTPException(status_code=400, detail="Invalid modification mode.")
-
-        # Check if the output has at least one page
-        if len(writer.pages) == 0:
-            raise HTTPException(status_code=400, detail="The operation resulted in a PDF with 0 pages.")
-
-        out_buf = BytesIO()
-        writer.write(out_buf)
-        writer.close()
-        out_buf.seek(0)
-
-        return StreamingResponse(
-            out_buf, 
-            media_type="application/pdf", 
-            headers={"Content-Disposition": f"attachment; filename=modified_{file.filename}"}
-        )
-    except HTTPException as he:
-        raise he
+        with open(output_path, "wb") as f:
+            writer.write(f)
+            
+        return FileResponse(output_path, media_type="application/pdf", filename=output_filename)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Modification failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Deleting pages failed: {str(e)}")
