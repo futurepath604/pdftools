@@ -3,184 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unlock PDF - Secure PDF Tools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .gradient-bg { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
-        .group:hover .group-hover\:opacity-100 { opacity: 1; visibility: visible; }
-    </style>
+    <title>Lock PDF - FILEORA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/js/branding.js" defer></script>
+    <script src="/static/js/ads-manager.js" defer></script>
 </head>
-<body class="bg-gray-50 font-sans min-h-screen flex flex-col justify-between">
-
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="/" class="flex items-center space-x-2 text-indigo-600 font-bold text-xl"><span>🛠️ Secure PDF Tools</span></a>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <a href="/" class="text-gray-600 hover:text-indigo-600 text-sm font-medium">Dashboard</a>
-                    <div class="relative group inline-block text-left">
-                        <button class="text-gray-600 hover:text-indigo-600 text-sm font-medium flex items-center space-x-1 focus:outline-none py-5">
-                            <span>All Tools</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div class="absolute right-0 mt-0 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <div class="py-1">
-                                <a href="/compress" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📉 Compress PDF</a>
-                                <a href="/merge" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔀 Merge PDF</a>
-                                <a href="/pdf-to-image" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖼️ PDF to Image</a>
-                            </div>
-                            <div class="py-1">
-                                <a href="/split" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">✂️ Split PDF</a>
-                                <a href="/rotate" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔄 Rotate PDF</a>
-                                <a href="/delete-pages" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🗑️ Delete Pages</a>
-                            </div>
-                            <div class="py-1">
-                                <a href="/lock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔒 Lock PDF</a>
-                                <a href="/unlock" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔓 Unlock PDF</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<body class="bg-light">
+    <div id="header-ad" class="container mt-2"></div>
+    <nav class="navbar navbar-dark bg-dark"><div class="container"><a class="navbar-brand brand-title" href="/">📄 FILEORA</a></div></nav>
+    <div class="container my-5" style="max-width: 600px;">
+        <div class="card shadow p-4">
+            <h2 class="mb-4">Protect PDF with Password</h2>
+            <form>
+                <div class="mb-3"><input class="form-control" type="file" accept=".pdf" required></div>
+                <div class="mb-3"><input class="form-control" type="password" placeholder="Enter Password" required></div>
+                <button type="submit" class="btn btn-primary w-100">Lock PDF</button>
+            </form>
+            <div id="tool-box-ad" class="mt-3"></div>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="flex-grow max-w-3xl w-full mx-auto px-4 py-12">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-gray-900">Unlock Password PDF</h1>
-            <p class="mt-2 text-gray-500">Remove password protection and restrictions from your PDF document.</p>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 space-y-6">
-            <!-- Drop Zone -->
-            <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-500 bg-gray-50">
-                <input type="file" id="file-input" class="hidden" accept=".pdf">
-                <div class="space-y-2">
-                    <div class="text-indigo-500 text-4xl">🔓</div>
-                    <div class="text-gray-600"><span class="font-medium text-indigo-600">Choose Protected PDF</span> or drag it here</div>
-                </div>
-            </div>
-
-            <!-- Password Field Input -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Enter PDF Password:</label>
-                <input type="password" id="pdf-password" placeholder="Enter the current password" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                
-                <!-- Forgot Password Help Option -->
-                <div class="mt-2 text-right">
-                    <button type="button" id="forgot-password-btn" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors focus:outline-none">
-                        Forgot or don't know the password?
-                    </button>
-                </div>
-            </div>
-
-            <!-- Legally Compliant Help Modal / Tip Section (Hidden by default) -->
-            <div id="recovery-tips" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4 text-amber-900 text-sm space-y-2">
-                <div class="flex items-center space-x-2 font-bold">
-                    <span>💡</span> <span>Important Legal & Recovery Notice:</span>
-                </div>
-                <p class="text-xs text-amber-800 leading-relaxed">
-                    Due to data security and legal policy compliances, we <b>do not</b> support unauthorized password cracking or brute-force bypassing. Breaking strong encryption without authorized credentials violates security standards. 
-                </p>
-                <div class="text-xs text-amber-800 space-y-1 pl-4 list-disc">
-                    <p>• Check if the file was generated by an automated system (e.g., Bank statement, telecom bill) where the password is usually your <b>PAN card number, Date of Birth (DDMMYYYY), or Name combination</b>.</p>
-                    <p>• Contact the original author or organization that generated this file to provide the security key.</p>
-                    <p>• Look up the original email thread where you received this PDF, as instructions for opening the document are often listed there.</p>
-                </div>
-            </div>
-
-            <!-- Action Button -->
-            <button id="unlock-btn" class="w-full gradient-bg text-white py-3 rounded-xl font-medium shadow-md hover:opacity-90 disabled:opacity-50" disabled>
-                Unlock PDF
-            </button>
-
-            <!-- Status Box -->
-            <div id="status" class="hidden p-4 rounded-xl text-sm font-medium"></div>
-        </div>
-    </main>
-
-    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
-        &copy; 2026 FFuture's Workspace. All rights reserved.
-    </footer>
-
-    <script>
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-input');
-        const passwordInput = document.getElementById('pdf-password');
-        const forgotBtn = document.getElementById('forgot-password-btn');
-        const recoveryTips = document.getElementById('recovery-tips');
-        const unlockBtn = document.getElementById('unlock-btn');
-        const status = document.getElementById('status');
-
-        let selectedFile = null;
-
-        // Toggle Recovery Options Legally
-        forgotBtn.addEventListener('click', () => {
-            recoveryTips.classList.toggle('hidden');
-        });
-
-        dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-indigo-500'));
-        dropZone.addEventListener('drop', (e) => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
-
-        function handleFile(file) {
-            if (file && file.type === 'application/pdf') {
-                selectedFile = file;
-                unlockBtn.disabled = false;
-                showStatus(`Selected: ${file.name}`, 'success');
-            }
-        }
-
-        unlockBtn.addEventListener('click', async () => {
-            if (!selectedFile) return;
-            
-            const password = passwordInput.value.trim();
-            if (!password) {
-                showStatus('Please enter the password to unlock this PDF.', 'error');
-                return;
-            }
-
-            unlockBtn.disabled = true;
-            unlockBtn.textContent = 'Unlocking...';
-
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            formData.append('password', password);
-
-            try {
-                const response = await fetch('/api/unlock-pdf', { method: 'POST', body: formData });
-                
-                if (response.status === 401 || response.status === 403) {
-                    throw new Error('Incorrect password. Please verify the credentials and try again.');
-                }
-                if (!response.ok) throw new Error('Failed to unlock PDF. The file may not be encrypted or is corrupted.');
-                
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `unlocked_${selectedFile.name}`;
-                a.click();
-                showStatus('Success! Password protection has been removed.', 'success');
-            } catch (err) {
-                showStatus(err.message, 'error');
-            } finally {
-                unlockBtn.disabled = false;
-                unlockBtn.textContent = 'Unlock PDF';
-            }
-        });
-
-        function showStatus(msg, type) {
-            status.classList.remove('hidden');
-            status.textContent = msg;
-            status.className = `mt-4 p-4 rounded-xl text-sm font-medium ${type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`;
-        }
-    </script>
+    </div>
+    <div id="footer-ad" class="container mb-3"></div>
+    <footer class="bg-dark text-white text-center py-3 mt-5"><p class="footer-text mb-0">© 2026 Fileora</p></footer>
 </body>
 </html>
