@@ -3,44 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Secure PDF Tools</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Legal & Support - FILEORA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/js/branding.js" defer></script>
+    <script src="/static/js/ads-manager.js" defer></script>
 </head>
-<body class="bg-slate-50 text-slate-800 font-['Inter'] py-12">
-    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl border border-slate-200 shadow-xs">
-        <a href="/" class="text-red-600 hover:underline text-sm font-medium mb-6 inline-block">&larr; Back to Dashboard</a>
-        <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Contact Support</h1>
-        <p class="text-slate-500 text-sm mb-6">Have questions or feedback about file conversions? Drop us a message.</p>
-        
-        <div class="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center">
-            <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mr-3">
-                <i class="fa-solid fa-envelope"></i>
-            </div>
-            <div>
-                <span class="block text-xs uppercase text-slate-400 font-bold tracking-wider">Official Inquiries</span>
-                <span class="text-slate-700 font-medium">support@yourdomain.com</span> <!-- Change to your domain email -->
-            </div>
+<body class="bg-light">
+    <div id="header-ad" class="container mt-2"></div>
+    <nav class="navbar navbar-dark bg-dark"><div class="container"><a class="navbar-brand brand-title" href="/">📄 FILEORA</a></div></nav>
+    <div class="container my-5" style="max-width: 800px;">
+        <div class="card shadow p-4">
+            <h2 class="mb-4">Information & Policies</h2>
+            <p>Welcome to <strong>FILEORA</strong>. We respect your privacy and provide safe, client-side/secure server processing for all document tools.</p>
+            <p>For any queries or support, feel free to contact us via our official support channels.</p>
         </div>
-
-        <form onsubmit="alert('Thank you! Your message has been routed.'); event.preventDefault();" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                <input type="text" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                <input type="email" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Message Topic</label>
-                <textarea required rows="4" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500" placeholder="Describe conversion errors, ideas..."></textarea>
-            </div>
-            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition">
-                Send Message
-            </button>
-        </form>
     </div>
+    <div id="footer-ad" class="container mb-3"></div>
+    <footer class="bg-dark text-white text-center py-3 mt-5"><p class="footer-text mb-0">© 2026 Fileora</p></footer>
 </body>
 </html>
